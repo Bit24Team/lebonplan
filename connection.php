@@ -46,6 +46,18 @@ try {
     foreach ($result as $row) {
         echo $row['pseudo'] . "</br>";
     }
+    // 7 Gerer la co d'un  utilisateurs
+    $pseudo = "Gandalf";
+    $mdp = "Maia";
+
+    $sql = "SELECT * FROM utilisateurs WHERE pseudo = '$pseudo' AND motDePasse = '$mdp'";
+    $result = $pdo->query($sql);
+
+    if ($result->fetch()) {
+        echo "Connexion réussie !<br>";
+    } else {
+        echo "Pseudo ou mot de passe incorrect.<br>";
+    }
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion
     echo "Erreur de connexion : " . $e->getMessage();
