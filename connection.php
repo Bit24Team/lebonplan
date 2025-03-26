@@ -24,8 +24,8 @@ try {
 
     $sql = "SELECT * from utilisateurs where pseudo = 'Gandalf'";
     $result = $pdo->query($sql);
-    $result = $result->fetchColumn();
-    echo $result;
+    $user = $result->fetch(PDO::FETCH_NUM);
+    echo "Statut Admin (indexé) : " . $user[3] . "<br>";
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion
     echo "Erreur de connexion : " . $e->getMessage();
