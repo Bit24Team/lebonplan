@@ -22,7 +22,7 @@ try {
     $result = $result->fetchColumn();
     echo $result;
 
-    $sql = "SELECT * from utilisateurs where pseudo = 'gandalf'";
+    $sql = "SELECT * from utilisateurs where pseudo = 'Gandalf'";
     $result = $result->fetchColumn();
     echo $result;
 } catch (PDOException $e) {
