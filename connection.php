@@ -23,6 +23,7 @@ try {
     echo $result;
 
     $sql = "SELECT * from utilisateurs where pseudo = 'Gandalf'";
+    $result = $pdo->query($sql);
     $result = $result->fetchColumn();
     echo $result;
 } catch (PDOException $e) {
