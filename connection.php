@@ -19,7 +19,7 @@ try {
     if ($result === false) {
         die("Error execution request");
     }
-    $result = $result->fetch();
+    $result = $result->fetchColumn();
     echo $result;
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion
