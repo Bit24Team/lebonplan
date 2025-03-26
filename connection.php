@@ -13,9 +13,15 @@ try {
 
     // Créer une nouvelle instance de PDO
     $pdo = new PDO($dsn, $username, $password, $options);
-    echo "Connexion réussie !";
+    $sql = "SELECT COUNT(*) FROM utilisateurs WHERE pseudo = 'Gandalf'";
+    $result = $pdo->query($sql);
+
+    if ($result === false) {
+        die("Error execution request");
+    }
+    $result = $result->fetch();
+    echo $result;
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion
     echo "Erreur de connexion : " . $e->getMessage();
 }
-?>
