@@ -13,14 +13,14 @@ try {
 
     // Créer une nouvelle instance de PDO
     $pdo = new PDO($dsn, $username, $password, $options);
-    // $sql = "SELECT COUNT(*) FROM utilisateurs WHERE pseudo = 'Gandalf'";
-    //$result = $pdo->query($sql);
+    $sql = "SELECT COUNT(*) FROM utilisateurs WHERE pseudo = 'Gandalf'";
+    $result = $pdo->query($sql);
 
-    //if ($result === false) {
-    //     die("Error execution request");
-    //}
-    // $result = $result->fetchColumn();
-    //echo $result;
+    if ($result === false) {
+        die("Error execution request");
+    }
+    $result = $result->fetchColumn();
+    echo $result;
 
     $sql = "SELECT * from utilisateurs where pseudo = 'gandalf'";
     $result = $result->fetchColumn();
