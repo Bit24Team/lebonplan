@@ -77,6 +77,7 @@ class DefaultController extends AbstractController
     {
         return new Response("Page d'inscription");
     }
+    // Requête s'inscription
     #[Route("/inscription", name:"register", methods: ["POST"])]
     public function register(Request $request, SessionInterface $session): Response
     {
