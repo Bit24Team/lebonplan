@@ -1,0 +1,29 @@
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches:
+      - main  # Change to the branch you want to deploy from (e.g., 'master', 'main')
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Azure VM
+        run: |
+          ssh -o StrictHostKeyChecking=no azureuser@13.81.97.84 << 'EOF'
+            cd /var/www/lebonplan/
+            git pull origin main
+            cd dev-web
+            composer install --no-dev --optimize-autoloader
+            php bin/console cache:clear --env=prod
+            php bin/console doctrine:migrations:migrate --no-interaction
+          EOF
