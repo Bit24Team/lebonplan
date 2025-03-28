@@ -50,7 +50,7 @@ class DefaultController extends AbstractController
     #[Route("/connexion", name:"login_page", methods: ["GET"])]
     public function login_page(): Response
     {
-        return new Response("connexion");
+        return $this->render('login.html.twig');
     }
     // Requête de connexion
     #[Route("/connexion", name:"login", methods: ["POST"])]
@@ -58,8 +58,9 @@ class DefaultController extends AbstractController
     {
         $username = $request->request->get('username');
         $password = $request->request->get('password');
+        $user_id = 
         $session->set('user', [
-            'username' => $username,
+            'user_id' => $username,
             'role' => 'admin',
         ]);
         return new Response("Connexion réussie !");
