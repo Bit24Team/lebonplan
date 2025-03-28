@@ -64,7 +64,7 @@ function login($pdo, $email, $password) {
     }
 }
 
-function research_compagny($company_name,$company_desc,$company_email,$company_phone,$company_intern,$company_rating){
+function research_compagny($pdo,$company_name,$company_desc,$company_email,$company_phone,$company_intern,$company_rating){
      // Initialisation de la requête SQL avec une condition toujours vraie
      $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
 
@@ -104,8 +104,8 @@ function research_compagny($company_name,$company_desc,$company_email,$company_p
      return $results;
  }
 
-function number_interns($name){
-    $sql = "SELECT COUNT * FROM Applications inner join Offers on id_offer.Applications = id.offer inner join Companies on id_company.Offers = id.Companies where name.Compagnies=:name"
+function number_interns($pdo,$name){
+    $sql = "SELECT COUNT * FROM Applications inner join Offers on id_offer.Applications = id.offer inner join Companies on id_company.Offers = id.Companies where name.Compagnies=:name";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['name.Companies' => $name]);
     $user = $stmt->fetch();

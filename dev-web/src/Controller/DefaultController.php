@@ -58,11 +58,10 @@ class DefaultController extends AbstractController
     {
         $username = $request->request->get('username');
         $password = $request->request->get('password');
-        $user_id = 
-        $session->set('user', [
-            'user_id' => $username,
-            'role' => 'admin',
-        ]);
+        //$user_id = auth($username,$password);
+        //$session->set('user', [
+        //    'user_id' => $user_id
+        //]);
         return new Response("Connexion réussie !");
     }
     #[Route('/deconnexion', name: 'logout', methods: ['GET'])]
