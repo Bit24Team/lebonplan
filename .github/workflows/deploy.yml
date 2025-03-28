@@ -19,7 +19,7 @@ jobs:
 
       - name: Deploy to Azure VM
         run: |
-          ssh -o StrictHostKeyChecking=no azure-user@13.81.97.84 << 'EOF'
+          ssh -o StrictHostKeyChecking=no azureuser@13.81.97.84 << 'EOF'
             cd /var/www/my-symfony-site
             git pull origin main
             composer install --no-dev --optimize-autoloader
