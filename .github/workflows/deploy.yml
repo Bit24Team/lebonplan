@@ -24,5 +24,5 @@ jobs:
             git pull origin main
             cd dev-web
             composer install --no-dev --optimize-autoloader
-            php bin/console cache:clear --env=prod
+            sudo php bin/console cache:clear --env=prod
           EOF
