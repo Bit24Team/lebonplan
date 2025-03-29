@@ -11,9 +11,10 @@
     />
   </head>
   <body>
-    <div class="container">
+    <div class="container{{ is_active }}">
       <div class="form-box login">
         <form action="#">
+          <input type="hidden" id="auth_login" name="auth_type" value="login">
           <h1>Connexion</h1>
           <div class="input-box">
             <input type="text" placeholder="Username" required />
@@ -32,6 +33,7 @@
 
       <div class="form-box register">
         <form action="#">
+          <input type="hidden" id="auth_register" name="auth_type" value="register">
           <h2>Créez votre compte</h2>
           <div class="name-container">
             <div class="input-box">
@@ -81,7 +83,7 @@
 
         <div class="toggle-panel toggle-right">
           <h1>Déjà un compte ?</h1>
-          <p>Connecté vous ici.</p>
+          <p>Connectez-vous ici.</p>
           <button class="btn login-btn">Connexion</button>
         </div>
       </div>

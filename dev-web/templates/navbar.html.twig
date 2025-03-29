@@ -31,11 +31,11 @@
             ><img src="{{ asset('/images/logo.png') }}" alt="Logo"
           /></a>
         </li>
-        <li class="test"><a href="#">Wishlist</a></li>
-        <li><a href="#">Offres</a></li>
-        <li><a href="#">Entreprise</a></li>
-        <li><a href="#">Inscription</a></li>
-        <li><a href="#">Connexion</a></li>
+        <li class="test"><a href="{{ path('account') }}">Mon compte</a></li>
+        <li><a href="{{ path('offers') }}">Offres</a></li>
+        <li><a href="{{ path('companies') }}">Entreprise</a></li>
+        <li><a href="{{ path('register_page') }}">Inscription</a></li>
+        <li><a href="{{ url('login_page') }}">Connexion</a></li>
       </ul>
       <ul>
         <li class="hideOnMobile">
@@ -47,11 +47,11 @@
             />
           </a>
         </li>
-        <li class="hideOnMobile"><a href="#">Wishlist</a></li>
-        <li class="hideOnMobile"><a href="#">Offres</a></li>
-        <li class="hideOnMobile"><a href="#">Entreprise</a></li>
-        <li class="hideOnMobile"><a href="#">Connexion</a></li>
-        <li class="hideOnMobile"><a href="#">Inscription</a></li>
+        <li class="hideOnMobile"><a href="{{ path('account') }}">Mon Compte</a></li>
+        <li class="hideOnMobile"><a href="{{ path('offers') }}">Offres</a></li>
+        <li class="hideOnMobile"><a href="{{ path('companies') }}">Entreprise</a></li>
+        <li class="hideOnMobile"><a href="{{ path('login_page') }}">Connexion</a></li>
+        <li class="hideOnMobile"><a href="{{ path('register_page') }}">Inscription</a></li>
         <li class="menu-button" onclick="showSidebar()">
           <a href="#">
             <svg height="26" viewBox="0 96 960 960" width="26">
