@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-include '/../Model/Model.php';
+include '/var/www/lebonplan/dev-web/src/Model/Model.php';
 
 class DefaultController extends AbstractController
 {
