@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Navbar</title>
+    <title>Lebonplan - {% block title %}Titre Invalide{% endblock %}</title>
     <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}" />
   </head>
   <body>
@@ -35,7 +35,7 @@
         <li><a href="{{ path('offers') }}">Offres</a></li>
         <li><a href="{{ path('companies') }}">Entreprise</a></li>
         <li><a href="{{ path('register_page') }}">Inscription</a></li>
-        <li><a href="{{ url('login_page') }}">Connexion</a></li>
+        <li><a href="{{ path('login_page') }}">Connexion</a></li>
       </ul>
       <ul>
         <li class="hideOnMobile">
@@ -63,6 +63,10 @@
         </li>
       </ul>
     </nav>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
     <script src="{{ asset('/js/navbar.js') }}"></script>
   </body>
 </html>

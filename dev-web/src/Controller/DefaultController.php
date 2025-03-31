@@ -14,7 +14,7 @@ class DefaultController extends AbstractController
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('navbar.html.twig');
+        return $this->render('index.twig');
     }
     // Page des offres
     #[Route('/offres', name: 'offers', methods: ['GET'])]
@@ -50,7 +50,7 @@ class DefaultController extends AbstractController
     #[Route("/connexion", name: "login_page", methods: ["GET"])]
     public function login_page(): Response
     {
-        return $this->render('login.html.twig', ['is_active'=>'']);
+        return $this->render('login.twig', ['is_active'=>'']);
     }
     // Requête de connexion
     #[Route("/connexion", name: "login", methods: ["POST"])]
@@ -75,7 +75,7 @@ class DefaultController extends AbstractController
     #[Route("/inscription", name: "register_page", methods: ["GET"])]
     public function register_page(): Response
     {
-        return $this->render("login.html.twig", ['is_active'=>' active']);
+        return $this->render("login.twig", ['is_active'=>' active']);
     }
     // Requête s'inscription
     #[Route("/inscription", name: "register", methods: ["POST"])]

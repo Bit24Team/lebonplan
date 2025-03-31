@@ -83,6 +83,8 @@ nav li:first-child {
   justify-content: flex-start;
   transition: right 0.3s ease-in-out; /* Animation de déplacement */
   z-index: 1000; /* S'assure qu'il est au-dessus */
+  -moz-transition: right 0.3s ease-in-out; /* Ligne à ajouter */
+  background-color: white; /* Fallback pour le blur */
 }
 .sidebar.active {
   right: 0; /* Fait glisser vers l'intérieur */
@@ -98,6 +100,8 @@ nav li:first-child {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out; /* Ligne à ajouter */
+  pointer-events: none; /* Remplace visibility: hidden */
 }
 .overlay.active {
   opacity: 1;
@@ -115,6 +119,8 @@ nav li:first-child {
 .sidebar li {
   width: 100%;
   margin-bottom: 15px;
+  -moz-transform: translateX(20px); /* Ligne à ajouter */
+  -moz-transition: opacity 0.3s ease, transform 0.7s ease; /* Ligne à ajouter */
 }
 
 .sidebar a {
@@ -179,7 +185,15 @@ nav li:first-child {
   margin: 20px auto;
 
 }
+.sidebar, .sidebar li {
+  will-change: transform, opacity; /* Ligne à ajouter */
+}
 
+@supports (backdrop-filter: blur(12px)) {
+  .sidebar {
+    background-color: rgba(255, 255, 255, 0.95); /* Rétablit la transparence si supporté */
+  }
+}
 /* Adaptations pour mobile */
 @media(max-width: 800px) {
   .hideOnMobile {
