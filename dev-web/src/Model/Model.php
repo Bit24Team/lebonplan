@@ -92,7 +92,7 @@ class Model
         return $stmt->fetchAll();
     }
 
-    function newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
+    public function newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Récupérer les valeurs du formulaire
@@ -112,7 +112,7 @@ class Model
             echo $twig->render('Entreprise.html.twig', ['successMessage' => $successMessage]);
             exit();
         }
-
+    }
     public function numberInterns(string $company_name): int
     {
         $sql = "SELECT COUNT(*) AS count FROM Applications
