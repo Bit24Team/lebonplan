@@ -66,9 +66,14 @@ class AccountController extends AbstractController
         $password = $request->request->get("password");
 
 
-        
+        //$this->model->login($email,$password)
 
-        return new Response($this->model->login($email,$password));
+        if ($this->model->login($email,$password)){
+            return new Response("Connexion réussi");
+        }
+        else{
+            return new Response("Mot de passe ou utilisateur incorect");
+        }
     }
 
 }
