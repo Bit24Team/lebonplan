@@ -41,8 +41,8 @@ class CompanyController extends AbstractController
         $manager_id = $request->request->get("idmanager");
         $name = $request->request->get("name");
         $description = $request->request->get("description");
-        $contact_mail = $request->request->get("contact-mail");
-        $contact_phone = $request->request->get("contact-phone");
+        $contact_mail = $request->request->get("contact_mail");
+        $contact_phone = $request->request->get("contact_phone");
 
         $this->model->newcompany($manager_id, $name, $description, $contact_mail, $contact_phone);
 
