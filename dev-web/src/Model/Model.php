@@ -92,12 +92,12 @@ class Model
         return $stmt->fetchAll();
     }
 
-    function newcompany($name, $description, $contact_mail, $contact_phone) {
+    function newcompany($idmanager,$name, $description, $contact_mail, $contact_phone) {
         
                 $sql = "INSERT INTO Companies (name,description,contact_mail,contact_phone) VALUES (:name,:description,:contact_mail,:contact_phone)";
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([
-                    //'idmanager' => $idmanager,
+                    'idmanager' => $idmanager,
                     'name' => $name,
                     'description' => $description,
                     'contact_mail' => $contact_mail,
