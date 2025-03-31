@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+
+    </nav>
+    <div class="container">
+        <h1 style="text-align: center;">Postuler à une offre de stage</h1>
+        <p>Vous pouvez ici répondre directement à l'offre de stage déposer par l'entreprise. Soyez le plus précis dans
+            vos réponses!</p>
+
+        <h2 style="margin-bottom: 0px ;">Stage - Administrateur Système et Réseaux H/F</h2>
+        <p class="legend">IBM | Pornichet-44 | Publier le 23/01/2025 | Ref. 123XYZ-44</p>
+        <div class="description">
+            <h3 style="margin-bottom: 0px;">Description de l'offre:</h3>
+            <p>Nous recherchons un(e) stagiaire Administrateur Système et Réseaux motivé(e) pour rejoindre notre équipe
+                IT à Pornichet. Ce stage constitue une opportunité unique de découvrir le fonctionnement et la gestion
+                d'une infrastructure informatique au sein d'une entreprise innovante.
+                <br>
+                Vous serez intégré(e) à notre équipe technique et participerez activement aux opérations de maintenance,
+                d'optimisation et de sécurisation de notre réseau et de nos systèmes. Vous aurez l'opportunité
+                d'intervenir sur des projets concrets liés à l'évolution de notre infrastructure et de contribuer à
+                l'amélioration continue de nos services informatiques.
+                <br>
+                En travaillant en étroite collaboration avec des experts en administration système et réseaux, vous
+                développerez des compétences techniques avancées et acquerrez une vision globale des bonnes pratiques en
+                matière de gestion des infrastructures informatiques.</p>
+            <h3 style="margin-bottom: 0px;">Missions:</h3>
+            <ul class="list_mission">
+                <li>Assurer l'installation, la configuration et la maintenance des serveurs et équipements réseaux.</li>
+                <li>Participer à la surveillance et à la sécurisation du réseau et des systèmes.</li>
+                <li>Assister à la gestion des incidents et au support technique auprès des utilisateurs.</li>
+                <li>Automatiser certaines tâches d'administration système via des scripts.</li>
+                <li>Documenter les procédures et les configurations mises en place.</li>
+            </ul>
+
+            <h3 style="margin-bottom: 0px;">Profil recherché:</h3>
+            <ul class="list_mission">
+                <li>Actuellement en formation Bac+2 ou Bac+3 en informatique, systèmes et réseaux.</li>
+                <li>Connaissances en administration des systèmes Windows et Linux.</li>
+                <li>Notions de virtualisation (VMware, Hyper-V) et de gestion des réseaux (TCP/IP, VLAN, VPN).</li>
+                <li>Capacité à travailler en équipe et à résoudre des problèmes techniques.</li>
+                <li>Curiosité, rigueur et envie d'apprendre.</li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="formulairebg">
+        <h2>Envoyer votre candidature dès maintenant!</h2>
+        <form id="formulaire" class="formulaire">
+            <div class="line_form">
+                <div class="block_form">
+                    <p>NOM</p>
+                    <input type="text" id="nom" name="nom">
+                    <p class="formulaire error"></p>
+                </div>
+                <div class="block_form">
+                    <p>PRÉNOM</p>
+                    <input type="text" id="prenom" name="prenom">
+                    <p class="formulaire error"></p>
+                </div>   
+            </div>
+
+            <p>ADRESSE MAIL</p>
+            <input type="email" id="email" name="email" style="width: 55%;">
+            <p class="formulaire error"></p>
+
+            <p>CV</p>
+            <div class="cv">
+                <input type="file" id="filecv" accept=".pdf, .doc, .docx, .odt, .rft, .jpeg, .pnj" hidden>
+                <label for="filecv" id="cv" class="bouton orange">AJOUTER MON CV</label>
+                <p class="formulaire error"></p>
+                <div class="afficher_cv">
+                    <i class="fa-solid fa-file"></i>
+                    <span class="cv_name"></span>
+                </div>
+            </div>
+            <p>Lettre de motivation</p>
+            <div class="cv">
+                <input type="file" id="filelm" accept=".pdf, .doc, .docx, .odt, .rft, .jpeg, .pnj" hidden>
+                <label for="filelm" id="lm" class="bouton orange">AJOUTER MA LETTRE DE MOTIVATION</label>
+                <p class="formulaire error"></p>
+                <div class="afficher_lm">
+                    <i class="fa-solid fa-file"></i>
+                    <span class="lm_name"></span>
+                </div>
+            </div>
+            <p class="formulaire legend">
+                Poid max. 2Mo <br>
+                Format .pdf, .doc, .docx, .odt, .rtf, .jpeg ou .pnj
+            </p>
+            <div style="padding-bottom: 10px; width: 45%;">
+                <button class="bouton orange" type="submit">POSTULER</button>
+            </div>
+            <div class="notifForm">
+
+            </div>
+        </form>
+    </div>
+    <div class="resum_block">
+        <h3>Stage - Administrateur Système et Réseaux H/F</h3>
+        <a href="" style="margin-bottom: 10px;">IBM</a>
+        <h4 style="margin-bottom: 5px;">Résumer de l'offre:</h4>
+        <ul class="list_resum_offre">
+            <li>3 mois</li>
+            <li>Bac+2, Bac+3</li>
+            <li>Système, Réseaux, Cloud</li>
+            <li>Exp -1ans</li>
+        </ul>
+        <div class="btn_block">
+            <button id="btn_postuler" class="bouton block">POSTULER</button>
+        </div>
+    </div>
+    
+    <div>
+        <button class="btn_remonter"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <div class="footer">
+        <footer>
+            <div class="text-center">2025-Tous droits réservés</div>
+        </footer>
+    </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
