@@ -60,7 +60,7 @@ class Model
             return false;
         }
     }
-
+ 
     public function researchcompagny(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {
         $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
@@ -92,7 +92,7 @@ class Model
         return $stmt->fetchAll();
     }
 
-    function newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
+    function newcompany($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
         
                 $sql = "INSERT INTO Compagnies (id, id_manager, email, name, description, contact_mail, contact_phone) VALUES (:id, :idmanager, :email, :name, :description, :contact_mail, :contact_phone)";
                 $stmt = $pdo->prepare($sql);
