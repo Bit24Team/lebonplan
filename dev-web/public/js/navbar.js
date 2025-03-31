@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuButton = document.querySelector(".menu-button");
   const overlay = document.querySelector(".overlay");
 
-  // Cache initial
   sidebar.style.display = "none";
   overlay.style.display = "none";
 
@@ -14,21 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebar.style.display = "flex";
     overlay.style.display = "block";
 
-    requestAnimationFrame(() => {
+    void sidebar.offsetWidth;
+
+    setTimeout(() => {
       sidebar.classList.add("active");
       overlay.classList.add("active");
-    });
+    }, 10);
   };
 
   window.hideSidebar = () => {
-    sidebar.style.display = "none";
-    overlay.style.display = "none";
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
 
-    // Réaffiche instantanément le burger
     menuButton.style.opacity = "1";
     menuButton.style.pointerEvents = "auto";
 
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
+    setTimeout(() => {
+      sidebar.style.display = "none";
+      overlay.style.display = "none";
+    }, 300);
   };
 });
