@@ -71,7 +71,6 @@ class AccountController extends AbstractController
 
         return new Response("Inscription terminée !");
     }
-}
     #[Route("/inscription", name: "register", methods: ["POST"])]
     public function login(Request $request, SessionInterface $session): Response
     {
@@ -83,4 +82,6 @@ class AccountController extends AbstractController
 
         return new Response("Inscription terminée !");
     }
-    }
+
+}
+
