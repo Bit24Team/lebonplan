@@ -12,9 +12,9 @@ class Model
     public function __construct()
     {
         try {
-            $dsn = 'mysql:host=localhost;dbname=Lebonplan;charset=utf8mb4';
-            $username = 'titouan';
-            $password = 'Posutiag3';
+            $dsn = $_ENV['DB_DSN'];
+            $username = $_ENV['DB_USR'];
+            $password = $_ENV['DB_PWD'];
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
