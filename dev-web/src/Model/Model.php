@@ -94,24 +94,30 @@ class Model
 
     function newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            // Récupérer les valeurs du formulaire
-            $id = $_POST['id'] ?? '';
-            $idmanager = $_POST['idmanager'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $contact_mail = $_POST['contact_mail'] ?? '';
-            $contact_phone = $_POST['contact_phone'] ?? '';
+            if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                // Récupérer les valeurs du formulaire
+                $id = $_POST['id'] ?? '';
+                $idmanager = $_POST['idmanager'] ?? '';
+                $email = $_POST['email'] ?? '';
+                $name = $_POST['name'] ?? '';
+                $description = $_POST['description'] ?? '';
+                $contact_mail = $_POST['contact_mail'] ?? '';
+                $contact_phone = $_POST['contact_phone'] ?? '';
         
-            // Call the function to insert the new company
-            newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone);
-        
-            // Pass a success message to the template
-            $successMessage = "Company added successfully!";
-            echo $twig->render('Entreprise.html.twig', ['successMessage' => $successMessage]);
-            exit();
+                $sql = "INSERT INTO Compagnies (id, id_manager, email, name, description, contact_mail, contact_phone) VALUES (:id, :idmanager, :email, :name, :description, :contact_mail, :contact_phone)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([
+                    'id' => $id,
+                    'idmanager' => $idmanager,
+                    'email' => $email,
+                    'name' => $name,
+                    'description' => $description,
+                    'contact_mail' => $contact_mail,
+                    'contact_phone' => $contact_phone
+                ]);
+            }
         }
+       
 
     public function numberInterns(string $company_name): int
     {
@@ -123,6 +129,25 @@ class Model
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':company_name' => $company_name]);
         return $stmt->fetch()['count'] ?? 0;
+    }
+    
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        // Récupérer les valeurs du formulaire
+        $id = $_POST['id'] ?? '';
+        $idmanager = $_POST['idmanager'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $name = $_POST['name'] ?? '';
+        $description = $_POST['description'] ?? '';
+        $contact_mail = $_POST['contact_mail'] ?? '';
+        $contact_phone = $_POST['contact_phone'] ?? '';
+    
+        // Call the function to insert the new company
+        newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone);
+    
+        // Pass a success message to the template
+        $successMessage = "Company added successfully!";
+        echo $twig->render('Entreprise.html.twig', ['successMessage' => $successMessage]);
+        exit();
     }
 }
 ?>
