@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-include './Model/Model.php';
+include '/var/www/lebonplan/dev-web/src/Model/Model.php';
 
 class DefaultController extends AbstractController
 {
@@ -105,7 +105,7 @@ class DefaultController extends AbstractController
         $description = $request->request->get("description");
         $contact_mail = $request->request->get("contact-mail");
         $contact_phone = $request->request->get("contact-phone");
-        
+        newcompagny($idmanager, $name, $description, $contact_mail, $contact_phone, $contact_phone);
         return new Response("Inscription terminée !");
     }
 }
