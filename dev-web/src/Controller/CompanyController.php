@@ -38,13 +38,12 @@ class CompanyController extends AbstractController
     #[Route("/ajout/entreprise", name: "company_register", methods: ["POST"])]
     public function company_register(Request $request): Response
     {
-        $idmanager = $request->request->get("idmanager");
         $name = $request->request->get("name");
         $description = $request->request->get("description");
         $contact_mail = $request->request->get("contact-mail");
         $contact_phone = $request->request->get("contact-phone");
 
-        $this->model->newcompany($idmanager, $name, $description, $contact_mail, $contact_phone, $contact_phone);
+        $this->model->newcompany($name, $description, $contact_mail, $contact_phone, $contact_phone);
 
         return new Response("Inscription terminée !");
     }
