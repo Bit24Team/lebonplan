@@ -7,11 +7,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
-include '/var/www/lebonplan/dev-web/src/Model/Model.php';
-
+use App\Model\Model;
 class DefaultController extends AbstractController
 {
+    private Model $model;
     // Page d'accueil
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
@@ -105,7 +104,7 @@ class DefaultController extends AbstractController
         $description = $request->request->get("description");
         $contact_mail = $request->request->get("contact-mail");
         $contact_phone = $request->request->get("contact-phone");
-        newcompagny($idmanager, $name, $description, $contact_mail, $contact_phone, $contact_phone);
+        $this->model->newcompany($idmanager, $name, $description, $contact_mail, $contact_phone, $contact_phone);
         return new Response("Inscription terminée !");
     }
 }
