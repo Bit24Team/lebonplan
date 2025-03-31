@@ -72,3 +72,15 @@ class AccountController extends AbstractController
         return new Response("Inscription terminée !");
     }
 }
+    #[Route("/inscription", name: "register", methods: ["POST"])]
+    public function login(Request $request, SessionInterface $session): Response
+    {
+        $email = $request->request->get("email");
+        $password = $request->request->get("password");
+
+
+        $this->model->login($email,$password);
+
+        return new Response("Inscription terminée !");
+    }
+    }
