@@ -29,19 +29,7 @@ class AccountController extends AbstractController
         return $this->render('login.twig', ['is_active'=>'']);
     }
 
-    #[Route("/connexion", name: "login", methods: ["POST"])]
-    public function login(Request $request, SessionInterface $session): Response
-    {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
 
-        //$user_id = auth($username,$password);
-        //$session->set('user', [
-        //    'user_id' => $user_id
-        //]);
-
-        return new Response("Connexion réussie !");
-    }
 
     #[Route('/deconnexion', name: 'logout', methods: ['GET'])]
     public function logout(SessionInterface $session): Response
@@ -71,16 +59,16 @@ class AccountController extends AbstractController
 
         return new Response("Inscription terminée !");
     }
-    #[Route("/inscription", name: "register", methods: ["POST"])]
+    #[Route("/inscription", name: "login", methods: ["POST"])]
     public function login(Request $request, SessionInterface $session): Response
     {
         $email = $request->request->get("email");
         $password = $request->request->get("password");
 
 
-        $this->model->login($email,$password);
+        
 
-        return new Response("Inscription terminée !");
+        return new Response($this->model->login($email,$password););
     }
 
 }
