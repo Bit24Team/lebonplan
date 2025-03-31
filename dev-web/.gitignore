@@ -11,6 +11,7 @@
 /.env
 /.env.local
 /.env.*.local
+/.env.*
 
 # Ignorer les fichiers de configuration IDE (exemple pour PhpStorm, VSCode, etc.)
 .idea/
