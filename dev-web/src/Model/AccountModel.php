@@ -5,7 +5,7 @@ namespace App\Model;
 use PDO;
 use PDOException;
 
-class Model
+class AccountModel
 {
     private PDO $pdo;
 
@@ -61,5 +61,5 @@ class Model
         }
     }
 
-
+}
 ?>

@@ -5,7 +5,7 @@ namespace App\Model;
 use PDO;
 use PDOException;
 
-class Model
+class CompanyModel
 {
     private PDO $pdo;
 
