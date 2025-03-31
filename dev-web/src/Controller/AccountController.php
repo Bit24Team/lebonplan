@@ -7,9 +7,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Model\AccountModel;
 
 class AccountController extends AbstractController
 {
+    private AccountModel $model;
+
+    public function __construct(AccountModel $model)
+    {
+        $this->model = $model;
+    }
     #[Route("/compte", name: "account", methods: ["GET"])]
     public function account(): Response
     {
@@ -60,7 +67,7 @@ class AccountController extends AbstractController
         $school = $request->request->get("school");
         $class = $request->request->get("class");
 
-        $this->model->createUser($first_name,$last_name,$password,$email,1,$phone,$school . "-" . $class)
+        $this->model->createUser($first_name,$last_name,$password,$email,1,$phone,$school . "-" . $class);
 
         return new Response("Inscription terminée !");
     }
