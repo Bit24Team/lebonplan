@@ -15,7 +15,7 @@ class Model
             $dsn = 'mysql:host=localhost;dbname=Lebonplan;charset=utf8mb4';
             $username = 'titouan';
             $password = 'Posutiag3';
-
+            
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -61,7 +61,7 @@ class Model
         }
     }
 
-    public function researchCompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
+    public function researchcompagny(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {
         $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
         $params = [];
@@ -91,6 +91,27 @@ class Model
         $stmt->execute($params);
         return $stmt->fetchAll();
     }
+
+    function newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // Récupérer les valeurs du formulaire
+            $id = $_POST['id'] ?? '';
+            $idmanager = $_POST['idmanager'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $name = $_POST['name'] ?? '';
+            $description = $_POST['description'] ?? '';
+            $contact_mail = $_POST['contact_mail'] ?? '';
+            $contact_phone = $_POST['contact_phone'] ?? '';
+        
+            // Call the function to insert the new company
+            newcompagny($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone);
+        
+            // Pass a success message to the template
+            $successMessage = "Company added successfully!";
+            echo $twig->render('Entreprise.html.twig', ['successMessage' => $successMessage]);
+            exit();
+        }
 
     public function numberInterns(string $company_name): int
     {

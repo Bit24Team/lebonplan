@@ -38,7 +38,7 @@ class DefaultController extends AbstractController
     #[Route('entreprise/{company_id}', name: 'company', methods: ['GET'])]
     public function show_company(int $company_id): Response
     {
-        return new Response("Entreprise N°$company_id");
+        return $this->render('Entreprise.html.twig');
     }
     // Page du compte
     #[Route("/compte", name: "account", methods: ["GET"])]
