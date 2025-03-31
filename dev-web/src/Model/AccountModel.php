@@ -45,7 +45,7 @@ class AccountModel
         ]);
     }
 
-    public function login(string $email, string $password): bool
+    public function login(string $email, string $password): int|null
     {
         $sql = "SELECT * FROM Users WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -53,11 +53,9 @@ class AccountModel
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            echo "<p style='color: green;'>Connexion réussie ! Bienvenue, " . htmlspecialchars($user['first_name']) . ".</p>";
-            return true;
+            return $user['id'];
         } else {
-            echo "<p style='color: red;'>Email ou mot de passe incorrect.</p>";
-            return false;
+            return null;
         }
     }
 
