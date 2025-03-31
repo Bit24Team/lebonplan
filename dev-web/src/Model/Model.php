@@ -94,8 +94,8 @@ class Model
 
     function newcompany($pdo, $id, $idmanager, $email, $name, $description, $contact_mail, $contact_phone) {
         
-                $sql = "INSERT INTO Compagnies (id, id_manager, email, name, description, contact_mail, contact_phone) VALUES (:id, :idmanager, :email, :name, :description, :contact_mail, :contact_phone)";
-                $stmt = $pdo->prepare($sql);
+                $sql = "INSERT INTO Companies (id_manager, email, name, description, contact_mail, contact_phone) VALUES (:idmanager, :email, :name, :description, :contact_mail, :contact_phone)";
+                $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([
                     'idmanager' => $idmanager,
                     'email' => $email,
