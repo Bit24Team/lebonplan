@@ -68,7 +68,7 @@ class AccountController extends AbstractController
 
         
 
-        return new Response($this->model->login($email,$password););
+        return new Response($this->model->login($email,$password));
     }
 
 }
