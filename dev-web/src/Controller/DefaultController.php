@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+include './Model/Model.php';
+
 class DefaultController extends AbstractController
 {
     // Page d'accueil
@@ -83,10 +85,27 @@ class DefaultController extends AbstractController
     {
         $username = $request->request->get("username");
         $password = $request->request->get("password");
-        $session->set("user", [
-            "username" => $username,
-            "password" => $password,
-        ]);
+        // $id = registeruser
+        // $session->set("user", [
+        //     "username" => $username,
+        //     "id" => $id,
+        // ]);
+        return new Response("Inscription terminée !");
+    }
+    #[Route("/ajout/entreprise", name: "company_register_page", methods: ["GET"])]
+    public function company_register_page(): Response
+    {
+        return $this->render("wk.html.twig");
+    }
+    #[Route("/ajout/entreprise", name: "register_page", methods: ["POST"])]
+    public function company_register(Request $request): Response
+    {
+        $idmanager = $request->request->get("idmanager");
+        $name = $request->request->get("name");
+        $description = $request->request->get("description");
+        $contact_mail = $request->request->get("contact-mail");
+        $contact_phone = $request->request->get("contact-phone");
+        
         return new Response("Inscription terminée !");
     }
 }
