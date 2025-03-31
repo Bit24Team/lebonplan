@@ -17,6 +17,20 @@ body {
 nav {
   background-color: white;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixe la nav en haut de la page */
+  top: 0; /* Positionne la nav tout en haut */
+  left: 0;
+  width: 100%; /* Prend toute la largeur de la page */
+  z-index: 100; /* S'assure que la nav reste au-dessus des autres éléments */
+}
+
+main {
+  background-color: white;
+  box-shadow: inset;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding-bottom: 100%;
+  padding-top: 60px;
 }
 
 nav ul {
@@ -96,7 +110,7 @@ nav li:first-child {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 99;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease-in-out;
