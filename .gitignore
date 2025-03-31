@@ -1,0 +1,38 @@
+# Ignorer les répertoires de dépendances
+/vendor/
+/node_modules/
+
+# Ignorer les fichiers de cache Symfony
+/var/cache/
+/var/log/
+/var/sessions/
+
+# Ignorer les fichiers de configuration et secrets sensibles
+/.env
+/.env.local
+/.env.*.local
+
+# Ignorer les fichiers de configuration IDE (exemple pour PhpStorm, VSCode, etc.)
+.idea/
+/.vscode/
+
+# Ignorer les fichiers de logs
+*.log
+
+# Ignorer les fichiers temporaires ou de compilation
+*.swp
+*.swo
+*.bak
+*.tmp
+*.log
+*.pid
+
+# Ignorer les fichiers de builds et de distribution
+/public/build/
+/public/uploads/
+
+# Ignorer le répertoire de tests si nécessaire
+/tests/
+
+# Ignorer les fichiers d'outils de déploiement
+/.phpunit/
