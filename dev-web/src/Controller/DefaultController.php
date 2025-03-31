@@ -94,7 +94,7 @@ class DefaultController extends AbstractController
     #[Route("/ajout/entreprise", name: "company_register_page", methods: ["GET"])]
     public function company_register_page(): Response
     {
-        return $this->render("wk.html.twig");
+        return $this->render("Entreprise.html.twig");
     }
     #[Route("/ajout/entreprise", name: "register_page", methods: ["POST"])]
     public function company_register(Request $request): Response
