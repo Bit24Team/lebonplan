@@ -32,7 +32,7 @@ class CompanyController extends AbstractController
     #[Route("/ajout/entreprise", name: "company_register_page", methods: ["GET"])]
     public function company_register_page(): Response
     {
-        return $this->render("wk.html.twig");
+        return $this->render("Entreprise.html.twig");
     }
 
     #[Route("/ajout/entreprise", name: "company_register", methods: ["POST"])]
