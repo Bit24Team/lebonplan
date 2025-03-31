@@ -27,7 +27,7 @@ class AccountModel
         }
     }
 
-    public function createUsers(string $first_name, string $last_name, string $password, string $email, int $permission, string $phone, string $group): bool
+    public function createUser(string $first_name, string $last_name, string $password, string $email, int $permission, string $phone, string $group): bool
     {
         $sql = "INSERT INTO Users (first_name, last_name, password, email, permission, phone, `group`)
                 VALUES (:first_name, :last_name, :password, :email, :permission, :phone, :group)";
