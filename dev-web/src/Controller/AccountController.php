@@ -52,14 +52,15 @@ class AccountController extends AbstractController
     #[Route("/inscription", name: "register", methods: ["POST"])]
     public function register(Request $request, SessionInterface $session): Response
     {
-        $username = $request->request->get("username");
+        $first_name = $request->request->get("first_name");
+        $last_name = $request->request->get("last_name");
+        $email = $request->request->get("email");
         $password = $request->request->get("password");
+        $phone = $request->request->get("phone");
+        $school = $request->request->get("school");
+        $class = $request->request->get("class");
 
-        // $id = registeruser
-        // $session->set("user", [
-        //     "username" => $username,
-        //     "id" => $id,
-        // ]);
+        $this->model->createUser($first_name,$last_name,$password,$email,1,$phone,$school . "-" . $class)
 
         return new Response("Inscription terminée !");
     }
