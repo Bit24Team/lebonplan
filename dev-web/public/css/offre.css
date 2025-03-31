@@ -191,13 +191,16 @@ body
 
 .bouton{
     display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
     font-size: 14px;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
-    width: 45%;
+    width: 60%;
     height: 40px;
     transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
@@ -326,6 +329,7 @@ input[type="radio"]:focus {
 .resum_block a{
     text-decoration: none;
     color: black;
+    display: block;
 }
 
 .resum_block a:hover{
@@ -367,6 +371,37 @@ input[type="radio"]:focus {
 }
 
 
+@media screen and (max-width : 1375px) {
+    .resum_block{
+        display: none;
+    }   
+    
+    .container{
+        margin-right: 10%;
+    }
+
+    .formulaire{
+        width: 90%;
+    }
+}
+
+@media screen and (max-width : 700px) {
+    .line_form{
+        flex-direction: column;
+    } 
+}
+
+@media screen and (max-width : 600px) {
+    .bouton{
+        width: 90%;
+        font-size: 1.2rem;
+    } 
+
+    .block_form{
+        width: 100%;
+    }
+}
+
 
 
 
@@ -398,3 +433,4 @@ input[type="radio"]:focus {
 .btn_remonter:active {
     transform: scale(0.9);
 }
+
