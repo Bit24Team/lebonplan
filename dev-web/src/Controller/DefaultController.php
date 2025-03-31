@@ -11,6 +11,9 @@ use App\Model\Model;
 class DefaultController extends AbstractController
 {
     private Model $model;
+    public function __construct(Model $model){
+        this->model = $model;
+    }
     // Page d'accueil
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
