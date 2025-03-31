@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Model\Model;
+use App\Model\CompanyModel;
 
 class CompanyController extends AbstractController
 {
-    private Model $model;
+    private CompanyModel $model;
 
-    public function __construct(Model $model)
+    public function __construct(CompanyModel $model)
     {
         $this->model = $model;
     }
