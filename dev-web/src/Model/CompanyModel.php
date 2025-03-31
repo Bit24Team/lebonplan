@@ -5,17 +5,17 @@ namespace App\Model;
 use PDO;
 use PDOException;
 
-class Model
+class CompanyModel
 {
     private PDO $pdo;
 
     public function __construct()
     {
         try {
-            $dsn = 'mysql:host=localhost;dbname=Lebonplan;charset=utf8mb4';
-            $username = 'titouan';
-            $password = 'Posutiag3';
-
+            $dsn = $_ENV['DB_DSN'];
+            $username = $_ENV['DB_USR'];
+            $password = $_ENV['DB_PWD'];
+            
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -27,41 +27,9 @@ class Model
         }
     }
 
-    public function createUsers(string $first_name, string $last_name, string $password, string $email, int $permission, string $phone, string $group): bool
-    {
-        $sql = "INSERT INTO Users (first_name, last_name, password, email, permission, phone, `group`)
-                VALUES (:first_name, :last_name, :password, :email, :permission, :phone, :group)";
-
-        $stmt = $this->pdo->prepare($sql);
-
-        return $stmt->execute([
-            ':first_name' => $first_name,
-            ':last_name' => $last_name,
-            ':password' => password_hash($password, PASSWORD_BCRYPT), // Hashage du mot de passe
-            ':email' => $email,
-            ':permission' => $permission,
-            ':phone' => $phone,
-            ':group' => $group
-        ]);
-    }
-
-    public function login(string $email, string $password): bool
-    {
-        $sql = "SELECT * FROM Users WHERE email = :email";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':email' => $email]);
-        $user = $stmt->fetch();
-
-        if ($user && password_verify($password, $user['password'])) {
-            echo "<p style='color: green;'>Connexion réussie ! Bienvenue, " . htmlspecialchars($user['first_name']) . ".</p>";
-            return true;
-        } else {
-            echo "<p style='color: red;'>Email ou mot de passe incorrect.</p>";
-            return false;
-        }
-    }
-
-    public function researchCompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
+    
+ 
+    public function researchcompagny(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {
         $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
         $params = [];
@@ -92,6 +60,21 @@ class Model
         return $stmt->fetchAll();
     }
 
+    function newcompany($idmanager,$name, $description, $contact_mail, $contact_phone) {
+        
+                $sql = "INSERT INTO Companies (id_manager,name,description,contact_mail,contact_phone) VALUES (:idmanager,:name,:description,:contact_mail,:contact_phone)";
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute([
+                    'idmanager' => $idmanager,
+                    'name' => $name,
+                    'description' => $description,
+                    'contact_mail' => $contact_mail,
+                    'contact_phone' => $contact_phone
+                ]);
+            
+        
+            }   
+
     public function numberInterns(string $company_name): int
     {
         $sql = "SELECT COUNT(*) AS count FROM Applications
@@ -103,5 +86,7 @@ class Model
         $stmt->execute([':company_name' => $company_name]);
         return $stmt->fetch()['count'] ?? 0;
     }
+
+
 }
 ?>

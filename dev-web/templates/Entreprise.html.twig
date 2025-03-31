@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestionnaire d'Identité</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0px;
+            padding: 20px;
+            display: flex;
+            background-color: #f4f4f4;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .success-message {
+            color: green;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Formulaire de Gestionnaire d'Identité</h2>
+        <form action="" method="POST">
+            <label for="idmanager">ID Manager:</label>
+            <input type="text" id="idmanager" name="idmanager" required />
+
+            <label for="name">Nom:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="contact-mail">Contact Mail:</label>
+            <input type="email" id="contact-mail" name="contact_mail" required />
+
+            <label for="contact-phone">Contact Téléphone:</label>
+            <input type="tel" id="contact-phone" name="contact_phone" required />
+
+            <button type="submit">Soumettre</button>
+        </form>
+    </div>
+</body>
+</html>

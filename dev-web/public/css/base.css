@@ -1,0 +1,252 @@
+/* Garde le code de base pour le body et le nav */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url('../images/laptop.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+
+nav {
+  background-color: white;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixe la nav en haut de la page */
+  top: 0; /* Positionne la nav tout en haut */
+  left: 0;
+  width: 100%; /* Prend toute la largeur de la page */
+  z-index: 100; /* S'assure que la nav reste au-dessus des autres éléments */
+}
+
+main {
+  background-color: white;
+  box-shadow: inset;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding-bottom: 100%;
+  padding-top: 60px;
+}
+
+nav ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+nav li {
+  height: 50px;
+}
+
+nav a {
+  height: 100%;
+  padding: 0 30px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: black;
+  position: relative;
+}
+
+nav a:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 0%;
+  content: '.';
+  color: transparent;
+  background: #0077ff;
+  height: 1px;
+  transition: width 0.3s ease; /* Animation fluide */
+}
+
+nav a:hover:after {
+  width: 100%; /* Le trait s'étend sous le lien au survol */
+}
+
+nav a:hover {
+  background-color: #f0f0f0;
+}
+
+nav li:first-child {
+  margin-right: auto;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px; /* Commence hors de l'écran */
+  height: 100vh;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.95); /* Plus opaque pour mieux voir */
+  backdrop-filter: blur(12px);
+  box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  transition: right 0.3s ease-in-out; /* Animation de déplacement */
+  z-index: 1000; /* S'assure qu'il est au-dessus */
+  -moz-transition: right 0.3s ease-in-out; /* Ligne à ajouter */
+  background-color: white; /* Fallback pour le blur */
+}
+.sidebar.active {
+  right: 0; /* Fait glisser vers l'intérieur */
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out; /* Ligne à ajouter */
+  pointer-events: none; /* Remplace visibility: hidden */
+}
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.menu-button svg {
+  transition: transform 0.3s ease-in-out;
+  width: clamp(24px, 6vw, 28px);
+  height: clamp(24px, 6vw, 28px);
+}
+
+.menu-button:hover svg {
+  transform: scale(1.1);
+}
+.sidebar li {
+  width: 100%;
+  margin-bottom: 15px;
+  -moz-transform: translateX(20px); /* Ligne à ajouter */
+  -moz-transition: opacity 0.3s ease, transform 0.7s ease; /* Ligne à ajouter */
+}
+
+.sidebar a {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  width: 80%;
+
+  
+}
+.sidebar li {
+  width: 100%;
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.3s ease, transform 0.7s ease;
+}
+
+.sidebar.active li {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+.sidebar.active li:nth-child(1) { transition-delay: 0.1s; }
+.sidebar.active li:nth-child(2) { transition-delay: 0.2s; }
+.sidebar.active li:nth-child(3) { transition-delay: 0.3s; }
+.sidebar.active li:nth-child(4) { transition-delay: 0.4s; }
+.sidebar.active li:nth-child(5) { transition-delay: 0.5s; }
+.sidebar.active li:nth-child(6) { transition-delay: 0.6s; }
+.sidebar.active li:nth-child(7) { transition-delay: 0.7s; }
+
+.menu-button {
+  display: none;
+}
+
+.close-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+}
+
+
+.menu-button svg {
+  margin-left: 0; /* Assure que les trois traits restent centrés */
+  
+}
+
+/* Ajustements spécifiques pour les images et le logo */
+.accueil-img {
+  width: 100px; /* Taille fixe pour éviter qu'elle déborde */
+  height: auto;
+  object-fit: contain; /* Garde les proportions sans déborder */
+}
+
+.sidebar img {
+  width: 50%;
+  max-width: 95px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+
+}
+.sidebar, .sidebar li {
+  will-change: transform, opacity; /* Ligne à ajouter */
+}
+
+@supports (backdrop-filter: blur(12px)) {
+  .sidebar {
+    background-color: rgba(255, 255, 255, 0.95); /* Rétablit la transparence si supporté */
+  }
+}
+/* Adaptations pour mobile */
+@media(max-width: 800px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .menu-button {
+    display: flex; /* Changé de 'block' à 'flex' */
+    width: auto; /* S'adapte au contenu */
+    margin-left: auto; /* Aligné à droite */
+    /* Taille responsive avec clamp() */
+    padding: clamp(0.75rem, 2vw, 1rem);
+    min-width: clamp(44px, 10vw, 60px);
+    min-height: clamp(44px, 10vw, 60px);
+  }
+  .menu-button svg {
+    /* Taille d'icône responsive */
+    width: clamp(24px, 6vw, 28px);
+    height: clamp(24px, 6vw, 28px);
+  }
+}
+
+@media (max-width: 400px) {
+  .menu-button {
+    padding: 0.5rem;
+    min-width: 40px;
+    min-height: 40px;
+  }
+  
+  .menu-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    right: -100%;
+  }
+  .sidebar.active {
+    right: 0;
+  }
+}

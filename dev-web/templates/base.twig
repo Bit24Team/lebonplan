@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Navbar</title>
-    <link rel="stylesheet" href="{{ asset('/css/navbar.css') }}" />
+    <title>Lebonplan - {% block title %}Titre Invalide{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('/css/base.css') }}" />
+    {% block styles %}{% endblock %}
   </head>
   <body>
     <div class="overlay" onclick="hideSidebar()"></div>
@@ -31,15 +32,19 @@
             ><img src="{{ asset('/images/logo.png') }}" alt="Logo"
           /></a>
         </li>
-        <li class="test"><a href="{{ path('account') }}">Mon compte</a></li>
         <li><a href="{{ path('offers') }}">Offres</a></li>
         <li><a href="{{ path('companies') }}">Entreprise</a></li>
+        {% if app.session.get('user') %}
+        <li class="test"><a href="{{ path('account') }}">Mon compte</a></li>
+        <li class="test"><a href="{{ path('logout') }}">Déconnexion</a></li>
+        {% else %}
         <li><a href="{{ path('register_page') }}">Inscription</a></li>
         <li><a href="{{ path('login_page') }}">Connexion</a></li>
+        {% endif %}
       </ul>
       <ul>
         <li class="hideOnMobile">
-          <a href="#">
+          <a href="{{ path('index') }}">
             <img
               src="{{ asset('/images/logo.png') }}"
               alt="Accueil"
@@ -47,11 +52,15 @@
             />
           </a>
         </li>
-        <li class="hideOnMobile"><a href="{{ path('account') }}">Mon Compte</a></li>
         <li class="hideOnMobile"><a href="{{ path('offers') }}">Offres</a></li>
         <li class="hideOnMobile"><a href="{{ path('companies') }}">Entreprise</a></li>
+        {% if app.session.get('user') %}
+        <li class="hideOnMobile"><a href="{{ path('account') }}">Mon Compte</a></li>
+        <li class="hideOnMobile"><a href="{{ path('logout') }}">Déconnexion</a></li>
+        {% else %}
         <li class="hideOnMobile"><a href="{{ path('login_page') }}">Connexion</a></li>
         <li class="hideOnMobile"><a href="{{ path('register_page') }}">Inscription</a></li>
+        {% endif %}
         <li class="menu-button" onclick="showSidebar()">
           <a href="#">
             <svg height="26" viewBox="0 96 960 960" width="26">
@@ -63,6 +72,12 @@
         </li>
       </ul>
     </nav>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
     <script src="{{ asset('/js/navbar.js') }}"></script>
+    {% block scripts %}
+    {% endblock %}
   </body>
 </html>
