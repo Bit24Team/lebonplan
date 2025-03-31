@@ -12,7 +12,7 @@ class DefaultController extends AbstractController
 {
     private Model $model;
     public function __construct(Model $model){
-        this->model = $model;
+        $this->model = $model;
     }
     // Page d'accueil
     #[Route('/', name: 'index', methods: ['GET'])]
