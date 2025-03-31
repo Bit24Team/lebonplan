@@ -102,12 +102,16 @@ class DefaultController extends AbstractController
     #[Route("/ajout/entreprise", name: "register_page", methods: ["POST"])]
     public function company_register(Request $request): Response
     {
-        $idmanager = $request->request->get("idmanager");
+        //$idmanager = $request->request->get("idmanager");
         $name = $request->request->get("name");
         $description = $request->request->get("description");
         $contact_mail = $request->request->get("contact-mail");
         $contact_phone = $request->request->get("contact-phone");
+<<<<<<< HEAD
         $this->model->newcompany($idmanager, $name, $description, $contact_mail, $contact_phone, $contact_phone);
+=======
+        $this->model->newcompany($name, $description, $contact_mail, $contact_phone);
+>>>>>>> 6e193730d8bbc8b103f3708dbc6b353ef9612cc5
         return new Response("Inscription terminée !");
     }
 }
