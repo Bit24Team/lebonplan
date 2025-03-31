@@ -29,8 +29,8 @@ class AccountModel
 
     public function createUser(string $first_name, string $last_name, string $password, string $email, int $permission, string $phone, string $group): bool
     {
-        $sql = "INSERT INTO Users (first_name, last_name, password, email, permission, phone, `group`)
-                VALUES (:first_name, :last_name, :password, :email, :permission, :phone, :group)";
+        $sql = "INSERT INTO Users (first_name,last_name,password,email,permission,phone,groupe)
+                VALUES (:first_name, :last_name, :password, :email, :permission, :phone, :groupe)";
 
         $stmt = $this->pdo->prepare($sql);
 
@@ -41,7 +41,7 @@ class AccountModel
             ':email' => $email,
             ':permission' => $permission,
             ':phone' => $phone,
-            ':group' => $group
+            ':groupe' => $group
         ]);
     }
 
