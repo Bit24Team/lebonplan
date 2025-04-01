@@ -50,12 +50,19 @@ class OfferController extends AbstractController
         SessionInterface $session
     ): Response {
         $manager_id = $session->get("user")["id"];
-        $title = $request->request->get("title");
-        $description = $request->request->get("description");
-        $salary = $request->request->get("salary");
-        $skills = $request->request->get("skills");
-        $start_date = $request->request->get("start_date");
-        $end_date = $request->request->get("end_date");
+        //récupère les données du formulaire en json
+        $json = $request->getContent();
+        $data = json_decode($json, true);
+        if ($data === null) {
+            return $this->json(["error" => "Invalid JSON"], 400);
+        }
+        //récupère les données du formulaire
+        $title = $data["title"];
+        $description = $data["description"];
+        $salary = $data["salary"];
+        $skills = $data["skills"];
+        $start_date = $data["start_date"];
+        $end_date = $data["end_date"];
         $duration = $end_date - $start_date;
         $skills = explode(",", $skills);
         $this->model->create_offer(
