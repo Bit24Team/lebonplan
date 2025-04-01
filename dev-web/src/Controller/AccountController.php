@@ -62,9 +62,9 @@ class AccountController extends AbstractController
             $data = $this->model->login($email, $password);
             if ($data) {
                 $session->set('user', $data);
-                return new Response("Connexion réussie ! Bienvenue, " . htmlspecialchars($email) . ".");
+                return $this->redirectToRoute('index');
             } else {
-                return new Response("Email ou mot de passe incorrect.");
+                return $this->redirectToRoute('login_page', ['error' => 'Invalid credentials']);
             }
         } elseif ($auth_type === "register") {
             $first_name = $request->request->get("first_name");

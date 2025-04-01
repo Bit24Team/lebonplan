@@ -9,11 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use App\Model\OfferModel;
+use App\Model\OffersModel;
 
 class OfferController extends AbstractController
 {
-    //private OfferModel $model;
+    private OffersModel $model;
     #[Route("/offres", name: "offers", methods: ["GET"])]
     public function show_offers(): Response
     {
@@ -47,12 +47,10 @@ class OfferController extends AbstractController
         $manager_id = $session->get("user")["id"];
         $title = $request->request->get("title");
         $description = $request->request->get("description");
-        $location = $request->request->get("location");
         $salary = $request->request->get("salary");
-        $contract_type = $request->request->get("contract_type");
+        $skills = $request->request->get("skills");
 
-        // Assuming you have a model to handle the database operations
-        // $this->model->addOffer($company_id, $title, $description, $location, $salary, $contract_type);
+        //$this->model->create_offer($skills, $title, $description, $company, $salary, $contract_type);
 
         return new Response("Offre ajoutée !");
     }
