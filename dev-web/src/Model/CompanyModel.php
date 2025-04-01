@@ -87,7 +87,7 @@ class CompanyModel
         return $stmt->fetch()['count'] ?? 0;
     }
 
-    public function modify_company(?string $name,?string $description,?string $email,?string $phone,?string $company_name): int
+    public function modify_company(?string $name,?string $description,?string $email,?string $phone,INT $company_id): int
     {
         $sql = "UPDATE Companies SET "
         $params = [];
@@ -108,19 +108,45 @@ class CompanyModel
             $sql .= " Companies.contact_phone = :company_phone";
             $params[':company_phone'] = $phone;
         }
-        $sql .= " WHERE Companies=:company_name";
-        $params[':company_name'] = $company_name;
+        $sql .= " WHERE Companies=:id";
+        $params[':company_id'] = $company_id;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'name' => $name
+            'name' => $name,
             'description' => $description,
             'email' => $email,
             'phone' => $phone,
             'company_name' => $company_name,
         ]);
+        
+        public function rate_company(INT $user_id, INT $company_id,INT $rating): int
+    {
+        $sql = "SELECT Count(*) from Evaluations where from_user=:user_id AND to_company=:company_id ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':user_id' => $user_id,
+            ':company_id' => $company_id
+        ]);
+        $stmt->fetch();
+
+        if ($stmt>=1){
+        $sql = "UPDATE Evaluations SET amount=:rating WHERE where from_user=:user_id AND to_company=:company_id ";
+        }
+        else {
+        $sql = "INSERT INTO Evaluations(from_user,to_compagny,amount) VALUES (:user_id,:company_id,:rating)";
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':user_id' => $user_id,
+            ':company_id' => $company_id,
+            ':rating' => $rating,
+        ]);
+    }
+
         
         
 
