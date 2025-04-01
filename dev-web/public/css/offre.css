@@ -128,36 +128,6 @@ body
     margin-right: 0.8rem;
 }
 
-.formulaire select{
-    border: 1px solid black;
-    border-radius: 8px;
-    height: 30px;
-}
-
-.formulaire input{
-    border: 1px solid black;
-    border-radius: 8px;
-    height: 40px;
-    width: 80%;
-    margin-bottom: 1rem;
-    padding: 0px 5px;
-}
-
-.formulaire input select{
-    border-color: #7494ec;
-}
-
-
-.formulaire textarea{
-    border: none;
-    border-radius: 8px;
-    width: 100%;
-    height: 150px;
-    resize: none;
-    font-family: inherit;
-    padding: 3px;
-}
-
 .formulaire .legend{
     color: gray;
     font-size: 0.6em;
@@ -272,47 +242,6 @@ body
     font-size: 1.4rem;
 }
 
-input[type="checkbox"] {
-    vertical-align: sub; 
-    margin-right: 5px;
-    width: 15px;
-    height: 15px;
-}
-
-input[type="radio"] {
-    -webkit-appearance: none;
-    appearance: none;
-    margin: 0;
-    font: inherit;
-    width: 1.15rem;
-    height: 1.15rem;
-    border: 1.5px solid black; /* Contour initial */
-    border-radius: 50%;
-    cursor: pointer;
-    background-color: white; /* Fond blanc par défaut */
-    display: flex;
-    align-items:center;
-    justify-content: center;
-}
-
-input[type="radio"]::before {
-    content: "";
-    width: 0.65rem;
-    height: 0.65rem;
-    border-radius: 50%;
-    background-color: #00a8ff; /* Devient orange au clic */
-    transform: scale(0); /* Caché par défaut */
-    transition: transform 120ms ease-in-out;
-}
-
-input[type="radio"]:checked::before {
-    transform: scale(1); /* Affiche l’intérieur orange */
-}
-
-input[type="radio"]:focus {
-    outline: none; /* Supprime le contour rouge */
-}
-
 .resum_block{
     width: 300px;
     height: 380px;
@@ -383,12 +312,6 @@ input[type="radio"]:focus {
     .formulaire{
         width: 90%;
     }
-}
-
-@media screen and (max-width : 700px) {
-    .line_form{
-        flex-direction: column;
-    } 
 }
 
 @media screen and (max-width : 600px) {
