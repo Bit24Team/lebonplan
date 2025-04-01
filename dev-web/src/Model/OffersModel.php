@@ -27,6 +27,23 @@ class OffersModel
         }
     }
     
+    public function get_id_offer($title,$company):int{
+        $sql = 'SELECT id from Offers where title =:title AND id_company=:company';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':title'=> $title,
+            ':company'=> $company
+        ]);
+        return $stmt->fetch();
+    }
+    public function get_id_skill($name):int{
+        $sql = 'SELECT id from Skills where name=:name';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':name'=> $name,
+        ]);
+        return $stmt->fetch();
+    }
     public function reacherch_offer(string $title,string $description,int $salary,$start_date,int $duration,int $skill){
         $sql = "SELECT id FROM Offers INNER JOIN OfferSkills ON Offers.id = OfferSkill.id_offer JOIN Skills ON Skills.id = id_skill WHERE 1=1";
         $params = [];
@@ -62,24 +79,42 @@ class OffersModel
     
     }
 
-    public function create_offer(string $skills, string $title, string $description, string $company, float $salary, string $start_date, string $end_date)
+    public function create_offer(string $skills, string $title, string $description, int $company, float $salary, string $start_date, string $duration)
     {
-        $sql = "INSERT INTO Offers (title, description, company, skills, salary, start_date, end_date) 
-                VALUES (:title, :description, :company, :skills, :salary, :start_date, :end_date)";
+        $sql = "INSERT INTO Offers (id_company,title,description,salary,start_date,duration) 
+                VALUES (:id_company,:title,:description,:salary,:start_date,:duration)";
         
         $stmt = $this->pdo->prepare($sql);
         
 
         $stmt->execute([
+            ':id_company' => $company,
             ':title' => $title,
             ':description' => $description,
-            ':company' => $company,
-            ':skills' => $skills,
             ':salary' => $salary,
             ':start_date' => $start_date,
-            ':end_date' => $end_date
+            ':duration' => $duration
         ]);
-}
+        
+        $sql="SELECT COUNT * FROM Skills where name=:name";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':name'=> $skills ]);
+        if($stmt->fetch()=0){
+            $this->newskill($skills);
+            $sql="INSERT into OfferSkill(id_offer,id_skill) values (:offer,:skill) ";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ':skill' => $this->get_id_skill($skills),
+                ':offer' => $this->get_id_offer($title,$company),
+
+            ]);
+        }   
+    }
+    public function newskill(string $skills):void{ 
+    $sql= 'INSERT INTO Skills(name) VALUES (:skill)';
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':skill'=> $skills ]);
+    }
 
 
 
