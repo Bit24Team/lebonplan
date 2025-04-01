@@ -29,7 +29,7 @@ class CompanyModel
 
     
  
-    public function researchcompagny(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
+    public function researchcompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {
         $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
         $params = [];
@@ -87,6 +87,78 @@ class CompanyModel
         return $stmt->fetch()['count'] ?? 0;
     }
 
+    public function modify_company(?string $name,?string $description,?string $email,?string $phone,INT $company_id):void
+    {
+        $sql = "UPDATE Companies SET ";
+        $params = [];
+
+        if ($name !== null) {
+            $sql .= " Companies.name = :name";
+            $params[':name'] = $name;
+        }
+        if ($description !== null) {
+            $sql .= " Companies.description = :description";
+            $params[':description'] = $description;
+        }
+        if ($email !== null) {
+            $sql .= " Companies.contact_mail = :email";
+            $params[':email'] = $email;
+        }
+        if ($phone !== null) {
+            $sql .= " Companies.contact_phone = :company_phone";
+            $params[':company_phone'] = $phone;
+        }
+        $sql .= " WHERE Companies=:id";
+        $params[':company_id'] = $company_id;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'name' => $name,
+            'description' => $description,
+            'email' => $email,
+            'phone' => $phone,
+            'company_id' => $company_id,
+        ]);
+    }   
+    public function rate_company(INT $user_id, INT $company_id,INT $rating):void
+    {
+        $sql = "SELECT Count(*) from Evaluations where from_user=:user_id AND to_company=:company_id ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':user_id' => $user_id,
+            ':company_id' => $company_id
+        ]);
+        $stmt->fetch();
+
+        if ($stmt>=1){
+        $sql = "UPDATE Evaluations SET amount=:rating WHERE where from_user=:user_id AND to_company=:company_id ";
+        }
+        else {
+        $sql = "INSERT INTO Evaluations(from_user,to_compagny,amount) VALUES (:user_id,:company_id,:rating)";
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':user_id' => $user_id,
+            ':company_id' => $company_id,
+            ':rating' => $rating,
+        ]);
+    }
+    public function get_rate(INT $company_id):INT {
+        $sql = "SELECT amount FROM Evaluations where to_company=:company_id" ;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':company_id' => $company_id
+        ]);
+        return $stmt->fetch();
+    }  
+
+        
+        
+
 
 }
+
 ?>

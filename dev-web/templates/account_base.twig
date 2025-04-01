@@ -1,0 +1,22 @@
+{% extends 'base.twig' %}
+{% block title %}Mon Compte{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('/css/account.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+{% endblock %}
+{% block content %}
+{% if app.session.get('user') %}
+{% if perm == 2 %}
+{%include 'templates/account_company.twig' %}
+{% elseif perm == 3 %}
+{% include 'templates/account_admin.twig' %}
+{% else %}
+{% include 'templates/account_user.twig' %}
+{% endif %}
+{% else %}
+<div class="container">
+    <h1>Vous n'êtes pas connecté</h1>
+    <p>Veuillez vous connecter pour accéder à votre compte.</p>
+    <a href="{{ path('login_page') }}" class="btn">Se connecter</a>
+{% endif %}
+{% endblock %}
