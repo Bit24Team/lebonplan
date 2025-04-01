@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rechercher une offre{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/search_offer.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="search-container">
+        <h1>Rechercher une offre</h1>
+        
+        <div class="search-bar">
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par entreprise, titre ou compétence...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <button class="filter-button" id="filterButton">
+                <i class="fas fa-sliders-h"></i>
+                <span class="filter-text">Filtres</span>
+            </button>
+        </div>
+        
+        <div class="filter-panel" id="filterPanel">
+            <div class="filter-group">
+                <h4>Compétences</h4>
+                <div class="skills-container" id="skillsContainer">
+                    
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h4>Rémunération</h4>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <input type="range" id="salaryRange" min="500" max="2500" step="100" value="1000" style="flex-grow: 1;">
+                    <span id="salaryValue">1000€</span>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <h4>Date de début</h4>
+                <input type="date" id="startDate" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+            
+            <button class="apply-filters" id="applyFilters">Appliquer les filtres</button>
+        </div>
+        
+        <div class="results-container" id="resultsContainer">
+            <!-- Résultats générés dynamiquement -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/search_offer.js') }}"></script>
+{% endblock %}
