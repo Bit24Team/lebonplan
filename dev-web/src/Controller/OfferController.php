@@ -14,6 +14,12 @@ use App\Model\OffersModel;
 class OfferController extends AbstractController
 {
     private OffersModel $model;
+
+    public function __construct(OffersModel $model)
+    {
+        $this->model = $model;
+    }
+
     #[Route("/offres", name: "offers", methods: ["GET"])]
     public function show_offers(): Response
     {
