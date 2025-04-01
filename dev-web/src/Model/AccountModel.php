@@ -74,11 +74,12 @@ class AccountModel
     public function get_user_id(string $first_name,string $last_name,string $email):INT{
         $sql = "SELECT id from Users Where first_name=:first_name AND last_name=:last_name AND email=:email ";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
+        $stmt->execute([
             ':first_name'=>$first_name,
             ':last_name'=>$last_name,
             ':email'=>$email
         ]);
+        return $stmt->fetch()['id'];
         
         
     }
