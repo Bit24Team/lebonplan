@@ -80,40 +80,63 @@ class OffersModel
             ':end_date' => $end_date
         ]);
 }
-    public function update_offer(int $offer_id, string $skills, string $title, string $description, string $company, float $salary, string $start_date, string $end_date)
-    {
-        $sql = "UPDATE Offers 
-                SET title = :title, 
-                    description = :description, 
-                    company = :company, 
-                    skills = :skills, 
-                    salary = :salary, 
-                    start_date = :start_date, 
-                    end_date = :end_date 
-                WHERE id = :offer_id";
-
-        $stmt = $this->pdo->prepare($sql);
 
 
-        $stmt->execute([
-            ':title' => $title,
-            ':description' => $description,
-            ':company' => $company,
-            ':skills' => $skills,
-            ':salary' => $salary,
-            ':start_date' => $start_date,
-            ':end_date' => $end_date,
-            ':offer_id' => $offer_id 
-        ]);
 
-    }
+        public function update_offer(int $offer_id, ?string $skills, ?string $title, ?string $description, ?string $company, ?float $salary, ?string $start_date, ?string $end_date): void
+        {
+            // Initialiser la base de la requête SQL
+            $sql = "UPDATE Offers SET ";
+            $params = [];
+        
+
+            if ($title !== null) {
+                $sql .= "title = :title, ";
+                $params[':title'] = $title;
+            }
+            if ($description !== null) {
+                $sql .= "description = :description, ";
+                $params[':description'] = $description;
+            }
+            if ($company !== null) {
+                $sql .= "company = :company, ";
+                $params[':company'] = $company;
+            }
+            if ($skills !== null) {
+                $sql .= "skills = :skills, ";
+                $params[':skills'] = $skills;
+            }
+            if ($salary !== null) {
+                $sql .= "salary = :salary, ";
+                $params[':salary'] = $salary;
+            }
+            if ($start_date !== null) {
+                $sql .= "start_date = :start_date, ";
+                $params[':start_date'] = $start_date;
+            }
+            if ($end_date !== null) {
+                $sql .= "end_date = :end_date, ";
+                $params[':end_date'] = $end_date;
+            }
+        
+
+            $sql = rtrim($sql, ', ');
+
+            $sql .= " WHERE id = :offer_id";
+            $params[':offer_id'] = $offer_id;
+        
+            // Préparer et exécuter la requête
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
+        }
+        
+
+
     public function delete_offer(int $offer_id)
     {
 
         $sql = "DELETE FROM Offers WHERE id = :offer_id";
-
         $stmt = $this->pdo->prepare($sql);
- 
         $stmt->execute([
             ':offer_id' => $offer_id
          ]);
