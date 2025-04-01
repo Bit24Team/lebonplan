@@ -59,9 +59,9 @@ class AccountController extends AbstractController
         if ($auth_type === "login") {
             $email = $request->request->get("email");
             $password = $request->request->get("password");
-            $user_id = $this->model->login($email, $password);
-            if ($user_id) {
-                $session->set('user', $user_id);
+            $data = $this->model->login($email, $password);
+            if ($data) {
+                $session->set('user', $data);
                 return new Response("Connexion réussie ! Bienvenue, " . htmlspecialchars($email) . ".");
             } else {
                 return new Response("Email ou mot de passe incorrect.");

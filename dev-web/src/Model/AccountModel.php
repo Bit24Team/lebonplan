@@ -45,7 +45,7 @@ class AccountModel
         ]);
     }
 
-    public function login(string $email, string $password): int|null
+    public function login(string $email, string $password): array|null
     {
         $sql = "SELECT * FROM Users WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
@@ -53,11 +53,23 @@ class AccountModel
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            return $user['id'];
+            return ['id'=>$user['id'],'permission'=>$user['permission']];
         } else {
             return null;
         }
     }
+    public function get_perm(string $id): int|null
+    {
+        $sql = "SELECT permission FROM Users WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        $user = $stmt->fetch();
 
+        if ($user) {
+            return (int)$user['permission'];
+        } else {
+            return null;
+        }
+    }
 }
 ?>
