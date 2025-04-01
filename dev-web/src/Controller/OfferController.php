@@ -36,7 +36,7 @@ class OfferController extends AbstractController
     #[Route("/ajouter/offre", name: "add_offer_page", methods: ["GET"])]
     public function add_offer_page(): Response
     {
-        return $this->render("add_offer.twig");
+        return $this->render("offer/add.twig");
     }
     #[Route("/ajouter/offre", name: "add_offer", methods: ["POST"])]
     public function add_offer(
