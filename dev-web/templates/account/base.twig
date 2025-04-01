@@ -9,11 +9,11 @@
 {% set user = app.session.get('user') %}
 {% set perm = user['permission'] %}
 {% if perm == 2 %}
-{%include 'templates/account_company.twig' %}
+{% include 'account/company.twig' %}
 {% elseif perm == 3 %}
-{% include 'templates/account_admin.twig' %}
+{% include 'account/admin.twig' %}
 {% else %}
-{% include 'templates/account_user.twig' %}
+{% include 'account/user.twig' %}
 {% endif %}
 {% else %}
 <div class="container">
