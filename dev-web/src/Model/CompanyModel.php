@@ -87,6 +87,44 @@ class CompanyModel
         return $stmt->fetch()['count'] ?? 0;
     }
 
+    public function modify_company(?string $name,?string $description,?string $email,?string $phone,?string $company_name): int
+    {
+        $sql = "UPDATE Companies SET "
+        $params = [];
+
+        if ($name !== null) {
+            $sql .= " Companies.name = :name";
+            $params[':name'] = $name;
+        }
+        if ($description !== null) {
+            $sql .= " Companies.description = :description";
+            $params[':description'] = $description;
+        }
+        if ($email !== null) {
+            $sql .= " Companies.contact_mail = :email";
+            $params[':email'] = $email;
+        }
+        if ($phone !== null) {
+            $sql .= " Companies.contact_phone = :company_phone";
+            $params[':company_phone'] = $phone;
+        }
+        $sql .= " WHERE Companies=:company_name";
+        $params[':company_name'] = $company_name;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'name' => $name
+            'description' => $description,
+            'email' => $email,
+            'phone' => $phone,
+            'company_name' => $company_name,
+        ]);
+        
+        
+
 
 }
+
 ?>
