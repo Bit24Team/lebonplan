@@ -60,4 +60,9 @@ class OfferController extends AbstractController
         
     ]);
 }
+#[Route('/test/offre', name:'offer_test', methods: ['GET'])]
+    public function offer_test(): Response
+    {
+        return $this->render('offer_form_test.twig');
+    }
 }
