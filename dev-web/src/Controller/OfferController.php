@@ -17,13 +17,13 @@ class OfferController extends AbstractController
     #[Route("/offres", name: "offers", methods: ["GET"])]
     public function show_offers(): Response
     {
-        return new Response("Offres");
+        return $this->render("offer/search.twig");
     }
 
     #[Route("/offre/{offer_id}", name: "offer", methods: ["GET"])]
     public function show_offer(int $offer_id): Response
     {
-        return new Response("Offre N°$offer_id");
+        return $this->render("offer/offer.twig");
     }
     #[Route("/offre/{offer_id}", name: "submit_application", methods: ["POST"])]
     public function submit_application(
@@ -31,7 +31,7 @@ class OfferController extends AbstractController
         Request $request,
         SessionInterface $session
     ): Response {
-        return new Response("Candidature envoyée !");
+        return $this->redirectToRoute("offer", ["offer_id" => $offer_id]);
     }
     #[Route("/ajouter/offre", name: "add_offer_page", methods: ["GET"])]
     public function add_offer_page(): Response
@@ -63,10 +63,5 @@ class OfferController extends AbstractController
         // Assuming you have a model to handle the database operations
         // $offers = $this->model->getOffers();
         return $this->json([]);
-    }
-    #[Route("/test/offre", name: "offer_test", methods: ["GET"])]
-    public function offer_test(): Response
-    {
-        return $this->render("offer_form_test.twig");
     }
 }

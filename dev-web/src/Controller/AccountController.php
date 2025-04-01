@@ -21,20 +21,20 @@ class AccountController extends AbstractController
     #[Route("/compte", name: "account", methods: ["GET"])]
     public function account(): Response
     {
-        return new Response("Compte");
+        return $this->render('account/base.twig');
     }
 
     #[Route('/deconnexion', name: 'logout', methods: ['GET'])]
     public function logout(SessionInterface $session): Response
     {
         $session->remove('user');
-        return new Response("Déconnexion réussie !");
+        return $this->redirectToRoute('index');
     }
 
     #[Route("/inscription", name: "register_page", methods: ["GET"])]
     public function register_page(): Response
     {
-        return $this->render("login.twig", ['is_active' => ' active']);
+        return $this->render("account/login.twig", ['is_active' => ' active']);
     }
 
     #[Route("/inscription", name: "register", methods: ["POST"])]
@@ -45,7 +45,7 @@ class AccountController extends AbstractController
     #[Route("/connexion", name: "login_page", methods: ["GET"])]
     public function login_page(): Response
     {
-        return $this->render('login.twig', ['is_active' => '']);
+        return $this->render('account/login.twig', ['is_active' => '']);
     }
     #[Route("/connexion", name: "login", methods: ["POST"])]
     public function login(Request $request, SessionInterface $session): Response
@@ -75,7 +75,7 @@ class AccountController extends AbstractController
             $school = $request->request->get("school");
             $class = $request->request->get("class");
             $this->model->createUser($first_name, $last_name, $password, $email, 1, $phone, $school . "-" . $class);
-            return new Response("Inscription terminée !");
+            return $this->redirectToRoute('login_page');
         }
         return new Response("Erreur lors de l'authentification.");
     }
