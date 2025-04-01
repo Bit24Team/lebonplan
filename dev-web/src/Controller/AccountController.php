@@ -45,7 +45,6 @@ class AccountController extends AbstractController
     #[Route("/connexion", name: "login_page", methods: ["GET"])]
     public function login_page(Request $request, SessionInterface $session): Response
     {
-        $session->set("user", $request->get("user"));
         $error = $request->get("error") ?? null;
         if ($session->has("user")) {
             return $this->redirectToRoute('index');
