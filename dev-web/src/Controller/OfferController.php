@@ -61,8 +61,8 @@ class OfferController extends AbstractController
         $description = $data["description"];
         $salary = $data["salary"];
         $skills = $data["skills"];
-        $start_date = $data["start_date"];
-        $end_date = $data["end_date"];
+        $start_date = $data["startDate"];
+        $end_date = $data["endDate"];
         $duration = $end_date - $start_date;
         $skills = explode(",", $skills);
         $this->model->create_offer(
