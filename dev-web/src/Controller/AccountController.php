@@ -43,9 +43,9 @@ class AccountController extends AbstractController
         return $this->login_or_register($request, $session);
     }
     #[Route("/connexion", name: "login_page", methods: ["GET"])]
-    public function login_page(): Response
+    public function login_page(string $error=null): Response
     {
-        return $this->render('account/login.twig', ['is_active' => '']);
+        return $this->render('account/login.twig', ['is_active' => '','error' => $error]);
     }
     #[Route("/connexion", name: "login", methods: ["POST"])]
     public function login(Request $request, SessionInterface $session): Response
