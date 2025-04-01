@@ -6,6 +6,8 @@
 {% endblock %}
 {% block content %}
 {% if app.session.get('user') %}
+{% set user = app.session.get('user') %}
+{% set perm = user['permission'] %}
 {% if perm == 2 %}
 {%include 'templates/account_company.twig' %}
 {% elseif perm == 3 %}
