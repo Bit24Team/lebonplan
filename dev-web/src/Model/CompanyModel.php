@@ -26,15 +26,6 @@ class CompanyModel
             die('Connection failed: ' . $e->getMessage());
         }
     }
-
-    public function get_id_company($id_manager):int{
-        $sql = 'SELECT id from Companies where id=:id_manager';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':id_manager'=> $id_manager,
-        ]);
-        return $stmt->fetch();
-    }
  
     public function researchcompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {

@@ -40,7 +40,6 @@ class OfferController extends AbstractController
     }
     #[Route("/ajouter/offre", name: "add_offer", methods: ["POST"])]
     public function add_offer(
-        int $offer_id,
         Request $request,
         SessionInterface $session
     ): Response {
@@ -49,10 +48,21 @@ class OfferController extends AbstractController
         $description = $request->request->get("description");
         $salary = $request->request->get("salary");
         $skills = $request->request->get("skills");
+        $start_date = $request->request->get("start_date");
+        $end_date = $request->request->get("end_date");
+        $duration = $end_date - $start_date;
+        $skills = explode(",", $skills);
+        $this->model->create_offer(
+            $manager_id,
+            $skills,
+            $title, 
+            $description,
+            $salary,
+            $start_date,
+            $duration
+        );
 
-        //$this->model->create_offer($skills, $title, $description, $company, $salary, $contract_type);
-
-        return new Response("Offre ajoutée !");
+        return $this->redirectToRoute("account");
     }
 
     #[Route("/api/offers", name: "api_offers", methods: ["GET"])]

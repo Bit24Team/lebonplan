@@ -20,7 +20,7 @@ class CompanyController extends AbstractController
     #[Route("/entreprises", name: "companies", methods: ["GET"])]
     public function show_companies(): Response
     {
-        return new Response('Entreprises');
+        return $this->render('company/search.twig');
     }
 
     #[Route('/entreprise/{company_id}', name: 'company', methods: ['GET'])]
