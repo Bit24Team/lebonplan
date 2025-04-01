@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  text-decoration: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, #4070f4, #00bcd4);
+  padding: 20px;
+}
+
+form {
+  position: relative;
+  width: 850px;
+  max-width: 100%;
+  background: #fff;
+  margin: 20px;
+  border-radius: 30px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 40px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: #4070f4;
+  box-shadow: 0 0 0 3px rgba(64, 112, 244, 0.2);
+  outline: none;
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.skill-tag {
+  background: #f0f2f5;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remove-skill {
+  color: #ff4757;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-skill {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.add-skill input {
+  flex: 1;
+}
+
+.btn {
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background: #4070f4;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #3058c4;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(64, 112, 244, 0.3);
+}
+
+.btn-secondary {
+  background: #f0f2f5;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #e1e5eb;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  grid-column: 1 / -1;
+  border-top: 1px solid #eee;
+  padding-top: 30px;
+}
+
+.date-group {
+  display: flex;
+  gap: 15px;
+}
+
+
+.description-editor {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.description-editor:focus-within {
+  border-color: #4070f4;
+  box-shadow: 0 0 0 3px rgba(64, 112, 244, 0.2);
+}
+
+.description-editor .toolbar {
+  background: #f5f5f5;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+}
+
+.description-editor .toolbar button,
+.description-editor .toolbar select {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.description-editor .toolbar button:hover {
+  background: #f0f0f0;
+}
+
+.description-editor .toolbar select {
+  min-width: 100px;
+}
+
+.editor-content {
+  min-height: 150px;
+  padding: 15px;
+  outline: none;
+  line-height: 1.6;
+  color: #333;
+  font-family: inherit;
+}
+
+.editor-content:empty:before {
+  content: attr(placeholder);
+  color: #999;
+  display: block;
+}
+
+/* Styles spécifiques pour le contenu éditable */
+.editor-content * {
+  font-family: inherit !important;
+}
+
+.editor-content b, .editor-content strong {
+  font-weight: bold !important;
+}
+
+.editor-content i, .editor-content em {
+  font-style: italic !important;
+}
+
+.editor-content u {
+  text-decoration: underline !important;
+}
+
+.editor-content s, .editor-content strike {
+  text-decoration: line-through !important;
+}
+
+/* Styles pour les listes */
+.editor-content ul, 
+.editor-content ol {
+  padding-left: 30px;
+  margin: 10px 0;
+}
+
+.editor-content ul {
+  list-style-type: disc;
+}
+
+.editor-content ol {
+  list-style-type: decimal;
+}
+
+/* Styles spécifiques pour le sélecteur de police */
+#font-family {
+  padding: 5px 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  cursor: pointer;
+  height: 32px;
+}
+
+#font-family option {
+  padding: 5px;
+  font-size: 14px;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-container {
+    grid-template-columns: 1fr;
+  }
+  
+  form {
+    padding: 30px 20px;
+  }
+  
+  .date-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .description-editor .toolbar {
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  
+  .description-editor .toolbar button,
+  .description-editor .toolbar select {
+    padding: 5px 8px;
+    font-size: 13px;
+  }
+}
