@@ -116,14 +116,13 @@ class CompanyModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'name' => $name,
-            'name' => $name,
             'description' => $description,
             'email' => $email,
             'phone' => $phone,
-            'company_name' => $company_name,
+            'company_id' => $company_id,
         ]);
-        
-        public function rate_company(INT $user_id, INT $company_id,INT $rating): int
+    }   
+        public function rate_company(INT $user_id, INT $company_id,INT $rating):void
     {
         $sql = "SELECT Count(*) from Evaluations where from_user=:user_id AND to_company=:company_id ";
 
