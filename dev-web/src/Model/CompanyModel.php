@@ -29,7 +29,7 @@ class CompanyModel
 
     
  
-    public function researchcompagny(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
+    public function researchcompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {
         $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
         $params = [];
@@ -87,9 +87,9 @@ class CompanyModel
         return $stmt->fetch()['count'] ?? 0;
     }
 
-    public function modify_company(?string $name,?string $description,?string $email,?string $phone,?string $company_name): int
+    public function modify_company(?string $name,?string $description,?string $email,?string $phone,?string $company_name): void
     {
-        $sql = "UPDATE Companies SET "
+        $sql = "UPDATE Companies SET ";
         $params = [];
 
         if ($name !== null) {
@@ -115,13 +115,13 @@ class CompanyModel
         $stmt->execute($params);
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            'name' => $name
+            'name' => $name,
             'description' => $description,
             'email' => $email,
             'phone' => $phone,
             'company_name' => $company_name,
         ]);
-        
+    }
         
 
 
