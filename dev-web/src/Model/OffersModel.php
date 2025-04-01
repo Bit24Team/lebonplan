@@ -27,27 +27,37 @@ class OffersModel
         }
     }
     
-    public function get_id_offer($title,$company):int{
-        $sql = 'SELECT id from Offers where title =:title AND id_company=:company';
+    public function get_id_offer($title, $company): int
+    {
+        $sql = 'SELECT id FROM Offers WHERE title = :title AND id_company = :company';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':title'=> $title,
-            ':company'=> $company
+            ':title' => $title,
+            ':company' => $company
         ]);
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+        return $result ? $result['id'] : 0;
     }
-    public function get_id_skill($name):int{
-        $sql = 'SELECT id from Skills where name=:name';
+    
+    public function get_id_skill($name): int
+    {
+        $sql = 'SELECT id FROM Skills WHERE name = :name';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-            ':name'=> $name,
+            ':name' => $name,
         ]);
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+        return $result ? $result['id'] : 0;
     }
-    public function reacherch_offer(string $title,string $description,int $salary,$start_date,int $duration,int $skill){
-        $sql = "SELECT id FROM Offers INNER JOIN OfferSkills ON Offers.id = OfferSkill.id_offer JOIN Skills ON Skills.id = id_skill WHERE 1=1";
+    
+    public function reacherch_offer(string $title, string $description, int $salary, $start_date, int $duration, int $skill)
+    {
+        $sql = "SELECT id FROM Offers
+                INNER JOIN OfferSkills ON Offers.id = OfferSkills.id_offer
+                JOIN Skills ON Skills.id = OfferSkills.id_skill
+                WHERE 1=1";
         $params = [];
-
+    
         if ($title !== null) {
             $sql .= " AND Offers.title = :title";
             $params[':title'] = $title;
@@ -69,24 +79,22 @@ class OffersModel
             $params[':duration'] = $duration;
         }
         if ($skill !== null) {
-            $sql .= " AND id.skills = :skill";
+            $sql .= " AND Skills.id = :skill";
             $params[':skill'] = $skill;
         }
-
+    
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
-    
     }
+    
 
-    public function create_offer(string $skills, string $title, string $description, int $company, float $salary, string $start_date, string $duration)
-    {
-        $sql = "INSERT INTO Offers (id_company,title,description,salary,start_date,duration) 
-                VALUES (:id_company,:title,:description,:salary,:start_date,:duration)";
-        
+    public function create_offer(string $skills, string $title, string $description, int $company, float $salary, string $start_date, string $duration){
+        $sql = "INSERT INTO Offers (id_company, title, description, salary, start_date, duration)
+                VALUES (:id_company, :title, :description, :salary, :start_date, :duration)";
+    
         $stmt = $this->pdo->prepare($sql);
-        
-
+    
         $stmt->execute([
             ':id_company' => $company,
             ':title' => $title,
@@ -95,21 +103,24 @@ class OffersModel
             ':start_date' => $start_date,
             ':duration' => $duration
         ]);
-        
-        $sql="SELECT COUNT * FROM Skills where name=:name";
+    
+        $sql = "SELECT COUNT(*) as count FROM Skills WHERE name = :name";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':name'=> $skills ]);
-        if($stmt->fetch()=0){
+        $stmt->execute([':name' => $skills]);
+        $result = $stmt->fetch();
+    
+        if ($result['count'] == 0) {
             $this->newskill($skills);
-            $sql="INSERT into OfferSkill(id_offer,id_skill) values (:offer,:skill) ";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([
-                ':skill' => $this->get_id_skill($skills),
-                ':offer' => $this->get_id_offer($title,$company),
-
-            ]);
-        }   
+        }
+    
+        $sql = "INSERT INTO OfferSkill (id_offer, id_skill) VALUES (:offer, :skill)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':skill' => $this->get_id_skill($skills),
+            ':offer' => $this->get_id_offer($title, $company),
+        ]);
     }
+    
     public function newskill(string $skills):void{ 
     $sql= 'INSERT INTO Skills(name) VALUES (:skill)';
     $stmt = $this->pdo->prepare($sql);
