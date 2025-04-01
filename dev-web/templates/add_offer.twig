@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Création d'offre d'entreprise</title>
+    <link rel="stylesheet" href="/css/test.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <form id="offerForm">
+      <h1>
+        <i class="fas fa-file-contract"></i> Création d'offre d'entreprise
+      </h1>
+
+      <div class="form-container">
+        <!-- Colonne 1 -->
+        <div class="form-column">
+          <div class="form-group">
+            <label for="offerTitle">Titre de l'offre *</label>
+            <input type="text" id="offerTitle" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="companyName">Entreprise *</label>
+            <input type="text" id="companyName" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="offerDescription">Description *</label>
+            <div class="editor-container description-editor">
+              <div class="toolbar">
+                <select
+                  onchange="formatText('fontSize', this.value); this.selectedIndex = 0;"
+                >
+                  <option value="">Taille</option>
+                  <option value="1">Petit</option>
+                  <option value="3">Normal</option>
+                  <option value="5">Grand</option>
+                </select>
+                <button type="button" onclick="formatText('bold')" title="Gras">
+                  <b>B</b>
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('italic')"
+                  title="Italique"
+                >
+                  <i>I</i>
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('underline')"
+                  title="Souligné"
+                >
+                  <u>U</u>
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('strikeThrough')"
+                  title="Barré"
+                  style="text-decoration: line-through"
+                >
+                  S
+                </button>
+                <button type="button" onclick="insertLink()" title="Lien">
+                  🔗
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('insertUnorderedList')"
+                  title="Liste à puces"
+                >
+                  •
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('insertOrderedList')"
+                  title="Liste numérotée"
+                >
+                  1.
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('justifyLeft')"
+                  title="Aligner à gauche"
+                >
+                  ⬅️
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('justifyCenter')"
+                  title="Centrer"
+                >
+                  🔘
+                </button>
+                <button
+                  type="button"
+                  onclick="formatText('justifyRight')"
+                  title="Aligner à droite"
+                >
+                  ➡️
+                </button>
+              </div>
+
+              <div
+                id="offerDescription"
+                class="editor-content"
+                contenteditable="true"
+                style="max-width: 100%; overflow-wrap: break-word"
+              ></div>
+            </div>
+
+            <textarea
+              name="descriptionHtml"
+              id="descriptionHtml"
+              style="display: none"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Colonne 2 -->
+        <div class="form-column">
+          <div class="form-group">
+            <label>Compétences requises</label>
+            <div class="skills-container" id="skillsContainer">
+              <!-- Compétences ajoutées dynamiquement -->
+            </div>
+            <div class="add-skill">
+              <input
+                type="text"
+                id="newSkill"
+                class="form-control"
+                placeholder="Ajouter une compétence"
+              />
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="addSkill()"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="salary">Rémunération (€/mois) *</label>
+            <input
+              type="number"
+              id="salary"
+              class="form-control"
+              min="500"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Période de stage *</label>
+            <div class="date-group">
+              <div style="flex: 1">
+                <label for="startDate">Début</label>
+                <input
+                  type="date"
+                  id="startDate"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div style="flex: 1">
+                <label for="endDate">Fin</label>
+                <input type="date" id="endDate" class="form-control" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Annuler
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Publier l'offre
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <script src="/js/test.js"></script>
+  </body>
+</html>

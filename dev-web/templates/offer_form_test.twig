@@ -1,23 +1,34 @@
 {% extends 'base.twig' %}
-{% block title %}{{ offer_name }}{% endblock %}
+
+{% block title %}
+    Postuler
+{% endblock %}
+
+
 {% block styles %}
-    <link rel="stylesheet" href="{{asset('/css/offre.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/offer.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-{% endblock %}   
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h1 style="text-align: center;">Postuler à une offre</h1>
-    <p>Vous pouvez ici répondre directement à l'offre de stage déposer par l'entreprise. Soyez le plus précis dans
-        vos réponses!</p>
-    <h2 style="margin-bottom: 0px ;">{{ offer_name }}</h2>
-    <p class="legend">{{ company_name }} | Commence le {{ start_date }} | Ref. {{id}}</p>
-    <div class="description">
-    {{ description }}
-    </div>
-</div>
 <div class="formulairebg">
     <h2>Envoyez votre candidature dès maintenant!</h2>
     <form id="formulaire" class="formulaire">
+        <div class="line_form">
+            <div class="block_form">
+                <p>NOM</p>
+                <input type="text" id="nom" name="nom">
+                <p class="formulaire error"></p>
+            </div>
+            <div class="block_form">
+                <p>PRÉNOM</p>
+                <input type="text" id="prenom" name="prenom">
+                <p class="formulaire error"></p>
+            </div>   
+        </div>
+        <p>ADRESSE MAIL</p>
+        <input type="email" id="email" name="email" style="width: 55%;">
+        <p class="formulaire error"></p>
         <p>CV</p>
         <div class="cv">
             <input type="file" id="filecv" accept=".pdf, .doc, .docx, .odt, .rft, .jpeg, .pnj" hidden>
@@ -49,25 +60,8 @@
         </div>
     </form>
 </div>
-<div class="resum_block">
-    <h3>{{ offer_name }}</h3>
-    <a href="{{ path('company',{'company_id': company_id}) }}" style="margin-bottom: 10px;">{{ company_name }}</a>
-    <h4 style="margin-bottom: 5px;">Résumé de l'offre:</h4>
-    <ul class="list_resum_offre">
-        {% for skill in skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-        <li>{{ salary }}€/mois</li>
-    </ul>
-    <div class="btn_block">
-        <button id="btn_postuler" class="bouton block">POSTULER</button>
-    </div>
-</div>
-
-<div>
-    <button class="btn_remonter"><i class="fa-solid fa-arrow-up"></i></button>
-</div>
 {% endblock %}
-{% block scripts %}
-<script src="script.js"></script>
+
+{% block javascripts %}
+    <script src="{{ asset('/js/offer.js') }}"></script>
 {% endblock %}
