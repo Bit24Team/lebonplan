@@ -9,7 +9,7 @@
 {% endblock %}
 {% block content %}
 {% if app.session.get('user') %}
-{% if perm == 2 %}
+{% if app.session.get('user')['permission'] == 2 %}
     <form id="offerForm">
       <h1>
         <i class="fas fa-file-contract"></i> Création d'offre d'entreprise
