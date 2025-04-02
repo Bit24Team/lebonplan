@@ -56,7 +56,15 @@
         <li class="hideOnMobile"><a href="{{ path('offers') }}">Offres</a></li>
         <li class="hideOnMobile"><a href="{{ path('companies') }}">Entreprise</a></li>
         {% if app.session.get('user') %}
-        <li class="hideOnMobile"><a href="{{ path('account') }}">Mon Compte</a></li>
+        {% set user = app.session.get('user') %}
+        {% set perm = user['permission'] %}
+        {% if perm == 2 %}
+        <li class="hideOnMobile"><a href="{{ path('manager_dashboard') }}">Mon Compte</a></li>
+        {% elseif perm == 3 %}
+        <li class="hideOnMobile"><a href="{{ path('admin_dashboard') }}">Mon Compte</a></li>
+        {% else %}
+        <li class="hideOnMobile"><a href="{{ path('user_dashboard') }}">Mon Compte</a></li>
+        {% endif %}
         <li class="hideOnMobile"><a href="{{ path('logout') }}">Déconnexion</a></li>
         {% else %}
         <li class="hideOnMobile"><a href="{{ path('login_page') }}">Connexion</a></li>
