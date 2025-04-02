@@ -1,0 +1,666 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 d-none d-md-block bg-dark sidebar">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" href="#dashboard" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#users" data-tab="users">
+                            <i class="fas fa-users mr-2"></i>Utilisateurs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#companies" data-tab="companies">
+                            <i class="fas fa-building mr-2"></i>Entreprises
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#offers" data-tab="offers">
+                            <i class="fas fa-briefcase mr-2"></i>Offres d'emploi
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#applications" data-tab="applications">
+                            <i class="fas fa-file-alt mr-2"></i>Candidatures
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#settings" data-tab="settings">
+                            <i class="fas fa-cog mr-2"></i>Paramètres
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Tableau de bord Administrateur</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <button class="btn btn-sm btn-outline-secondary">Exporter</button>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        Cette semaine
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Cards -->
+            <div id="dashboard-content" class="tab-content">
+                <!-- Dashboard Tab -->
+                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Utilisateurs</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.users_count }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Entreprises</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.companies_count }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-building fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Offres actives</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.active_offers_count }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-briefcase fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Candidatures (7j)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.weekly_applications }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Activité des candidatures</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="applicationsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Répartition des utilisateurs</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="usersChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Candidats
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Managers
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Admins
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Activité récente</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="recentActivity" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Utilisateur</th>
+                                            <th>Action</th>
+                                            <th>Détails</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for activity in recent_activity %}
+                                        <tr>
+                                            <td>{{ activity.date|date('d/m/Y H:i') }}</td>
+                                            <td>{{ activity.user }}</td>
+                                            <td>{{ activity.action }}</td>
+                                            <td>{{ activity.details }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div class="tab-pane fade" id="users" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Gestion des utilisateurs</h6>
+                            <a href="{{ path('admin_user_create') }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus mr-1"></i> Nouvel utilisateur
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nom</th>
+                                            <th>Email</th>
+                                            <th>Rôle</th>
+                                            <th>Inscription</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr>
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                {% if user.permission == 2 %}
+                                                    <span class="badge badge-danger">Admin</span>
+                                                {% elseif user.permission == 1 %}
+                                                    <span class="badge badge-success">Manager</span>
+                                                {% else %}
+                                                    <span class="badge badge-primary">Candidat</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ user.created_at|date('d/m/Y') }}</td>
+                                            <td>
+                                                {% if user.is_active %}
+                                                    <span class="badge badge-success">Actif</span>
+                                                {% else %}
+                                                    <span class="badge badge-secondary">Inactif</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-primary" title="Modifier">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    {% if user.is_active %}
+                                                        <a href="{{ path('admin_user_deactivate', {'id': user.id}) }}" class="btn btn-warning" title="Désactiver">
+                                                            <i class="fas fa-ban"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('admin_user_activate', {'id': user.id}) }}" class="btn btn-success" title="Activer">
+                                                            <i class="fas fa-check"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{{ path('admin_user_delete', {'id': user.id}) }}" class="btn btn-danger" title="Supprimer" onclick="return confirm('Supprimer cet utilisateur?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Companies Tab -->
+                <div class="tab-pane fade" id="companies" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Gestion des entreprises</h6>
+                            <a href="{{ path('admin_company_create') }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus mr-1"></i> Nouvelle entreprise
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="companiesTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nom</th>
+                                            <th>Manager</th>
+                                            <th>Email</th>
+                                            <th>Note</th>
+                                            <th>Offres</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for company in companies %}
+                                        <tr>
+                                            <td>{{ company.id }}</td>
+                                            <td>{{ company.name }}</td>
+                                            <td>
+                                                {% if company.manager %}
+                                                    {{ company.manager.first_name }} {{ company.manager.last_name }}
+                                                {% else %}
+                                                    <span class="text-muted">Aucun</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ company.contact_mail }}</td>
+                                            <td>
+                                                {% if company.average_rating %}
+                                                    {{ company.average_rating|number_format(1) }}
+                                                    <span class="text-warning">
+                                                        {% for i in 1..5 %}
+                                                            {% if i <= company.average_rating %}
+                                                                ★
+                                                            {% else %}
+                                                                ☆
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="text-muted">Aucune</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ company.offers_count }}</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ path('admin_company_edit', {'id': company.id}) }}" class="btn btn-primary" title="Modifier">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="{{ path('admin_company_delete', {'id': company.id}) }}" class="btn btn-danger" title="Supprimer" onclick="return confirm('Supprimer cette entreprise?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offers Tab -->
+                <div class="tab-pane fade" id="offers" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Gestion des offres</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-filter mr-1"></i>Filtrer
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{{ path('admin_offers', {'filter': 'all'}) }}">Toutes</a>
+                                    <a class="dropdown-item" href="{{ path('admin_offers', {'filter': 'active'}) }}">Actives</a>
+                                    <a class="dropdown-item" href="{{ path('admin_offers', {'filter': 'inactive'}) }}">Inactives</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="offersTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Titre</th>
+                                            <th>Entreprise</th>
+                                            <th>Salaire</th>
+                                            <th>Date début</th>
+                                            <th>Candidatures</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for offer in offers %}
+                                        <tr>
+                                            <td>{{ offer.id }}</td>
+                                            <td>{{ offer.title }}</td>
+                                            <td>{{ offer.company.name }}</td>
+                                            <td>{{ offer.salary }} €</td>
+                                            <td>{{ offer.start_date|date('d/m/Y') }}</td>
+                                            <td>{{ offer.applications_count }}</td>
+                                            <td>
+                                                {% if offer.status == 'active' %}
+                                                    <span class="badge badge-success">Active</span>
+                                                {% else %}
+                                                    <span class="badge badge-secondary">Inactive</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ path('admin_offer_show', {'id': offer.id}) }}" class="btn btn-primary" title="Voir">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ path('admin_offer_edit', {'id': offer.id}) }}" class="btn btn-secondary" title="Modifier">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    {% if offer.status == 'active' %}
+                                                        <a href="{{ path('admin_offer_deactivate', {'id': offer.id}) }}" class="btn btn-warning" title="Désactiver">
+                                                            <i class="fas fa-power-off"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('admin_offer_activate', {'id': offer.id}) }}" class="btn btn-success" title="Activer">
+                                                            <i class="fas fa-power-off"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{{ path('admin_offer_delete', {'id': offer.id}) }}" class="btn btn-danger" title="Supprimer" onclick="return confirm('Supprimer cette offre?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Applications Tab -->
+                <div class="tab-pane fade" id="applications" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Gestion des candidatures</h6>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="applicationsFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-filter mr-1"></i>Filtrer
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="applicationsFilter">
+                                    <a class="dropdown-item" href="{{ path('admin_applications', {'filter': 'all'}) }}">Toutes</a>
+                                    <a class="dropdown-item" href="{{ path('admin_applications', {'filter': 'pending'}) }}">En attente</a>
+                                    <a class="dropdown-item" href="{{ path('admin_applications', {'filter': 'accepted'}) }}">Acceptées</a>
+                                    <a class="dropdown-item" href="{{ path('admin_applications', {'filter': 'rejected'}) }}">Refusées</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="applicationsTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Candidat</th>
+                                            <th>Offre</th>
+                                            <th>Entreprise</th>
+                                            <th>Date</th>
+                                            <th>Statut</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for application in applications %}
+                                        <tr>
+                                            <td>{{ application.id }}</td>
+                                            <td>{{ application.candidate.first_name }} {{ application.candidate.last_name }}</td>
+                                            <td>{{ application.offer.title }}</td>
+                                            <td>{{ application.offer.company.name }}</td>
+                                            <td>{{ application.application_date|date('d/m/Y') }}</td>
+                                            <td>
+                                                {% if application.status == 'accepté' %}
+                                                    <span class="badge badge-success">Acceptée</span>
+                                                {% elseif application.status == 'refusé' %}
+                                                    <span class="badge badge-danger">Refusée</span>
+                                                {% else %}
+                                                    <span class="badge badge-warning">En attente</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{{ path('admin_application_show', {'id': application.id}) }}" class="btn btn-primary" title="Voir">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ path('admin_application_accept', {'id': application.id}) }}" class="btn btn-success" title="Accepter">
+                                                        <i class="fas fa-check"></i>
+                                                    </a>
+                                                    <a href="{{ path('admin_application_reject', {'id': application.id}) }}" class="btn btn-danger" title="Refuser">
+                                                        <i class="fas fa-times"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-pane fade" id="settings" role="tabpanel">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Paramètres du site</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{{ path('admin_settings_save') }}">
+                                <div class="form-group">
+                                    <label for="siteName">Nom du site</label>
+                                    <input type="text" class="form-control" id="siteName" name="siteName" value="{{ settings.site_name }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="siteEmail">Email de contact</label>
+                                    <input type="email" class="form-control" id="siteEmail" name="siteEmail" value="{{ settings.site_email }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="maintenanceMode">Mode maintenance</label>
+                                    <select class="form-control" id="maintenanceMode" name="maintenanceMode">
+                                        <option value="0" {% if not settings.maintenance_mode %}selected{% endif %}>Désactivé</option>
+                                        <option value="1" {% if settings.maintenance_mode %}selected{% endif %}>Activé</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registrationAllowed">Inscriptions autorisées</label>
+                                    <select class="form-control" id="registrationAllowed" name="registrationAllowed">
+                                        <option value="1" {% if settings.registration_allowed %}selected{% endif %}>Oui</option>
+                                        <option value="0" {% if not settings.registration_allowed %}selected{% endif %}>Non</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+        
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #adb5bd;
+            padding: 0.75rem 1rem;
+        }
+        
+        .sidebar .nav-link.active {
+            color: #fff;
+            background-color: rgba(255,255,255,.1);
+        }
+        
+        .sidebar .nav-link:hover {
+            color: #fff;
+        }
+        
+        .card {
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .chart-area, .chart-pie {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            padding: 0.35em 0.65em;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        // Activer les DataTables
+        $(document).ready(function() {
+            $('#usersTable, #companiesTable, #offersTable, #applicationsTable, #recentActivity').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json"
+                }
+            });
+            
+            // Gestion des onglets
+            $('.nav-link').on('click', function(e) {
+                e.preventDefault();
+                $('.nav-link').removeClass('active');
+                $(this).addClass('active');
+                $('.tab-pane').removeClass('show active');
+                $($(this).attr('href')).addClass('show active');
+            });
+            
+            // Applications Chart
+            var ctx = document.getElementById('applicationsChart').getContext('2d');
+            var applicationsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ applications_chart.labels|json_encode|raw }},
+                    datasets: [{
+                        label: "Candidatures",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: {{ applications_chart.data|json_encode|raw }},
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Users Chart
+            var ctx2 = document.getElementById('usersChart').getContext('2d');
+            var usersChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Candidats", "Managers", "Admins"],
+                    datasets: [{
+                        data: {{ users_chart.data|json_encode|raw }},
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 80,
+                }
+            });
+        });
+    </script>
+{% endblock %}
