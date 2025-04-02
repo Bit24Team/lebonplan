@@ -33,8 +33,9 @@
             </div>
             
             <div class="form-group">
-                <label for="company_rating">Note minimale</label>
-                <input type="number" id="company_rating" name="company_rating" min="1" max="5" 
+                <label for="company_rating">Note minimale (optionnel)</label>
+                <input type="number" id="company_rating" name="company_rating" 
+                       min="0" max="5" placeholder="0-5"
                        value="{{ search_params.company_rating ?? '' }}">
             </div>
         </div>
@@ -51,6 +52,22 @@
                 {% for company in companies %}
                     <div class="company-card">
                         <h2><a href="{{ path('company', {'company_id': company.id}) }}">{{ company.name }}</a></h2>
+                        <div class="company-rating">
+                            {% if company.average_rating %}
+                                Note: {{ company.average_rating|round(1) }}/5
+                                <div class="stars">
+                                    {% for i in 1..5 %}
+                                        {% if i <= company.average_rating|round %}
+                                            ★
+                                        {% else %}
+                                            ☆
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="no-rating">Pas encore noté</span>
+                            {% endif %}
+                        </div>
                         <p>{{ company.description|slice(0, 150) }}...</p>
                         <div class="company-meta">
                             <span>Email: {{ company.contact_mail }}</span>
@@ -194,6 +211,22 @@
     padding: 30px;
     background: #f5f5f5;
     border-radius: 8px;
+}
+
+.company-rating {
+    margin: 5px 0;
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.stars {
+    display: inline-block;
+    font-size: 1.2em;
+}
+
+.no-rating {
+    color: #6c757d;
+    font-style: italic;
 }
 </style>
 {% endblock %}

@@ -21,9 +21,21 @@ class OfferController extends AbstractController
     }
 
     #[Route("/offres", name: "offers", methods: ["GET"])]
-    public function show_offers(): Response
+    public function show_offers(Request $request): Response
     {
-        return $this->render("offer/search.twig");
+        $page = max(1, (int)$request->query->get('page', 1));
+        $perPage = 10;
+        
+        $totalOffers = $this->model->count_all_offers();
+        $offers = $this->model->get_paginated_offers($page, $perPage);
+        
+        $totalPages = ceil($totalOffers / $perPage);
+        
+        return $this->render("offer/search.twig", [
+            'offers' => $offers,
+            'current_page' => $page,
+            'total_pages' => $totalPages,
+        ]);
     }
 
     #[Route("/offre/{offer_id}", name: "offer", methods: ["GET"])]
@@ -84,4 +96,5 @@ class OfferController extends AbstractController
         // $offers = $this->model->getOffers();
         return $this->json([]);
     }
+    
 }

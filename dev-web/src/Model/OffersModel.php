@@ -198,61 +198,45 @@ class OffersModel
     
     }
     
-    public function get_offers(array $offer_ids)
-    {
-        // Vérifiez si le tableau d'identifiants est vide
-        if (empty($offer_ids)) {
-            return [];
-        }
-    
-        // Construisez la requête SQL avec des jointures pour récupérer les informations nécessaires
-        $placeholders = implode(',', array_fill(0, count($offer_ids), '?'));
-        $sql = "
-            SELECT
-                Offers.id AS offer_id,
-                Offers.title,
-                Companies.name AS company,
-                Offers.description,
-                GROUP_CONCAT(Skills.name) AS skills,
-                Offers.salary,
-                Offers.start_date,
-                Offers.duration,
-                DATE_ADD(Offers.start_date, INTERVAL Offers.duration DAY) AS end_date,
-                COUNT(Applications.id) AS applicants
-            FROM Offers
-            INNER JOIN Companies ON Offers.id_company = Companies.id
-            INNER JOIN OfferSkills ON Offers.id = OfferSkills.id_offer
-            INNER JOIN Skills ON OfferSkills.id_skill = Skills.id
-            LEFT JOIN Applications ON Offers.id = Applications.id_offer
-            WHERE Offers.id IN ($placeholders)
-            GROUP BY Offers.id
-        ";
-    
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($offer_ids);
-        return $stmt->fetchAll();
-    }
-    
-    public function offer_to_json(array $offer_ids, string $file_path)
+    public function count_all_offers(): int
 {
-    $offers = $this->get_offers($offer_ids);
+    $sql = "SELECT COUNT(*) as total FROM Offers";
+    $stmt = $this->pdo->query($sql);
+    $result = $stmt->fetch();
+    return (int)$result['total'];
+}
 
-    $offers_json = [];
-    foreach ($offers as $offer) {
-        $offers_json[] = [
-            'title' => $offer['title'],
-            'company' => $offer['company'],
-            'description' => $offer['description'],
-            'skills' => explode(',', $offer['skills']), 
-            'salary' => $offer['salary'],
-            'startDate' => $offer['start_date'],
-            'endDate' => $offer['end_date'],
-            'applicants' => $offer['applicants'],
-        ];
-    }
-
-    $json_data = json_encode($offers_json, JSON_PRETTY_PRINT);
-    file_put_contents($file_path, $json_data);
+public function get_paginated_offers(int $page = 1, int $perPage = 10): array
+{
+    $offset = ($page - 1) * $perPage;
+    
+    $sql = "
+        SELECT
+            Offers.id AS offer_id,
+            Offers.title,
+            Companies.name AS company,
+            Offers.description,
+            GROUP_CONCAT(Skills.name) AS skills,
+            Offers.salary,
+            Offers.start_date,
+            Offers.duration,
+            DATE_ADD(Offers.start_date, INTERVAL Offers.duration DAY) AS end_date,
+            COUNT(Applications.id) AS applicants
+        FROM Offers
+        INNER JOIN Companies ON Offers.id_company = Companies.id
+        INNER JOIN OfferSkills ON Offers.id = OfferSkills.id_offer
+        INNER JOIN Skills ON OfferSkills.id_skill = Skills.id
+        LEFT JOIN Applications ON Offers.id = Applications.id_offer
+        GROUP BY Offers.id
+        LIMIT :offset, :perPage
+    ";
+    
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':perPage', $perPage, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll();
 }
 
 }
