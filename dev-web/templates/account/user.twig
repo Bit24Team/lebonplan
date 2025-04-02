@@ -1,0 +1,205 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Profil utilisateur -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>Mon Profil</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar" class="rounded-circle" width="100">
+                    </div>
+                    <h4 class="text-center">{{ user.first_name }} {{ user.last_name }}</h4>
+                    <p class="text-muted text-center">{{ user.email }}</p>
+                    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Téléphone:</strong> {{ user.phone ?? 'Non renseigné' }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Groupe:</strong> {{ user.groupe ?? 'Non renseigné' }}
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-3 text-center">
+                        <a href="{{ path('edit_profile') }}" class="btn btn-outline-primary btn-sm">Modifier mon profil</a>
+                        <a href="{{ path('change_password') }}" class="btn btn-outline-secondary btn-sm mt-2">Changer mon mot de passe</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compétences utilisateur -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5>Mes Compétences</h5>
+                </div>
+                <div class="card-body">
+                    {% if user_skills is not empty %}
+                        <ul class="list-group">
+                            {% for skill in user_skills %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ skill.name }}
+                                    <a href="{{ path('remove_skill', {'id': skill.id}) }}" class="badge badge-danger badge-pill">×</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">Aucune compétence enregistrée</p>
+                    {% endif %}
+                    <div class="mt-3">
+                        <a href="{{ path('add_skill') }}" class="btn btn-outline-info btn-sm">Ajouter une compétence</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <!-- Onglets -->
+            <ul class="nav nav-tabs" id="accountTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="applications-tab" data-toggle="tab" href="#applications" role="tab">Mes Candidatures</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="wishlist-tab" data-toggle="tab" href="#wishlist" role="tab">Ma Wishlist</a>
+                </li>
+            </ul>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content" id="accountTabsContent">
+                <!-- Onglet Candidatures -->
+                <div class="tab-pane fade show active" id="applications" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            {% if applications is not empty %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Offre</th>
+                                                <th>Entreprise</th>
+                                                <th>Date</th>
+                                                <th>Statut</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for application in applications %}
+                                                <tr>
+                                                    <td>
+                                                        <a href="{{ path('offer_show', {'id': application.offer.id}) }}">
+                                                            {{ application.offer.title }}
+                                                        </a>
+                                                    </td>
+                                                    <td>{{ application.offer.company.name }}</td>
+                                                    <td>{{ application.application_date|date('d/m/Y') }}</td>
+                                                    <td>
+                                                        <span class="badge 
+                                                            {% if application.status == 'accepté' %}badge-success
+                                                            {% elseif application.status == 'refusé' %}badge-danger
+                                                            {% elseif application.status == 'en attente' %}badge-warning
+                                                            {% else %}badge-secondary{% endif %}">
+                                                            {{ application.status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ path('application_show', {'id': application.id}) }}" class="btn btn-sm btn-outline-primary" title="Voir">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ path('application_edit', {'id': application.id}) }}" class="btn btn-sm btn-outline-secondary" title="Modifier">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    Vous n'avez postulé à aucune offre pour le moment.
+                                </div>
+                                <a href="{{ path('offer_index') }}" class="btn btn-primary">Voir les offres disponibles</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Onglet Wishlist -->
+                <div class="tab-pane fade" id="wishlist" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            {% if wishlist is not empty %}
+                                <div class="row">
+                                    {% for application in wishlist %}
+                                        <div class="col-md-6 mb-4">
+                                            <div class="card h-100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        <a href="{{ path('offer_show', {'id': application.offer.id}) }}">
+                                                            {{ application.offer.title }}
+                                                        </a>
+                                                    </h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        {{ application.offer.company.name }}
+                                                    </h6>
+                                                    <p class="card-text">
+                                                        <small class="text-muted">
+                                                            Salaire: {{ application.offer.salary }} €
+                                                            | Début: {{ application.offer.start_date|date('d/m/Y') }}
+                                                        </small>
+                                                    </p>
+                                                    <p class="card-text">
+                                                        {{ application.offer.description|slice(0, 100) }}...
+                                                    </p>
+                                                </div>
+                                                <div class="card-footer bg-transparent">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="badge badge-info">
+                                                            {{ application.application_date|date('d/m/Y') }}
+                                                        </span>
+                                                        <div>
+                                                            <a href="{{ path('apply_offer', {'id': application.offer.id}) }}" class="btn btn-sm btn-success">
+                                                                Postuler maintenant
+                                                            </a>
+                                                            <a href="{{ path('remove_from_wishlist', {'id': application.id}) }}" class="btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-trash"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    Votre wishlist est vide. Ajoutez des offres à votre wishlist pour les consulter plus tard.
+                                </div>
+                                <a href="{{ path('offer_index') }}" class="btn btn-primary">Parcourir les offres</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block styles %}
+    <style>
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-tabs .nav-link {
+            font-weight: 500;
+        }
+        .badge {
+            font-size: 0.85em;
+            padding: 0.35em 0.65em;
+        }
+        .table th {
+            border-top: none;
+        }
+    </style>
+{% endblock %}
