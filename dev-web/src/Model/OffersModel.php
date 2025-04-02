@@ -116,7 +116,7 @@ class OffersModel
         foreach ($skills as $skill) {
             $sql = "SELECT COUNT(*) as count FROM Skills WHERE name = :name";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([':name' => $skills]);
+            $stmt->execute([':name' => $skill]);
             $result = $stmt->fetch();
             if($result['count'] == 0){
                 $this->newskill($skill);
@@ -124,7 +124,7 @@ class OffersModel
             $sql = "INSERT INTO OfferSkill (id_offer, id_skill) VALUES (:offer, :skill)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
-                ':skill' => $this->get_id_skill($skills),
+                ':skill' => $this->get_id_skill($skill),
                 ':offer' => $this->get_id_offer($title, $company),
             ]);
         }
