@@ -1,57 +1,60 @@
 {% extends 'base.twig' %}
 
-{% block title %}Rechercher une offre{% endblock %}
-
-{% block styles %}
-    <link rel="stylesheet" href="{{ asset('css/search_offer.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-{% endblock %}
+{% block title %}Liste des Offres{% endblock %}
 
 {% block content %}
-<div class="search-container">
-        <h1>Rechercher une offre</h1>
-        
-        <div class="search-bar">
-            <div class="search-input-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="Rechercher par entreprise, titre ou compétence...">
-                <i class="fas fa-search search-icon"></i>
-            </div>
-            <button class="filter-button" id="filterButton">
-                <i class="fas fa-sliders-h"></i>
-                <span class="filter-text">Filtres</span>
-            </button>
-        </div>
-        
-        <div class="filter-panel" id="filterPanel">
-            <div class="filter-group">
-                <h4>Compétences</h4>
-                <div class="skills-container" id="skillsContainer">
-                    
-                </div>
+<div class="offers-container">
+    <h1>Liste des Offres</h1>
+    
+    <div class="offers-list">
+        {% for offer in offers %}
+        <div class="offer-card">
+            <h2>{{ offer.title }}</h2>
+            <p class="company">{{ offer.company }}</p>
+            <p class="description">{{ offer.description|slice(0, 150) }}...</p>
+            
+            <div class="skills">
+                {% for skill in offer.skills|split(',') %}
+                <span class="skill-tag">{{ skill }}</span>
+                {% endfor %}
             </div>
             
-            <div class="filter-group">
-                <h4>Rémunération</h4>
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <input type="range" id="salaryRange" min="500" max="2500" step="100" value="1000" style="flex-grow: 1;">
-                    <span id="salaryValue">1000€</span>
-                </div>
+            <div class="offer-details">
+                <span>Salaire: {{ offer.salary }} €</span>
+                <span>Début: {{ offer.start_date|date('d/m/Y') }}</span>
+                <span>Durée: {{ offer.duration }} jours</span>
+                <span>Candidats: {{ offer.applicants }}</span>
             </div>
             
-            <div class="filter-group">
-                <h4>Date de début</h4>
-                <input type="date" id="startDate" style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
-            </div>
-            
-            <button class="apply-filters" id="applyFilters">Appliquer les filtres</button>
+            <a href="{{ path('offer', {'offer_id': offer.offer_id}) }}" class="view-button">Voir l'offre</a>
         </div>
-        
-        <div class="results-container" id="resultsContainer">
-            <!-- Résultats générés dynamiquement -->
-        </div>
+        {% else %}
+        <p>Aucune offre disponible pour le moment.</p>
+        {% endfor %}
     </div>
+    
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if current_page > 1 %}
+            <a href="{{ path('offers', {'page': current_page - 1}) }}" class="page-link">&laquo; Précédent</a>
+        {% endif %}
+        
+        {% for i in 1..total_pages %}
+            {% if i == current_page %}
+                <span class="current-page">{{ i }}</span>
+            {% else %}
+                <a href="{{ path('offers', {'page': i}) }}" class="page-link">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if current_page < total_pages %}
+            <a href="{{ path('offers', {'page': current_page + 1}) }}" class="page-link">Suivant &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('js/search_offer.js') }}"></script>
+{% block styles %}
+<link rel="stylesheet" href="{{ asset('/css/offers.css') }}" />
 {% endblock %}

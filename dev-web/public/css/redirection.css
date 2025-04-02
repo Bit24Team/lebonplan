@@ -1,0 +1,101 @@
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #333;
+}
+.container {
+  text-align: center;
+  width: 90%;
+  max-width: 1000px;
+}
+h1 {
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-size: 2.2em;
+}
+.options-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.option-card {
+  flex: 1;
+  min-width: 300px;
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.option-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+.option-title {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+.option-icon {
+  font-size: 3em;
+  margin-bottom: 20px;
+  color: #3498db;
+}
+.entreprise .option-icon {
+  color: #e74c3c;
+}
+.utilisateur .option-icon {
+  color: #2ecc71;
+}
+.option-description {
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.btn-entreprise {
+  background-color: #e74c3c;
+}
+.btn-entreprise:hover {
+  background-color: #c0392b;
+}
+.btn-utilisateur {
+  background-color: #2ecc71;
+}
+.btn-utilisateur:hover {
+  background-color: #27ae60;
+}
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 30px 0;
+  color: #7f8c8d;
+}
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #bdc3c7;
+}
+.separator::before {
+  margin-right: 20px;
+}
+.separator::after {
+  margin-left: 20px;
+}
