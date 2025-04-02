@@ -10,7 +10,7 @@
                     {% if company %}
                         <h4 class="text-center">{{ company.name }}</h4>
                         <p class="text-muted text-center">{{ company.description|slice(0, 50) }}...</p>
-                        
+
                         <ul class="list-group list-group-flush mt-3">
                             <li class="list-group-item">
                                 <strong>Email:</strong> {{ company.contact_mail }}
@@ -18,25 +18,8 @@
                             <li class="list-group-item">
                                 <strong>Téléphone:</strong> {{ company.contact_phone }}
                             </li>
-                            <li class="list-group-item">
-                                <strong>Note moyenne:</strong> 
-                                {% if company.average_rating %}
-                                    {{ company.average_rating|number_format(1) }}/5
-                                    <span class="text-warning">
-                                        {% for i in 1..5 %}
-                                            {% if i <= company.average_rating %}
-                                                ★
-                                            {% else %}
-                                                ☆
-                                            {% endif %}
-                                        {% endfor %}
-                                    </span>
-                                {% else %}
-                                    Pas encore évaluée
-                                {% endif %}
-                            </li>
                         </ul>
-                        
+
                         <div class="mt-3 text-center">
                             <a href="{{ path('edit_company', {'id': company.id}) }}" class="btn btn-outline-primary btn-sm">Modifier l'entreprise</a>
                         </div>
@@ -59,13 +42,9 @@
                         <h3>{{ offers|length }}</h3>
                         <p class="text-muted">Offres publiées</p>
                     </div>
-                    <div class="text-center mb-3">
+                    <div class="text-center">
                         <h3>{{ total_applications }}</h3>
                         <p class="text-muted">Candidatures totales</p>
-                    </div>
-                    <div class="text-center">
-                        <h3>{{ new_applications }}</h3>
-                        <p class="text-muted">Nouvelles candidatures</p>
                     </div>
                 </div>
             </div>

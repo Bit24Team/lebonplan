@@ -98,7 +98,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                Offres actives</div>
+                                                Offres</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.active_offers_count }}</div>
                                         </div>
                                         <div class="col-auto">
@@ -352,12 +352,11 @@
                             <h6 class="m-0 font-weight-bold text-primary">Gestion des offres</h6>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-filter mr-1"></i>Filtrer
+                                    <i class="fas fa-filter mr-1"></i>Actions
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{{ path('admin_offers', {'filter': 'all'}) }}">Toutes</a>
-                                    <a class="dropdown-item" href="{{ path('admin_offers', {'filter': 'active'}) }}">Actives</a>
-                                    <a class="dropdown-item" href="{{ path('admin_offers', {'filter': 'inactive'}) }}">Inactives</a>
+                                    <a class="dropdown-item" href="{{ path('admin_offers') }}">Toutes les offres</a>
+                                    <a class="dropdown-item" href="{{ path('add_offer_page') }}">Créer une offre</a>
                                 </div>
                             </div>
                         </div>
@@ -372,7 +371,6 @@
                                             <th>Salaire</th>
                                             <th>Date début</th>
                                             <th>Candidatures</th>
-                                            <th>Statut</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -381,17 +379,10 @@
                                         <tr>
                                             <td>{{ offer.id }}</td>
                                             <td>{{ offer.title }}</td>
-                                            <td>{{ offer.company.name }}</td>
+                                            <td>{{ offer.company_name }}</td>
                                             <td>{{ offer.salary }} €</td>
                                             <td>{{ offer.start_date|date('d/m/Y') }}</td>
                                             <td>{{ offer.applications_count }}</td>
-                                            <td>
-                                                {% if offer.status == 'active' %}
-                                                    <span class="badge badge-success">Active</span>
-                                                {% else %}
-                                                    <span class="badge badge-secondary">Inactive</span>
-                                                {% endif %}
-                                            </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     <a href="{{ path('admin_offer_show', {'id': offer.id}) }}" class="btn btn-primary" title="Voir">
@@ -400,15 +391,6 @@
                                                     <a href="{{ path('admin_offer_edit', {'id': offer.id}) }}" class="btn btn-secondary" title="Modifier">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    {% if offer.status == 'active' %}
-                                                        <a href="{{ path('admin_offer_deactivate', {'id': offer.id}) }}" class="btn btn-warning" title="Désactiver">
-                                                            <i class="fas fa-power-off"></i>
-                                                        </a>
-                                                    {% else %}
-                                                        <a href="{{ path('admin_offer_activate', {'id': offer.id}) }}" class="btn btn-success" title="Activer">
-                                                            <i class="fas fa-power-off"></i>
-                                                        </a>
-                                                    {% endif %}
                                                     <a href="{{ path('admin_offer_delete', {'id': offer.id}) }}" class="btn btn-danger" title="Supprimer" onclick="return confirm('Supprimer cette offre?')">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
