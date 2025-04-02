@@ -4,6 +4,7 @@ namespace App\Model;
 
 use PDO;
 use PDOException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ApplicationModel
 {
@@ -89,32 +90,32 @@ class ApplicationModel
         return $offer;
     }
 
-    public function uploadFile(array $file, string $targetDir): string
-    {
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
-
-        $fileName = uniqid() . '_' . basename($file['name']);
-        $targetFile = $targetDir . $fileName;
-
-        // Vérification du type de fichier
-        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        $allowedTypes = ['pdf', 'doc', 'docx', 'odt', 'rtf', 'jpeg', 'jpg', 'png'];
-        
-        if (!in_array($fileType, $allowedTypes)) {
-            throw new \Exception('Type de fichier non autorisé');
-        }
-
-        // Vérification de la taille (2Mo max)
-        if ($file['size'] > 2000000) {
-            throw new \Exception('Le fichier est trop volumineux (max 2Mo)');
-        }
-
-        if (!move_uploaded_file($file['tmp_name'], $targetFile)) {
-            throw new \Exception('Erreur lors du téléchargement du fichier');
-        }
-
-        return $fileName;
+    public function uploadFile(UploadedFile $file, string $targetDir): string
+{
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true);
     }
+
+    $fileName = uniqid() . '_' . $file->getClientOriginalName();
+    $targetFile = $targetDir . $fileName;
+
+    // Vérification du type de fichier
+    $fileType = strtolower($file->getClientOriginalExtension());
+    $allowedTypes = ['pdf', 'doc', 'docx', 'odt', 'rtf', 'jpeg', 'jpg', 'png'];
+    
+    if (!in_array($fileType, $allowedTypes)) {
+        throw new \Exception('Type de fichier non autorisé');
+    }
+
+    // Vérification de la taille (2Mo max)
+    if ($file->getSize() > 2000000) {
+        throw new \Exception('Le fichier est trop volumineux (max 2Mo)');
+    }
+
+    if (!$file->move($targetDir, $fileName)) {
+        throw new \Exception('Erreur lors du téléchargement du fichier');
+    }
+
+    return $fileName;
+}
 }

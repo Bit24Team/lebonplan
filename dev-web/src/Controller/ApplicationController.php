@@ -52,55 +52,56 @@ class ApplicationController extends AbstractController
     }
 
     #[Route('/offre/{offer_id}/postuler', name: 'submit_application', methods: ['POST'])]
-    public function submitApplication(int $offer_id, Request $request, SessionInterface $session): Response
-    {
-        $offer = $this->model->getOfferDetails($offer_id);
-        
-        if (!$offer) {
-            throw $this->createNotFoundException('Offre non trouvée');
-        }
-
-        $user = $this->getUserFromSession($session); // À adapter selon votre système d'authentification
-
-        if (!$user) {
-            return $this->redirectToRoute('login_page');
-        }
-
-        if ($this->model->hasAlreadyApplied($offer_id, $user['id'])) {
-            $this->addFlash('warning', 'Vous avez déjà postulé à cette offre');
-            return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
-        }
-
-        try {
-            // Gestion des fichiers uploadés
-            $cvFile = $request->files->get('cv');
-            $motivationFile = $request->files->get('motivation_letter');
-
-            if (!$cvFile || !$motivationFile) {
-                throw new \Exception('Veuillez fournir un CV et une lettre de motivation');
-            }
-
-            $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/';
-            
-            $cvPath = $this->model->uploadFile($cvFile, $uploadDir);
-            $motivationPath = $this->model->uploadFile($motivationFile, $uploadDir);
-
-            // Création de la candidature
-            $this->model->createApplication(
-                $offer_id,
-                $user['id'],
-                $cvPath,
-                $motivationPath
-            );
-
-            $this->addFlash('success', 'Votre candidature a bien été envoyée !');
-            return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
-
-        } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-            return $this->redirectToRoute('apply_offer', ['offer_id' => $offer_id]);
-        }
+public function submitApplication(int $offer_id, Request $request, SessionInterface $session): Response
+{
+    $offer = $this->model->getOfferDetails($offer_id);
+    
+    if (!$offer) {
+        throw $this->createNotFoundException('Offre non trouvée');
     }
+
+    $user = $this->getUserFromSession($session);
+
+    if (!$user) {
+        return $this->redirectToRoute('login_page');
+    }
+
+    if ($this->model->hasAlreadyApplied($offer_id, $user['id'])) {
+        $this->addFlash('warning', 'Vous avez déjà postulé à cette offre');
+        return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
+    }
+
+    try {
+        // Gestion des fichiers uploadés
+        $cvFile = $request->files->get('cv');
+        $motivationFile = $request->files->get('motivation_letter');
+
+        if (!$cvFile || !$motivationFile) {
+            throw new \Exception('Veuillez fournir un CV et une lettre de motivation');
+        }
+
+        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/';
+        
+        // Plus besoin de convertir en tableau, on passe directement l'objet UploadedFile
+        $cvPath = $this->model->uploadFile($cvFile, $uploadDir);
+        $motivationPath = $this->model->uploadFile($motivationFile, $uploadDir);
+
+        // Création de la candidature
+        $this->model->createApplication(
+            $offer_id,
+            $user['id'],
+            $cvPath,
+            $motivationPath
+        );
+
+        $this->addFlash('success', 'Votre candidature a bien été envoyée !');
+        return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
+
+    } catch (\Exception $e) {
+        $this->addFlash('error', $e->getMessage());
+        return $this->redirectToRoute('apply_offer', ['offer_id' => $offer_id]);
+    }
+}
 
     private function getUserFromSession(SessionInterface $session): ?array
     {
