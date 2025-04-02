@@ -64,7 +64,6 @@ class OfferController extends AbstractController
         $start_date = strtotime($data["startDate"]);
         $end_date = strtotime($data["endDate"]);
         $duration = $end_date - $start_date;
-        $skills = explode(",", $skills);
         $this->model->create_offer(
             $manager_id,
             $skills,
