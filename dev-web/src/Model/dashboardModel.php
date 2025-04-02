@@ -333,8 +333,8 @@ class DashboardModel
     public function getUserData(int $userId): array
     {
         $data = [];
-        
-        // Compétences de l'utilisateur
+
+        // Récupérer les compétences
         $stmt = $this->pdo->prepare("
             SELECT s.id, s.name 
             FROM UserSkill us
@@ -343,8 +343,8 @@ class DashboardModel
         ");
         $stmt->execute([':user_id' => $userId]);
         $data['user_skills'] = $stmt->fetchAll();
-        
-        // Candidatures de l'utilisateur (exclure wishlist)
+
+        // Candidatures
         $stmt = $this->pdo->prepare("
             SELECT 
                 a.*,
@@ -361,8 +361,8 @@ class DashboardModel
         ");
         $stmt->execute([':user_id' => $userId]);
         $data['applications'] = $stmt->fetchAll();
-        
-        // Wishlist de l'utilisateur (status = wishlist)
+
+        // Wishlist
         $stmt = $this->pdo->prepare("
             SELECT 
                 a.*,
@@ -380,7 +380,15 @@ class DashboardModel
         ");
         $stmt->execute([':user_id' => $userId]);
         $data['wishlist'] = $stmt->fetchAll();
-        
+
         return $data;
+    }
+    public function getUserFullData(int $userId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM Users WHERE id = :id
+        ");
+        $stmt->execute([':id' => $userId]);
+        return $stmt->fetch() ?: [];
     }
 }

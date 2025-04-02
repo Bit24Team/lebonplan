@@ -163,18 +163,20 @@ class DashboardController extends AbstractController
     #[Route('/user', name: 'user_dashboard')]
     public function userDashboard(SessionInterface $session): Response
     {
-        $user = $session->get('user');
-        if (!$user) {
+        $userSession = $session->get('user');
+        if (!$userSession) {
             return $this->redirectToRoute('login_page');
         }
 
-        $data = $this->model->getUserData($user['id']);
+        // Récupération des données via le modèle
+        $userData = $this->model->getUserFullData($userSession['id']);
+        $dashboardData = $this->model->getUserData($userSession['id']);
 
         return $this->render('user.twig', [
-            'user' => $user,
-            'user_skills' => $data['user_skills'],
-            'applications' => $data['applications'],
-            'wishlist' => $data['wishlist']
+            'user' => array_merge($userSession, $userData), // Fusion des données de session et de la BDD
+            'user_skills' => $dashboardData['user_skills'],
+            'applications' => $dashboardData['applications'],
+            'wishlist' => $dashboardData['wishlist']
         ]);
     }
 }

@@ -10,15 +10,18 @@
             <div class="text-center mb-3">
                 <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar" class="rounded-circle" width="100">
             </div>
-            <h4 class="text-center">{{ user.first_name }} {{ user.last_name }}</h4>
-            <p class="text-muted text-center">{{ user.email }}</p>
+            <h4 class="text-center">
+                {{ user.first_name is defined ? user.first_name : '' }} 
+                {{ user.last_name is defined ? user.last_name : '' }}
+            </h4>
+            <p class="text-muted text-center">{{ user.email is defined ? user.email : '' }}</p>
             
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <strong>Téléphone:</strong> {{ user.phone ?? 'Non renseigné' }}
+                    <strong>Téléphone:</strong> {{ user.phone is defined ? user.phone : 'Non renseigné' }}
                 </li>
                 <li class="list-group-item">
-                    <strong>Groupe:</strong> {{ user.groupe ?? 'Non renseigné' }}
+                    <strong>Groupe:</strong> {{ user.groupe is defined ? user.groupe : 'Non renseigné' }}
                 </li>
             </ul>
         </div>
