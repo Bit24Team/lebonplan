@@ -36,10 +36,12 @@ class CompanyModel
         int $page = 1,
         int $perPage = 10
     ): array {
-        $sql = "SELECT Companies.* FROM Companies 
+        $sql = "SELECT Companies.*, AVG(Evaluations.amount) as average_rating 
+                FROM Companies 
                 LEFT JOIN Evaluations ON Companies.id = Evaluations.to_company 
                 WHERE 1=1";
-        $countSql = "SELECT COUNT(*) as total FROM Companies 
+        $countSql = "SELECT COUNT(DISTINCT Companies.id) as total 
+                     FROM Companies 
                      LEFT JOIN Evaluations ON Companies.id = Evaluations.to_company 
                      WHERE 1=1";
         $params = [];
@@ -65,10 +67,13 @@ class CompanyModel
             $params[':company_phone'] = '%' . $company_phone . '%';
         }
         if ($company_rating !== null) {
-            $sql .= " AND Evaluations.amount = :company_rating";
-            $countSql .= " AND Evaluations.amount = :company_rating";
+            $sql .= " AND (Evaluations.amount >= :company_rating OR Evaluations.amount IS NULL)";
+            $countSql .= " AND (Evaluations.amount >= :company_rating OR Evaluations.amount IS NULL)";
             $params[':company_rating'] = $company_rating;
         }
+    
+        // Group by company
+        $sql .= " GROUP BY Companies.id";
     
         // Ajout de la pagination
         $offset = ($page - 1) * $perPage;
