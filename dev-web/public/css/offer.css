@@ -299,6 +299,29 @@ body
     opacity: 0;
 }
 
+.banniere{
+    width: 100%;
+    background-color: #7494ec;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 5rem;
+    padding-top: 8rem;
+    margin-bottom: 3rem;
+}
+
+.banniere h1{
+    font-size: 5rem;
+}
+
+.li_banniere{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
 
 @media screen and (max-width : 1375px) {
     .resum_block{
