@@ -333,8 +333,8 @@ class DashboardModel
     public function getUserData(int $userId): array
     {
         $data = [];
-
-        // Récupérer les compétences
+        
+        // Compétences de l'utilisateur
         $stmt = $this->pdo->prepare("
             SELECT s.id, s.name 
             FROM UserSkill us
@@ -343,8 +343,8 @@ class DashboardModel
         ");
         $stmt->execute([':user_id' => $userId]);
         $data['user_skills'] = $stmt->fetchAll();
-
-        // Candidatures
+        
+        // Candidatures de l'utilisateur (exclure wishlist)
         $stmt = $this->pdo->prepare("
             SELECT 
                 a.*,
@@ -361,8 +361,8 @@ class DashboardModel
         ");
         $stmt->execute([':user_id' => $userId]);
         $data['applications'] = $stmt->fetchAll();
-
-        // Wishlist
+        
+        // Wishlist de l'utilisateur (status = wishlist)
         $stmt = $this->pdo->prepare("
             SELECT 
                 a.*,
@@ -380,63 +380,7 @@ class DashboardModel
         ");
         $stmt->execute([':user_id' => $userId]);
         $data['wishlist'] = $stmt->fetchAll();
-
-        return $data;
-    }
-    public function getUserById(int $userId): array
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT id, first_name, last_name, email, phone, groupe, permission 
-            FROM Users 
-            WHERE id = :id
-        ");
-        $stmt->execute([':id' => $userId]);
-        return $stmt->fetch() ?: [];
-    }
-    
-    public function getCompleteUserData(int $userId): array
-    {
-        $user = $this->getUserById($userId);
         
-        if (empty($user)) {
-            return [];
-        }
-    
-        return [
-            'user' => $user,
-            'skills' => $this->getUserSkills($userId),
-            'applications' => $this->getUserApplications($userId),
-            'wishlist' => $this->getUserWishlist($userId)
-        ];
-    }
-    
-    private function getUserSkills(int $userId): array
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT s.id, s.name 
-            FROM UserSkill us
-            JOIN Skills s ON us.id_skill = s.id
-            WHERE us.id_user = :user_id
-        ");
-        $stmt->execute([':user_id' => $userId]);
-        return $stmt->fetchAll();
-    }
-    
-    private function getUserApplications(int $userId): array
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT /* requête existante pour les applications */
-        ");
-        $stmt->execute([':user_id' => $userId]);
-        return $stmt->fetchAll();
-    }
-    
-    private function getUserWishlist(int $userId): array
-    {
-        $stmt = $this->pdo->prepare("
-            SELECT /* requête existante pour la wishlist */
-        ");
-        $stmt->execute([':user_id' => $userId]);
-        return $stmt->fetchAll();
+        return $data;
     }
 }

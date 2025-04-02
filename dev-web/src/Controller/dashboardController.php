@@ -100,7 +100,7 @@ class DashboardController extends AbstractController
         $filter = $request->query->get('filter', 'all');
         $applications = $this->model->getAllApplications($filter);
 
-        return $this->render('account/admin.twig', [
+        return $this->render('admin.twig', [
             'active_tab' => 'applications',
             'applications' => $applications,
             'filter' => $filter
@@ -117,7 +117,7 @@ class DashboardController extends AbstractController
 
         $settings = $this->model->getSiteSettings();
 
-        return $this->render('account/admin.twig', [
+        return $this->render('admin.twig', [
             'active_tab' => 'settings',
             'settings' => $settings
         ]);
@@ -151,7 +151,7 @@ class DashboardController extends AbstractController
 
         $data = $this->model->getManagerData($user['id']);
 
-        return $this->render('account/company.twig', [
+        return $this->render('company.twig', [
             'company' => $data['company'] ?? null,
             'offers' => $data['offers'] ?? [],
             'total_applications' => $data['total_applications'] ?? 0,
@@ -163,22 +163,16 @@ class DashboardController extends AbstractController
     #[Route('/user', name: 'user_dashboard')]
     public function userDashboard(SessionInterface $session): Response
     {
-        $userSession = $session->get('user');
-        if (!$userSession) {
+        $user = $session->get('user');
+        if (!$user) {
             return $this->redirectToRoute('login_page');
         }
 
-        $data = $this->model->getCompleteUserData($userSession['id']);
+        $data = $this->model->getUserData($user['id']);
 
-        if (empty($data)) {
-            // Gérer le cas où l'utilisateur n'existe pas
-            $session->remove('user');
-            return $this->redirectToRoute('login_page');
-        }
-
-        return $this->render('account/user.twig', [
-            'user' => $data['user'],
-            'user_skills' => $data['skills'],
+        return $this->render('user.twig', [
+            'user' => $user,
+            'user_skills' => $data['user_skills'],
             'applications' => $data['applications'],
             'wishlist' => $data['wishlist']
         ]);
