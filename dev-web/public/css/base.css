@@ -262,26 +262,26 @@ nav li:first-child {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  font-size: 2.2rem;
-  padding: 1.2rem 5rem;
+  font-size: 1.36rem;
+  padding: 0.75rem 3.1rem;
   text-align: center;
   z-index: 998;
 }
 
 .cookies h5{
   color: white;
-  font-size: 1.4rem;
+  font-size: 0.87rem;
   text-decoration: underline;
   cursor: pointer;
 }
 
 .cookies button{
-  margin: 0.5rem;
+  margin: 0.3rem;
   cursor: pointer;
   color: white;
-  border-radius: 0.5rem;
-  padding: 1rem 3rem;
-  font-size: 1.8rem;
+  border-radius: 0.3rem;
+  padding: 0.62rem 1.86rem;
+  font-size: 1.1rem;
   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
 
@@ -314,35 +314,35 @@ nav li:first-child {
   z-index: 999;
   position: fixed;
   flex-direction: column;
-  border-radius: 1rem;
+  border-radius: 0.62rem;
   
 }
 
 .cookies_explain ul{
-  padding-left: 4rem;
+  padding-left: 2.5rem;
 }
 
 .cookies_explain p{
-  padding: 1rem;
+  padding: 0.62rem;
 }
 
 .cookies_text{
   overflow-y: auto; /* permet le défilement du texte */
   padding: 20px;
   max-height: 80vh;
-  padding: 5rem;
+  padding: 3.1rem;
 }
 
 .cookie_text_block{
-  margin-bottom: 3rem;
+  margin-bottom: 1.86rem;
 }
 
 .cookies_banniere{
   width: 100%;
-  height: 5rem;
+  height: 3.1rem;
   background-color: #000c2e;
   color: white;
-  padding: 5rem;
+  padding: 3.1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -350,7 +350,7 @@ nav li:first-child {
 
 .fa-solid.fa-xmark.cookies_croix{
   color: white;
-  font-size: 3rem;
+  font-size: 1.86rem;
   cursor: pointer;
 }
 
@@ -358,5 +358,5 @@ nav li:first-child {
   width: 70%;
   height: 3px;
   background-color: #7494ec;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
 }
