@@ -39,12 +39,13 @@ class OffersModel
         return $result ? $result['id'] : 0;
     }
     public function get_id_company($id_manager):int{
-        $sql = 'SELECT id from Companies where id=:id_manager';
+        $sql = 'SELECT id FROM Companies WHERE id_manager = :id_manager';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':id_manager'=> $id_manager,
         ]);
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+        return $result ? $result['id'] : 0;
     }
     
     public function get_id_skill($name): int
