@@ -109,7 +109,6 @@
                                                 <th>Date début</th>
                                                 <th>Salaire</th>
                                                 <th>Candidatures</th>
-                                                <th>Statut</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -129,23 +128,12 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span class="badge 
-                                                            {% if offer.status == 'active' %}badge-success
-                                                            {% elseif offer.status == 'inactive' %}badge-secondary
-                                                            {% else %}badge-warning{% endif %}">
-                                                            {{ offer.status }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
                                                         <div class="btn-group btn-group-sm" role="group">
                                                             <a href="{{ path('offer_show', {'id': offer.id}) }}" class="btn btn-outline-primary" title="Voir">
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
                                                             <a href="{{ path('edit_offer', {'id': offer.id}) }}" class="btn btn-outline-secondary" title="Modifier">
                                                                 <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="{{ path('toggle_offer_status', {'id': offer.id}) }}" class="btn btn-outline-{{ offer.status == 'active' ? 'warning' : 'success' }}" title="{{ offer.status == 'active' ? 'Désactiver' : 'Activer' }}">
-                                                                <i class="fas fa-power-off"></i>
                                                             </a>
                                                             <a href="{{ path('delete_offer', {'id': offer.id}) }}" class="btn btn-outline-danger" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette offre?')">
                                                                 <i class="fas fa-trash"></i>
@@ -180,9 +168,6 @@
                                                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ offer.id }}" aria-expanded="true" aria-controls="collapse{{ offer.id }}">
                                                         {{ offer.title }} 
                                                         <span class="badge badge-primary">{{ offer.applications|length }}</span>
-                                                        {% if offer.new_applications > 0 %}
-                                                            <span class="badge badge-danger">+{{ offer.new_applications }} nouvelles</span>
-                                                        {% endif %}
                                                     </button>
                                                 </h5>
                                             </div>
@@ -204,7 +189,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     {% for application in offer.applications %}
-                                                                        <tr class="{% if application.is_new %}table-info{% endif %}">
+                                                                        <tr>
                                                                             <td>
                                                                                 {{ application.candidate.first_name }} {{ application.candidate.last_name }}
                                                                                 <br>

@@ -27,35 +27,85 @@ class CompanyModel
         }
     }
  
-    public function researchcompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
-    {
-        $sql = "SELECT id FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
+    public function researchCompaniesPaginated(
+        ?string $company_name, 
+        ?string $company_desc, 
+        ?string $company_email, 
+        ?string $company_phone, 
+        ?int $company_rating,
+        int $page = 1,
+        int $perPage = 10
+    ): array {
+        $sql = "SELECT Companies.*, AVG(Evaluations.amount) as average_rating 
+                FROM Companies 
+                LEFT JOIN Evaluations ON Companies.id = Evaluations.to_company 
+                WHERE 1=1";
+        $countSql = "SELECT COUNT(DISTINCT Companies.id) as total 
+                     FROM Companies 
+                     LEFT JOIN Evaluations ON Companies.id = Evaluations.to_company 
+                     WHERE 1=1";
         $params = [];
-
+    
         if ($company_name !== null) {
-            $sql .= " AND Companies.name = :company_name";
-            $params[':company_name'] = $company_name;
+            $sql .= " AND Companies.name LIKE :company_name";
+            $countSql .= " AND Companies.name LIKE :company_name";
+            $params[':company_name'] = '%' . $company_name . '%';
         }
         if ($company_desc !== null) {
-            $sql .= " AND Companies.description = :company_desc";
-            $params[':company_desc'] = $company_desc;
+            $sql .= " AND Companies.description LIKE :company_desc";
+            $countSql .= " AND Companies.description LIKE :company_desc";
+            $params[':company_desc'] = '%' . $company_desc . '%';
         }
         if ($company_email !== null) {
-            $sql .= " AND Companies.contact_mail = :company_email";
-            $params[':company_email'] = $company_email;
+            $sql .= " AND Companies.contact_mail LIKE :company_email";
+            $countSql .= " AND Companies.contact_mail LIKE :company_email";
+            $params[':company_email'] = '%' . $company_email . '%';
         }
         if ($company_phone !== null) {
-            $sql .= " AND Companies.contact_phone = :company_phone";
-            $params[':company_phone'] = $company_phone;
+            $sql .= " AND Companies.contact_phone LIKE :company_phone";
+            $countSql .= " AND Companies.contact_phone LIKE :company_phone";
+            $params[':company_phone'] = '%' . $company_phone . '%';
         }
         if ($company_rating !== null) {
-            $sql .= " AND Evaluations.amount = :company_rating";
+            $sql .= " AND (Evaluations.amount >= :company_rating OR Evaluations.amount IS NULL)";
+            $countSql .= " AND (Evaluations.amount >= :company_rating OR Evaluations.amount IS NULL)";
             $params[':company_rating'] = $company_rating;
         }
-
+    
+        // Group by company
+        $sql .= " GROUP BY Companies.id";
+    
+        // Ajout de la pagination
+        $offset = ($page - 1) * $perPage;
+        $sql .= " LIMIT :offset, :perPage";
+        $params[':offset'] = $offset;
+        $params[':perPage'] = $perPage;
+    
+        // Exécution de la requête principale
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll();
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+        }
+        $stmt->execute();
+        $companies = $stmt->fetchAll();
+    
+        // Exécution de la requête de comptage
+        $stmtCount = $this->pdo->prepare($countSql);
+        foreach ($params as $key => $value) {
+            if ($key !== ':offset' && $key !== ':perPage') {
+                $stmtCount->bindValue($key, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+            }
+        }
+        $stmtCount->execute();
+        $total = $stmtCount->fetch()['total'];
+    
+        return [
+            'companies' => $companies,
+            'total' => $total,
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total_pages' => ceil($total / $perPage)
+        ];
     }
 
     function newcompany($idmanager,$name, $description, $contact_mail, $contact_phone) {
@@ -154,7 +204,7 @@ class CompanyModel
         ]);
     }
 
-
+    
 
         
 

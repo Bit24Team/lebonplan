@@ -1,0 +1,199 @@
+{% extends 'base.twig' %}
+
+{% block title %}Recherche d'entreprises{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <h1>Recherche d'entreprises</h1>
+    
+    <form method="get" action="{{ path('companies') }}" class="search-form">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="company_name">Nom</label>
+                <input type="text" id="company_name" name="company_name" 
+                       value="{{ search_params.company_name ?? '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="company_desc">Description</label>
+                <input type="text" id="company_desc" name="company_desc" 
+                       value="{{ search_params.company_desc ?? '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="company_email">Email</label>
+                <input type="email" id="company_email" name="company_email" 
+                       value="{{ search_params.company_email ?? '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="company_phone">Téléphone</label>
+                <input type="text" id="company_phone" name="company_phone" 
+                       value="{{ search_params.company_phone ?? '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="company_rating">Note minimale</label>
+                <input type="number" id="company_rating" name="company_rating" min="1" max="5" 
+                       value="{{ search_params.company_rating ?? '' }}">
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <a href="{{ path('companies') }}" class="btn btn-secondary">Réinitialiser</a>
+        </div>
+    </form>
+    
+    <div class="results">
+        {% if companies|length > 0 %}
+            <div class="company-list">
+                {% for company in companies %}
+                    <div class="company-card">
+                        <h2><a href="{{ path('company', {'company_id': company.id}) }}">{{ company.name }}</a></h2>
+                        <p>{{ company.description|slice(0, 150) }}...</p>
+                        <div class="company-meta">
+                            <span>Email: {{ company.contact_mail }}</span>
+                            <span>Téléphone: {{ company.contact_phone }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="pagination">
+                {% if pagination.current_page > 1 %}
+                    <a href="{{ path('companies', {page: 1, ...search_params}) }}">« Première</a>
+                    <a href="{{ path('companies', {page: pagination.current_page - 1, ...search_params}) }}">‹ Précédente</a>
+                {% endif %}
+                
+                <span>Page {{ pagination.current_page }} sur {{ pagination.total_pages }}</span>
+                
+                {% if pagination.current_page < pagination.total_pages %}
+                    <a href="{{ path('companies', {page: pagination.current_page + 1, ...search_params}) }}">Suivante ›</a>
+                    <a href="{{ path('companies', {page: pagination.total_pages, ...search_params}) }}">Dernière »</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <p class="no-results">Aucune entreprise trouvée.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.search-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.search-form {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #0066cc;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.company-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.company-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.company-card h2 {
+    margin-top: 0;
+    color: #0066cc;
+}
+
+.company-meta {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 30px;
+    padding: 15px 0;
+}
+
+.pagination a {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #0066cc;
+}
+
+.pagination a:hover {
+    background: #f5f5f5;
+}
+
+.no-results {
+    text-align: center;
+    padding: 30px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+</style>
+{% endblock %}
