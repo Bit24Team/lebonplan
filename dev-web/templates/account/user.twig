@@ -10,26 +10,39 @@
                     <div class="text-center mb-3">
                         <img src="{{ asset('images/default-avatar.png') }}" alt="Avatar" class="rounded-circle" width="100">
                     </div>
-                    <h4 class="text-center">{{ user.first_name }} {{ user.last_name }}</h4>
-                    <p class="text-muted text-center">{{ user.email }}</p>
                     
-                    <ul class="list-group list-group-flush">
+                    <h4 class="text-center">
+                        {{ user.first_name ?? '' }} {{ user.last_name ?? '' }}
+                    </h4>
+                    
+                    <p class="text-muted text-center">{{ user.email ?? '' }}</p>
+                    
+                    <ul class="list-group list-group-flush mt-3">
+                        {% if user.phone is defined and user.phone %}
                         <li class="list-group-item">
-                            <strong>Téléphone:</strong> {{ user.phone ?? 'Non renseigné' }}
+                            <strong>Téléphone:</strong> {{ user.phone }}
                         </li>
+                        {% endif %}
+                        
+                        {% if user.groupe is defined and user.groupe %}
                         <li class="list-group-item">
-                            <strong>Groupe:</strong> {{ user.groupe ?? 'Non renseigné' }}
+                            <strong>Groupe:</strong> {{ user.groupe }}
                         </li>
+                        {% endif %}
                     </ul>
                     
                     <div class="mt-3 text-center">
-                        <a href="{{ path('edit_profile') }}" class="btn btn-outline-primary btn-sm">Modifier mon profil</a>
-                        <a href="{{ path('change_password') }}" class="btn btn-outline-secondary btn-sm mt-2">Changer mon mot de passe</a>
+                        <a href="{{ path('edit_profile') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-edit"></i> Modifier mon profil
+                        </a>
+                        <a href="{{ path('change_password') }}" class="btn btn-outline-secondary btn-sm mt-2">
+                            <i class="fas fa-lock"></i> Changer mon mot de passe
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Compétences utilisateur -->
+            <!-- Compétences -->
             <div class="card mb-4">
                 <div class="card-header bg-info text-white">
                     <h5>Mes Compétences</h5>
@@ -40,16 +53,12 @@
                             {% for skill in user_skills %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     {{ skill.name }}
-                                    <a href="{{ path('remove_skill', {'id': skill.id}) }}" class="badge badge-danger badge-pill">×</a>
                                 </li>
                             {% endfor %}
                         </ul>
                     {% else %}
                         <p class="text-muted">Aucune compétence enregistrée</p>
                     {% endif %}
-                    <div class="mt-3">
-                        <a href="{{ path('add_skill') }}" class="btn btn-outline-info btn-sm">Ajouter une compétence</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -58,10 +67,14 @@
             <!-- Onglets -->
             <ul class="nav nav-tabs" id="accountTabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="applications-tab" data-toggle="tab" href="#applications" role="tab">Mes Candidatures</a>
+                    <a class="nav-link active" id="applications-tab" data-toggle="tab" href="#applications" role="tab">
+                        Mes Candidatures
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="wishlist-tab" data-toggle="tab" href="#wishlist" role="tab">Ma Wishlist</a>
+                    <a class="nav-link" id="wishlist-tab" data-toggle="tab" href="#wishlist" role="tab">
+                        Ma Wishlist
+                    </a>
                 </li>
             </ul>
 
@@ -69,7 +82,7 @@
             <div class="tab-content" id="accountTabsContent">
                 <!-- Onglet Candidatures -->
                 <div class="tab-pane fade show active" id="applications" role="tabpanel">
-                    <div class="card">
+                    <div class="card mt-3">
                         <div class="card-body">
                             {% if applications is not empty %}
                                 <div class="table-responsive">
@@ -80,35 +93,35 @@
                                                 <th>Entreprise</th>
                                                 <th>Date</th>
                                                 <th>Statut</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for application in applications %}
+                                            {% for app in applications %}
                                                 <tr>
                                                     <td>
-                                                        <a href="{{ path('offer_show', {'id': application.offer.id}) }}">
-                                                            {{ application.offer.title }}
-                                                        </a>
-                                                    </td>
-                                                    <td>{{ application.offer.company.name }}</td>
-                                                    <td>{{ application.application_date|date('d/m/Y') }}</td>
-                                                    <td>
-                                                        <span class="badge 
-                                                            {% if application.status == 'accepté' %}badge-success
-                                                            {% elseif application.status == 'refusé' %}badge-danger
-                                                            {% elseif application.status == 'en attente' %}badge-warning
-                                                            {% else %}badge-secondary{% endif %}">
-                                                            {{ application.status }}
-                                                        </span>
+                                                        {% if app.offer_title is defined %}
+                                                            {{ app.offer_title }}
+                                                        {% endif %}
                                                     </td>
                                                     <td>
-                                                        <a href="{{ path('application_show', {'id': application.id}) }}" class="btn btn-sm btn-outline-primary" title="Voir">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <a href="{{ path('application_edit', {'id': application.id}) }}" class="btn btn-sm btn-outline-secondary" title="Modifier">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
+                                                        {% if app.company_name is defined %}
+                                                            {{ app.company_name }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if app.application_date is defined %}
+                                                            {{ app.application_date|date('d/m/Y') }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if app.status is defined %}
+                                                            <span class="badge 
+                                                                {% if app.status == 'accepté' %}badge-success
+                                                                {% elseif app.status == 'refusé' %}badge-danger
+                                                                {% else %}badge-warning{% endif %}">
+                                                                {{ app.status }}
+                                                            </span>
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -117,9 +130,8 @@
                                 </div>
                             {% else %}
                                 <div class="alert alert-info">
-                                    Vous n'avez postulé à aucune offre pour le moment.
+                                    Vous n'avez postulé à aucune offre.
                                 </div>
-                                <a href="{{ path('offer_index') }}" class="btn btn-primary">Voir les offres disponibles</a>
                             {% endif %}
                         </div>
                     </div>
@@ -127,46 +139,36 @@
 
                 <!-- Onglet Wishlist -->
                 <div class="tab-pane fade" id="wishlist" role="tabpanel">
-                    <div class="card">
+                    <div class="card mt-3">
                         <div class="card-body">
                             {% if wishlist is not empty %}
                                 <div class="row">
-                                    {% for application in wishlist %}
-                                        <div class="col-md-6 mb-4">
+                                    {% for item in wishlist %}
+                                        <div class="col-md-6 mb-3">
                                             <div class="card h-100">
                                                 <div class="card-body">
                                                     <h5 class="card-title">
-                                                        <a href="{{ path('offer_show', {'id': application.offer.id}) }}">
-                                                            {{ application.offer.title }}
-                                                        </a>
+                                                        {% if item.offer_title is defined %}
+                                                            {{ item.offer_title }}
+                                                        {% endif %}
                                                     </h5>
                                                     <h6 class="card-subtitle mb-2 text-muted">
-                                                        {{ application.offer.company.name }}
+                                                        {% if item.company_name is defined %}
+                                                            {{ item.company_name }}
+                                                        {% endif %}
                                                     </h6>
+                                                    {% if item.start_date is defined or item.salary is defined %}
                                                     <p class="card-text">
                                                         <small class="text-muted">
-                                                            Salaire: {{ application.offer.salary }} €
-                                                            | Début: {{ application.offer.start_date|date('d/m/Y') }}
+                                                            {% if item.salary is defined %}
+                                                                Salaire: {{ item.salary }} €
+                                                            {% endif %}
+                                                            {% if item.start_date is defined %}
+                                                                | Début: {{ item.start_date|date('d/m/Y') }}
+                                                            {% endif %}
                                                         </small>
                                                     </p>
-                                                    <p class="card-text">
-                                                        {{ application.offer.description|slice(0, 100) }}...
-                                                    </p>
-                                                </div>
-                                                <div class="card-footer bg-transparent">
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="badge badge-info">
-                                                            {{ application.application_date|date('d/m/Y') }}
-                                                        </span>
-                                                        <div>
-                                                            <a href="{{ path('apply_offer', {'id': application.offer.id}) }}" class="btn btn-sm btn-success">
-                                                                Postuler maintenant
-                                                            </a>
-                                                            <a href="{{ path('remove_from_wishlist', {'id': application.id}) }}" class="btn btn-sm btn-outline-danger">
-                                                                <i class="fas fa-trash"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -174,9 +176,8 @@
                                 </div>
                             {% else %}
                                 <div class="alert alert-info">
-                                    Votre wishlist est vide. Ajoutez des offres à votre wishlist pour les consulter plus tard.
+                                    Votre wishlist est vide.
                                 </div>
-                                <a href="{{ path('offer_index') }}" class="btn btn-primary">Parcourir les offres</a>
                             {% endif %}
                         </div>
                     </div>

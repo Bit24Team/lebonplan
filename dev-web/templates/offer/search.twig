@@ -4,14 +4,16 @@
 
 {% block content %}
 <div class="offers-container">
-    <h1>Liste des Offres</h1>
+    <h1>Découvrez nos offres d'emploi</h1>
     
+    {% if offers|length > 0 %}
     <div class="offers-list">
         {% for offer in offers %}
         <div class="offer-card">
             <h2>{{ offer.title }}</h2>
-            <p class="company">{{ offer.company }}</p>
-            <p class="description">{{ offer.description|slice(0, 150) }}...</p>
+            <span class="company">{{ offer.company }}</span>
+            
+            <p class="description">{{ offer.description|slice(0, 150) }}{% if offer.description|length > 150 %}...{% endif %}</p>
             
             <div class="skills">
                 {% for skill in offer.skills|split(',') %}
@@ -22,24 +24,21 @@
             <div class="offer-details">
                 <span>Salaire: {{ offer.salary }} €</span>
                 <span>Début: {{ offer.start_date|date('d/m/Y') }}</span>
-                <span>Durée: {{ offer.duration }} jours</span>
-                <span>Candidats: {{ offer.applicants }}</span>
+                <span>Durée: {{ (offer.duration / (60 * 60 * 24))|round(0) }} jours</span>
+                <span>{{ offer.applicants }} candidat(s)</span>
             </div>
             
-            <a href="{{ path('offer', {'offer_id': offer.offer_id}) }}" class="view-button">Voir l'offre</a>
+            <a href="{{ path('apply_offer', {'offer_id': offer.offer_id}) }}" class="view-button">Voir l'offre</a>
         </div>
-        {% else %}
-        <p>Aucune offre disponible pour le moment.</p>
         {% endfor %}
     </div>
     
-    {% if total_pages > 1 %}
     <div class="pagination">
         {% if current_page > 1 %}
             <a href="{{ path('offers', {'page': current_page - 1}) }}" class="page-link">&laquo; Précédent</a>
         {% endif %}
         
-        {% for i in 1..total_pages %}
+        {% for i in range(1, total_pages) %}
             {% if i == current_page %}
                 <span class="current-page">{{ i }}</span>
             {% else %}
@@ -50,6 +49,10 @@
         {% if current_page < total_pages %}
             <a href="{{ path('offers', {'page': current_page + 1}) }}" class="page-link">Suivant &raquo;</a>
         {% endif %}
+    </div>
+    {% else %}
+    <div class="no-offers">
+        <p>Aucune offre disponible pour le moment. Revenez plus tard !</p>
     </div>
     {% endif %}
 </div>

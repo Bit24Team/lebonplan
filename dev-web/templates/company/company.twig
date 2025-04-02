@@ -1,0 +1,118 @@
+{% extends 'base.twig' %}
+{% block title %}{{ company.name }}{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/css/company.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+{% endblock %}   
+{% block content %}
+<div class="banniere">
+    <i class="fa-solid fa-building logo"></i>
+    <h1>{{ company.name }}</h1>
+    <span class="note">
+        {% if company.average_rating %}
+            {{ "%.1f"|format(company.average_rating) }}
+        {% else %}
+            Pas encore noté
+        {% endif %}
+        <i class="fa-solid fa-star"></i>
+        {% if user %}
+            <button class="btn_noter" id="btn_noter">Noter l'entreprise</button>
+        {% endif %}
+    </span>
+    <span class="li_banniere">
+        <span>
+            <i class="fa-solid fa-phone"></i>
+            {{ company.contact_phone }}
+        </span>
+        <span>
+            <i class="fa-solid fa-envelope"></i>
+            {{ company.contact_mail }}
+        </span>
+    </span>
+</div>
+
+{% if user %}
+<div class="block_notation" id="rating_block" style="display: none;">
+    <div class="notation">
+        <i class="fa-solid fa-xmark croix" id="croix"></i>
+        <span class="star">
+            {% for i in 1..5 %}
+                <i data-value="{{ i }}" class="fa-{{ user_rating >= i ? 'solid' : 'regular' }} fa-star star-rating" id="star{{ i }}"></i>
+            {% endfor %}
+        </span>
+        <div class="btn_star">
+            <form id="rating_form" action="{{ path('rate_company', {'company_id': company.id}) }}" method="POST">
+                <input type="hidden" name="rating" id="rating_value">
+                <button type="submit" id="btn_send">ENVOYER</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container_entreprise">
+    <div class="block_entreprise">
+        <h2>A propos de nous</h2>
+        <div class="limite_bleu"></div>
+        <p>{{ company.description }}</p>
+    </div>
+    <div class="block_entreprise">
+        <h2>Nos offres</h2>
+        <div class="limite_bleu"></div>
+        {% if company.offers %}
+            <div class="offers-list">
+                {% for offer in company.offers %}
+                    <div class="offer-item">
+                        <h3>{{ offer.title }}</h3>
+                        <p>{{ offer.description|slice(0, 150) }}...</p>
+                        <a href="{{ path('offer', {'offer_id': offer.id}) }}">Voir l'offre</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Cette entreprise n'a pas encore publié d'offres.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/js/company.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnNoter = document.getElementById('btn_noter');
+    const ratingBlock = document.getElementById('rating_block');
+    const croix = document.getElementById('croix');
+    const stars = document.querySelectorAll('.star-rating');
+    const ratingValue = document.getElementById('rating_value');
+    
+    if (btnNoter) {
+        btnNoter.addEventListener('click', function() {
+            ratingBlock.style.display = 'block';
+        });
+    }
+    
+    if (croix) {
+        croix.addEventListener('click', function() {
+            ratingBlock.style.display = 'none';
+        });
+    }
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = this.getAttribute('data-value');
+            ratingValue.value = value;
+            
+            stars.forEach((s, index) => {
+                if (index < value) {
+                    s.classList.remove('fa-regular');
+                    s.classList.add('fa-solid');
+                } else {
+                    s.classList.remove('fa-solid');
+                    s.classList.add('fa-regular');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

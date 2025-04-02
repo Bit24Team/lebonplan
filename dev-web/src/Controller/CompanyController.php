@@ -53,11 +53,57 @@ public function show_companies(Request $request): Response
     ]);
 }
 
-    #[Route('/entreprise/{company_id}', name: 'company', methods: ['GET'])]
-    public function show_company(int $company_id): Response
-    {
-        return $this->render('company/company.twig');
+#[Route('/entreprise/{company_id}', name: 'company', methods: ['GET'])]
+public function show_company(int $company_id, Request $request): Response
+{
+    $company = $this->model->getCompanyById($company_id);
+    
+    if (!$company) {
+        throw $this->createNotFoundException('Entreprise non trouvée');
     }
+
+    // Gestion de la notation si l'utilisateur est connecté
+    $user = $request->getSession()->get('user');
+    $userRating = null;
+    
+    if ($user) {
+        $sql = "SELECT amount FROM Evaluations WHERE from_user = :user_id AND to_company = :company_id";
+        $stmt = $this->model->getPDO()->prepare($sql);
+        $stmt->execute([
+            ':user_id' => $user['id'],
+            ':company_id' => $company_id
+        ]);
+        $userRating = $stmt->fetchColumn();
+    }
+
+    return $this->render('company/company.twig', [
+        'company' => $company,
+        'user_rating' => $userRating,
+        'user' => $user
+    ]);
+}
+
+#[Route('/entreprise/{company_id}/rate', name: 'rate_company', methods: ['POST'])]
+public function rateCompany(int $company_id, Request $request): Response
+{
+    $user = $request->getSession()->get('user');
+    
+    if (!$user) {
+        return $this->redirectToRoute('login_page');
+    }
+
+    $rating = $request->request->getInt('rating');
+    
+    if ($rating < 1 || $rating > 5) {
+        $this->addFlash('error', 'La note doit être entre 1 et 5');
+        return $this->redirectToRoute('company', ['company_id' => $company_id]);
+    }
+
+    $this->model->rate_company($user['id'], $company_id, $rating);
+    
+    $this->addFlash('success', 'Merci pour votre notation !');
+    return $this->redirectToRoute('company', ['company_id' => $company_id]);
+}
 
     #[Route("/ajout/entreprise", name: "company_register_page", methods: ["GET"])]
     public function company_register_page(): Response

@@ -1,0 +1,35 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Modifier mon profil</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('update_profile') }}">
+                        <div class="form-group">
+                            <label for="first_name">Prénom</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" 
+                                   value="{{ user.first_name ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Nom</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" 
+                                   value="{{ user.last_name ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" 
+                                   value="{{ user.phone ?? '' }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

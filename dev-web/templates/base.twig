@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lebonplan - {% block title %}Titre Invalide{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('/css/base.css') }}" />
     {% block styles %}{% endblock %}
   </head>
@@ -55,7 +56,15 @@
         <li class="hideOnMobile"><a href="{{ path('offers') }}">Offres</a></li>
         <li class="hideOnMobile"><a href="{{ path('companies') }}">Entreprise</a></li>
         {% if app.session.get('user') %}
-        <li class="hideOnMobile"><a href="{{ path('account') }}">Mon Compte</a></li>
+        {% set user = app.session.get('user') %}
+        {% set perm = user['permission'] %}
+        {% if perm == 2 %}
+        <li class="hideOnMobile"><a href="{{ path('manager_dashboard') }}">Mon Compte</a></li>
+        {% elseif perm == 3 %}
+        <li class="hideOnMobile"><a href="{{ path('admin_dashboard') }}">Mon Compte</a></li>
+        {% else %}
+        <li class="hideOnMobile"><a href="{{ path('user_dashboard') }}">Mon Compte</a></li>
+        {% endif %}
         <li class="hideOnMobile"><a href="{{ path('logout') }}">Déconnexion</a></li>
         {% else %}
         <li class="hideOnMobile"><a href="{{ path('login_page') }}">Connexion</a></li>
@@ -72,11 +81,126 @@
         </li>
       </ul>
     </nav>
+
+
+    <div class="cookies">
+        <p>
+            Nous utilisons des cookies pour améliorer votre expérience sur notre site. En continuant votre navigation, 
+            vous acceptez leur utilisation.
+        </p>
+        <span>
+            <button class="accept_cookies">Accepter</button>
+            <button class="refuse_cookies">Refuser</button>
+            <h5 id="more_info">En savoir plus</h5>
+        </span>
+    </div>
+
+    <div class="cookies_explain">
+        <div class="cookies_banniere">
+            <h1>Politique d'utilisation des cookies</h1>
+            <i class="fa-solid fa-xmark cookies_croix" id="cookies_croix"></i>
+        </div>
+        <div class="cookies_text">
+            <div class="cookie_text_block">
+                <h3>1. Introduction</h3>
+                <div class="limite_bleu"></div>
+                <p>Notre site utilise des cookies et autres technologies similaires afin d'améliorer votre expérience 
+                        utilisateur, analyser le trafic et proposer des services adaptés à vos préférences. La présente politique 
+                        vise à vous informer sur 
+                        l'usage des cookies et sur les moyens dont vous disposez pour les gérer.</p>
+            </div>
+        
+
+            <div class="cookie_text_block">
+                <h3>2. Qu'est-ce qu'un cookie ?</h3>
+                <div class="limite_bleu"></div>
+                <p>Un cookie est un petit fichier texte stocké sur votre appareil (ordinateur, smartphone, tablette) lors de 
+                        votre visite sur un site web. Il permet notamment de mémoriser des informations vous concernant pour 
+                        faciliter votre navigation et 
+                    personnaliser votre expérience.</p>
+
+            </div>
+
+            <div class="cookie_text_block">
+
+                <h3>3. Quels types de cookies utilisons-nous ?</h3>
+                <div class="limite_bleu"></div>
+                <p>Nous utilisons plusieurs types de cookies sur notre site :</p>
+                <ul>
+
+                    <li><strong>Cookies essentiels</strong> : nécessaires au bon fonctionnement du site (accès sécurisé, 
+                        authentification, gestion des préférences de consentement, etc.).</li>
+
+                    <li><strong>Cookies de performance et d'analyse</strong> : nous aident à comprendre comment vous 
+                        interagissez avec notre site (statistiques de fréquentation, temps de chargement, etc.).</li>
+
+                    <li><strong>Cookies de personnalisation</strong> : permettent d'adapter l'affichage du site en fonction de 
+                        vos préférences et de votre historique de navigation.</li>
+
+                    <li><strong>Cookies publicitaires</strong> : utilisés pour vous proposer des annonces personnalisées et 
+                        limiter le nombre de fois qu'une publicité vous est affichée.</li>
+
+                </ul>
+            </div>
+
+            
+
+            <div class="cookie_text_block">
+                <h3>4. Gestion des cookies</h3>
+                <div class="limite_bleu"></div>
+                <p>Lors de votre première visite sur notre site, une bannière vous informe de l'utilisation des cookies et vous 
+                    propose d'accepter ou de paramétrer vos préférences. Vous pouvez à tout moment modifier vos choix en 
+                        accédant aux paramètres de 
+                    gestion des cookies via le lien disponible en bas de page.</p>
+
+                <p>Vous avez également la possibilité de configurer votre navigateur afin de refuser ou supprimer les cookies. 
+                    Toutefois, certaines fonctionnalités du site pourraient être altérées en cas de refus des cookies 
+                        essentiels.</p>
+            </div>
+
+            <div class="cookie_text_block">
+                <h3>5. Durée de conservation des cookies</h3>
+                <div class="limite_bleu"></div>
+                <p>La durée de conservation des cookies varie en fonction de leur nature :</p>
+                <ul>
+                    <li>Les cookies de session sont supprimés à la fermeture de votre navigateur.</li>
+                    <li>Les cookies persistants sont conservés pour une durée maximale de 13 mois.</li>
+                </ul>
+            </div>
+
+            <div class="cookie_text_block">
+                <h3>6. Base légale et conformité</h3>
+                <div class="limite_bleu"></div>
+                <p>L'utilisation des cookies sur notre site repose sur les bases légales suivantes :</p>
+                <ul>
+                    <li>Cookies essentiels : nécessaires à l'exécution d'un contrat ou à l'intérêt légitime du responsable du   
+                        traitement.</li>
+                    <li>Cookies analytiques, publicitaires et de personnalisation : soumis à votre consentement préalable 
+                            conformément au Règlement Général sur la Protection des Données (RGPD) et à la directive ePrivacy. 
+                            </li>
+                </ul>
+                <p>Nous nous engageons à respecter la réglementation en vigueur, notamment le RGPD (Règlement (UE) 2016/679) et 
+                        la loi française Informatique et Libertés.</p>
+            </div>
+
+            <div class="cookie_text_block">
+                <h3>7. Mise à jour de la politique des cookies</h3>
+                <div class="limite_bleu"></div>
+                <p>Nous nous réservons le droit de modifier cette politique à tout moment afin de refléter les évolutions 
+                        réglementaires ou techniques. Toute mise à jour sera publiée sur cette page avec la date de la dernière 
+                        modification.</p>
+            </div>
+        </div>
+        
+    </div>
+
+
     <main>
     {% block content %}
     {% endblock %}
     </main>
     <script src="{{ asset('/js/navbar.js') }}"></script>
+    <script src="{{ asset('/js/base.js') }}"></script>
     {% block scripts %}
     {% endblock %}
   </body>

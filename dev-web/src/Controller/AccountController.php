@@ -83,6 +83,59 @@ class AccountController extends AbstractController
         }
         return new Response("Erreur lors de l'authentification.");
     }
+    #[Route('/mon-profil/editer', name: 'edit_profile')]
+    public function editProfile(SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user) {
+            return $this->redirectToRoute('login_page');
+        }
 
+        // Ajoutez ici la logique pour récupérer les données du profil à éditer
+        return $this->render('account/edit_profile.twig', [
+            'user' => $user
+        ]);
+    }
+
+    #[Route('/mon-profil/mot-de-passe', name: 'change_password')]
+    public function changePassword(SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user) {
+            return $this->redirectToRoute('login_page');
+        }
+
+        return $this->render('account/change_password.twig');
+    }
+    #[Route('/mon-profil/editer/mise-a-jour', name: 'update_profile', methods: ['POST'])]
+    public function updateProfile(Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        // Traitement de la mise à jour du profil
+        // $request->request contient les données du formulaire
+        // Redirigez vers la page de profil avec un message de succès
+        
+        $this->addFlash('success', 'Profil mis à jour avec succès');
+        return $this->redirectToRoute('user_dashboard');
+    }
+    
+    #[Route('/mon-profil/mot-de-passe/mise-a-jour', name: 'update_password', methods: ['POST'])]
+    public function updatePassword(Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        // Traitement du changement de mot de passe
+        // Vérifiez l'ancien mot de passe et mettez à jour
+        
+        $this->addFlash('success', 'Mot de passe mis à jour avec succès');
+        return $this->redirectToRoute('user_dashboard');
+    }
 }
 

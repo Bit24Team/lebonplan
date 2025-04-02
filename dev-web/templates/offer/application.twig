@@ -1,26 +1,40 @@
 {% extends 'base.twig' %}
-{% block title %}{{ offer_name }}{% endblock %}
+{% block title %}Postuler à {{ offer_name }}{% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="{{asset('/css/offre.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 {% endblock %}   
 {% block content %}
+<div class="banniere">
+        <i class="fa-solid fa-briefcase"></i>
+        <h1>{{ offer_name }}</h1>
+        <span class="li_banniere">
+            <span>
+                <i class="fa-solid fa-building"></i>
+                {{ company_name }}
+            </span>
+            <span>
+                <i class="fa-solid fa-envelope"></i>
+                Email de l'entreprise
+            </span>
+        </span>
+    </div>
 <div class="container">
     <h1 style="text-align: center;">Postuler à une offre</h1>
     <p>Vous pouvez ici répondre directement à l'offre de stage déposer par l'entreprise. Soyez le plus précis dans
         vos réponses!</p>
     <h2 style="margin-bottom: 0px ;">{{ offer_name }}</h2>
-    <p class="legend">{{ company_name }} | Commence le {{ start_date }} | Ref. {{id}}</p>
+    <p class="legend">{{ company_name }} | Commence le {{ start_date|date('d/m/Y') }} | Ref. {{id}}</p>
     <div class="description">
-    {{ description }}
+        {{ description }}
     </div>
 </div>
 <div class="formulairebg">
     <h2>Envoyez votre candidature dès maintenant!</h2>
-    <form id="formulaire" class="formulaire">
+    <form id="formulaire" class="formulaire" method="POST" action="{{ path('submit_application', {'offer_id': id}) }}" enctype="multipart/form-data">
         <p>CV</p>
         <div class="cv">
-            <input type="file" id="filecv" accept=".pdf, .doc, .docx, .odt, .rft, .jpeg, .pnj" hidden>
+            <input type="file" name="cv" id="filecv" accept=".pdf, .doc, .docx, .odt, .rtf, .jpeg, .jpg, .png" required>
             <label for="filecv" id="cv" class="bouton orange">AJOUTER MON CV</label>
             <p class="formulaire error"></p>
             <div class="afficher_cv">
@@ -30,7 +44,7 @@
         </div>
         <p>Lettre de motivation</p>
         <div class="cv">
-            <input type="file" id="filelm" accept=".pdf, .doc, .docx, .odt, .rft, .jpeg, .pnj" hidden>
+            <input type="file" name="motivation_letter" id="filelm" accept=".pdf, .doc, .docx, .odt, .rtf, .jpeg, .jpg, .png" required>
             <label for="filelm" id="lm" class="bouton orange">AJOUTER MA LETTRE DE MOTIVATION</label>
             <p class="formulaire error"></p>
             <div class="afficher_lm">
@@ -39,13 +53,19 @@
             </div>
         </div>
         <p class="formulaire legend">
-            Poid max. 2Mo <br>
-            Format .pdf, .doc, .docx, .odt, .rtf, .jpeg ou .pnj
+            Poids max. 2Mo <br>
+            Format .pdf, .doc, .docx, .odt, .rtf, .jpeg, .jpg ou .png
         </p>
         <div style="padding-bottom: 10px; width: 45%;">
             <button class="bouton orange" type="submit">POSTULER</button>
         </div>
         <div class="notifForm">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
         </div>
     </form>
 </div>
@@ -60,9 +80,6 @@
         <li>{{ duration }}</li>
         <li>{{ salary }}€/mois</li>
     </ul>
-    <div class="btn_block">
-        <button id="btn_postuler" class="bouton block">POSTULER</button>
-    </div>
 </div>
 
 <div>
@@ -70,5 +87,5 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="script.js"></script>
+<script src="{{ asset('/js/application.js') }}"></script>
 {% endblock %}
