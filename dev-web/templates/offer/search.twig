@@ -28,7 +28,7 @@
                 <span>{{ offer.applicants }} candidat(s)</span>
             </div>
             
-            <a href="{{ path('offer', {'offer_id': offer.offer_id}) }}" class="view-button">Voir l'offre</a>
+            <a href="{{ path('apply_offer', {'offer_id': offer.offer_id}) }}" class="view-button">Voir l'offre</a>
         </div>
         {% endfor %}
     </div>

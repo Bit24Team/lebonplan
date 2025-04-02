@@ -25,31 +25,17 @@ class OfferController extends AbstractController
     {
         $page = max(1, (int)$request->query->get('page', 1));
         $perPage = 10;
-        
+
         $totalOffers = $this->model->count_all_offers();
         $offers = $this->model->get_paginated_offers($page, $perPage);
-        
+
         $totalPages = ceil($totalOffers / $perPage);
-        
+
         return $this->render("offer/search.twig", [
             'offers' => $offers,
             'current_page' => $page,
             'total_pages' => $totalPages,
         ]);
-    }
-
-    #[Route("/offre/{offer_id}", name: "offer", methods: ["GET"])]
-    public function show_offer(int $offer_id): Response
-    {
-        return $this->render("offer/offer.twig");
-    }
-    #[Route("/offre/{offer_id}", name: "submit_application", methods: ["POST"])]
-    public function submit_application(
-        int $offer_id,
-        Request $request,
-        SessionInterface $session
-    ): Response {
-        return $this->redirectToRoute("offer", ["offer_id" => $offer_id]);
     }
     #[Route("/ajouter/offre", name: "add_offer_page", methods: ["GET"])]
     public function add_offer_page(): Response
