@@ -7,32 +7,41 @@
                     <h5>Mon Entreprise</h5>
                 </div>
                 <div class="card-body">
-                    {% if company %}
-                        <h4 class="text-center">{{ company.name }}</h4>
+                    {% if company is defined and company %}
+                        <h4 class="text-center">{{ company.name ?? '' }}</h4>
+                        
+                        {% if company.description is defined %}
                         <p class="text-muted text-center">{{ company.description|slice(0, 50) }}...</p>
-
+                        {% endif %}
+                        
                         <ul class="list-group list-group-flush mt-3">
+                            {% if company.contact_mail is defined %}
                             <li class="list-group-item">
                                 <strong>Email:</strong> {{ company.contact_mail }}
                             </li>
+                            {% endif %}
+                            
+                            {% if company.contact_phone is defined %}
                             <li class="list-group-item">
                                 <strong>Téléphone:</strong> {{ company.contact_phone }}
                             </li>
+                            {% endif %}
                         </ul>
-
+                        
                         <div class="mt-3 text-center">
-                            <a href="{{ path('edit_company', {'id': company.id}) }}" class="btn btn-outline-primary btn-sm">Modifier l'entreprise</a>
+                            <a href="{{ path('edit_company', {'id': company.id}) }}" class="btn btn-outline-primary btn-sm">
+                                Modifier
+                            </a>
                         </div>
                     {% else %}
                         <div class="alert alert-warning">
-                            Vous n'avez pas encore créé d'entreprise.
+                            Aucune entreprise associée.
                         </div>
-                        <a href="{{ path('create_company') }}" class="btn btn-primary btn-sm">Créer une entreprise</a>
                     {% endif %}
                 </div>
             </div>
 
-            <!-- Statistiques -->
+            <!-- Statistiques simplifiées -->
             <div class="card mb-4">
                 <div class="card-header bg-info text-white">
                     <h5>Statistiques</h5>
@@ -42,221 +51,51 @@
                         <h3>{{ offers|length }}</h3>
                         <p class="text-muted">Offres publiées</p>
                     </div>
-                    <div class="text-center">
-                        <h3>{{ total_applications }}</h3>
-                        <p class="text-muted">Candidatures totales</p>
-                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-8">
-            <!-- Actions rapides -->
+            <!-- Contenu principal adapté -->
             <div class="card mb-4">
                 <div class="card-header bg-success text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Actions</h5>
-                        <a href="{{ path('add_offer_page') }}" class="btn btn-light btn-sm">
-                            <i class="fas fa-plus"></i> Nouvelle offre
-                        </a>
-                    </div>
+                    <h5 class="mb-0">Gestion des offres</h5>
                 </div>
-            </div>
-
-            <!-- Onglets -->
-            <ul class="nav nav-tabs" id="managerTabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="offers-tab" data-toggle="tab" href="#offers" role="tab">Mes Offres</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="applications-tab" data-toggle="tab" href="#applications" role="tab">Candidatures</a>
-                </li>
-            </ul>
-
-            <!-- Contenu des onglets -->
-            <div class="tab-content" id="managerTabsContent">
-                <!-- Onglet Offres -->
-                <div class="tab-pane fade show active" id="offers" role="tabpanel">
-                    <div class="card">
-                        <div class="card-body">
-                            {% if offers is not empty %}
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Titre</th>
-                                                <th>Date début</th>
-                                                <th>Salaire</th>
-                                                <th>Candidatures</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for offer in offers %}
-                                                <tr>
-                                                    <td>
-                                                        <a href="{{ path('offer_show', {'id': offer.id}) }}">
-                                                            {{ offer.title }}
-                                                        </a>
-                                                    </td>
-                                                    <td>{{ offer.start_date|date('d/m/Y') }}</td>
-                                                    <td>{{ offer.salary }} €</td>
-                                                    <td>
-                                                        <span class="badge badge-primary">
-                                                            {{ offer.applications_count }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm" role="group">
-                                                            <a href="{{ path('offer_show', {'id': offer.id}) }}" class="btn btn-outline-primary" title="Voir">
-                                                                <i class="fas fa-eye"></i>
-                                                            </a>
-                                                            <a href="{{ path('edit_offer', {'id': offer.id}) }}" class="btn btn-outline-secondary" title="Modifier">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <a href="{{ path('delete_offer', {'id': offer.id}) }}" class="btn btn-outline-danger" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette offre?')">
-                                                                <i class="fas fa-trash"></i>
-                                                            </a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% else %}
-                                <div class="alert alert-info">
-                                    Vous n'avez pas encore publié d'offres.
-                                </div>
-                                <a href="{{ path('add_offer_page') }}" class="btn btn-primary">Créer une offre</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Onglet Candidatures -->
-                <div class="tab-pane fade" id="applications" role="tabpanel">
-                    <div class="card">
-                        <div class="card-body">
-                            {% if all_applications is not empty %}
-                                <div class="accordion" id="applicationsAccordion">
-                                    {% for offer in all_applications %}
-                                        <div class="card">
-                                            <div class="card-header" id="heading{{ offer.id }}">
-                                                <h5 class="mb-0">
-                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ offer.id }}" aria-expanded="true" aria-controls="collapse{{ offer.id }}">
-                                                        {{ offer.title }} 
-                                                        <span class="badge badge-primary">{{ offer.applications|length }}</span>
-                                                    </button>
-                                                </h5>
-                                            </div>
-
-                                            <div id="collapse{{ offer.id }}" class="collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ offer.id }}" data-parent="#applicationsAccordion">
-                                                <div class="card-body">
-                                                    {% if offer.applications is not empty %}
-                                                        <div class="table-responsive">
-                                                            <table class="table table-sm">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Candidat</th>
-                                                                        <th>Date</th>
-                                                                        <th>CV</th>
-                                                                        <th>Lettre</th>
-                                                                        <th>Statut</th>
-                                                                        <th>Actions</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {% for application in offer.applications %}
-                                                                        <tr>
-                                                                            <td>
-                                                                                {{ application.candidate.first_name }} {{ application.candidate.last_name }}
-                                                                                <br>
-                                                                                <small class="text-muted">{{ application.candidate.email }}</small>
-                                                                            </td>
-                                                                            <td>{{ application.application_date|date('d/m/Y') }}</td>
-                                                                            <td>
-                                                                                <a href="{{ asset('uploads/resumes/' ~ application.resume) }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                                                                    <i class="fas fa-file-pdf"></i>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td>
-                                                                                {% if application.cover_letter %}
-                                                                                    <button class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#letterModal{{ application.id }}">
-                                                                                        <i class="fas fa-envelope-open-text"></i>
-                                                                                    </button>
-                                                                                {% else %}
-                                                                                    <span class="text-muted">Aucune</span>
-                                                                                {% endif %}
-                                                                            </td>
-                                                                            <td>
-                                                                                <span class="badge 
-                                                                                    {% if application.status == 'accepté' %}badge-success
-                                                                                    {% elseif application.status == 'refusé' %}badge-danger
-                                                                                    {% else %}badge-warning{% endif %}">
-                                                                                    {{ application.status }}
-                                                                                </span>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div class="btn-group btn-group-sm" role="group">
-                                                                                    <a href="{{ path('application_show', {'id': application.id}) }}" class="btn btn-outline-primary" title="Voir">
-                                                                                        <i class="fas fa-eye"></i>
-                                                                                    </a>
-                                                                                    <a href="{{ path('accept_application', {'id': application.id}) }}" class="btn btn-outline-success" title="Accepter">
-                                                                                        <i class="fas fa-check"></i>
-                                                                                    </a>
-                                                                                    <a href="{{ path('reject_application', {'id': application.id}) }}" class="btn btn-outline-danger" title="Refuser">
-                                                                                        <i class="fas fa-times"></i>
-                                                                                    </a>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-
-                                                                        <!-- Modal pour la lettre de motivation -->
-                                                                        <div class="modal fade" id="letterModal{{ application.id }}" tabindex="-1" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">
-                                                                            <div class="modal-dialog modal-lg" role="document">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h5 class="modal-title" id="letterModalLabel">Lettre de motivation</h5>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                            <span aria-hidden="true">&times;</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <p><strong>De:</strong> {{ application.candidate.first_name }} {{ application.candidate.last_name }}</p>
-                                                                                        <p><strong>Pour:</strong> {{ offer.title }}</p>
-                                                                                        <hr>
-                                                                                        <div class="p-3 border rounded bg-light">
-                                                                                            {{ application.cover_letter|nl2br }}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="modal-footer">
-                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    {% endfor %}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    {% else %}
-                                                        <div class="alert alert-info">
-                                                            Aucune candidature pour cette offre.
-                                                        </div>
-                                                    {% endif %}
+                <div class="card-body">
+                    {% if offers is not empty %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Titre</th>
+                                        <th>Date</th>
+                                        <th>Salaire</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for offer in offers %}
+                                        <tr>
+                                            <td>{{ offer.title ?? '' }}</td>
+                                            <td>{{ offer.start_date|date('d/m/Y') }}</td>
+                                            <td>{{ offer.salary }} €</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{{ path('offer_show', {'id': offer.id}) }}" class="btn btn-outline-primary">
+                                                        Voir
+                                                    </a>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </td>
+                                        </tr>
                                     {% endfor %}
-                                </div>
-                            {% else %}
-                                <div class="alert alert-info">
-                                    Aucune candidature pour le moment.
-                                </div>
-                            {% endif %}
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Aucune offre publiée.
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
