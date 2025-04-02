@@ -27,6 +27,11 @@
           <div class="forgot-link">
             <a href="#">Mot de passe oublié ?</a>
           </div>
+          {% if error is defined %}
+            <div class="error-message">
+              <p>{{ error }}</p>
+            </div>
+          {% endif %}
           <button type="submit" class="btn">Connexion</button>
         </form>
       </div>

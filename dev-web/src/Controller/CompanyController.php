@@ -20,21 +20,20 @@ class CompanyController extends AbstractController
     #[Route("/entreprises", name: "companies", methods: ["GET"])]
     public function show_companies(): Response
     {
-        return new Response('Entreprises');
+        return $this->render('company/search.twig');
     }
 
     #[Route('/entreprise/{company_id}', name: 'company', methods: ['GET'])]
     public function show_company(int $company_id): Response
     {
-        return $this->render('Entreprise.html.twig');
+        return $this->render('company/company.twig');
     }
 
     #[Route("/ajout/entreprise", name: "company_register_page", methods: ["GET"])]
     public function company_register_page(): Response
     {
-        return $this->render("Entreprise.html.twig");
+        return $this->render('company/register.twig');
     }
-
     #[Route("/ajout/entreprise", name: "company_register", methods: ["POST"])]
     public function company_register(Request $request): Response
     {
@@ -46,6 +45,6 @@ class CompanyController extends AbstractController
 
         $this->model->newcompany($manager_id, $name, $description, $contact_mail, $contact_phone);
 
-        return new Response("Inscription terminée !");
+        return $this->redirectToRoute('index');
     }
 }

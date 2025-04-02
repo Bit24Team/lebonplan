@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Création d'offre d'entreprise</title>
-    <link rel="stylesheet" href="/css/test.css" />
+{% extends 'base.twig' %}
+{% block title %}Création d'offre d'entreprise{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="/css/add_offer.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-  </head>
-  <body>
+{% endblock %}
+{% block content %}
+{% if app.session.get('user') %}
+{% if app.session.get('user')['permission'] == 2 %}
     <form id="offerForm">
       <h1>
         <i class="fas fa-file-contract"></i> Création d'offre d'entreprise
@@ -19,11 +18,6 @@
       <div class="form-container">
         <!-- Colonne 1 -->
         <div class="form-column">
-          <div class="form-group">
-            <label for="offerTitle">Titre de l'offre *</label>
-            <input type="text" id="offerTitle" class="form-control" required />
-          </div>
-
           <div class="form-group">
             <label for="companyName">Entreprise *</label>
             <input type="text" id="companyName" class="form-control" required />
@@ -188,7 +182,20 @@
         </div>
       </div>
     </form>
-
-    <script src="/js/test.js"></script>
-  </body>
-</html>
+{% else %}
+    <div class="container">
+      <h1>Accès refusé</h1>
+      <p>Vous n'avez pas les autorisations nécessaires pour accéder à cette page.</p>
+    </div>
+{% endif %}
+{% else %}
+    <div class="container">
+      <h1>Vous n'êtes pas connecté</h1>
+      <p>Veuillez vous connecter pour accéder à votre compte.</p>
+      <a href="{{ path('login_page') }}" class="btn">Se connecter</a>
+    </div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+    <script src="/js/add_offer.js"></script>
+{% endblock %}

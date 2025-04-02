@@ -26,12 +26,10 @@ class CompanyModel
             die('Connection failed: ' . $e->getMessage());
         }
     }
-
-    
  
     public function researchcompany(?string $company_name, ?string $company_desc, ?string $company_email, ?string $company_phone, ?int $company_rating): array
     {
-        $sql = "SELECT * FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
+        $sql = "SELECT id FROM Companies INNER JOIN Evaluations ON Companies.id = Evaluations.to_company WHERE 1=1";
         $params = [];
 
         if ($company_name !== null) {
@@ -108,19 +106,11 @@ class CompanyModel
             $sql .= " Companies.contact_phone = :company_phone";
             $params[':company_phone'] = $phone;
         }
-        $sql .= " WHERE Companies=:id";
+        $sql .= " WHERE Companies=:company_id";
         $params[':company_id'] = $company_id;
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            'name' => $name,
-            'description' => $description,
-            'email' => $email,
-            'phone' => $phone,
-            'company_id' => $company_id,
-        ]);
     }   
     public function rate_company(INT $user_id, INT $company_id,INT $rating):void
     {
@@ -134,7 +124,7 @@ class CompanyModel
         $stmt->fetch();
 
         if ($stmt>=1){
-        $sql = "UPDATE Evaluations SET amount=:rating WHERE where from_user=:user_id AND to_company=:company_id ";
+        $sql = "UPDATE Evaluations SET amount=:rating WHERE from_user=:user_id AND to_company=:company_id ";
         }
         else {
         $sql = "INSERT INTO Evaluations(from_user,to_compagny,amount) VALUES (:user_id,:company_id,:rating)";
@@ -155,7 +145,17 @@ class CompanyModel
         return $stmt->fetch();
     }  
 
-        
+    //sfx6
+    public function delete_company(INT $company_id):void{
+        $sql = "DELETE FROM Companies WHERE to_company=:company_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':company_id' => $company_id
+        ]);
+    }
+
+
+
         
 
 

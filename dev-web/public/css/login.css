@@ -62,6 +62,12 @@ form{ width: 100%; }
     transition: .6s ease-in-out 1.2s, visibility 0s 1s;
 }
 
+.error-message{
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
 .container.active .form-box{ right: 50%; }
 
 .form-box.register{ visibility: hidden; }

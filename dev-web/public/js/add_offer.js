@@ -62,14 +62,13 @@ function addSkill() {
 }
 
 // Soumission du formulaire
-document.getElementById("offerForm").addEventListener("submit", function (e) {
+document.getElementById("offerForm").addEventListener("submit", async function (e) {
   e.preventDefault();
-
-  // Sauvegarder le HTML de l'éditeur dans le champ caché
+  
+  // Préparation des données comme dans le code actuel
   document.getElementById("descriptionHtml").value =
     document.getElementById("offerDescription").innerHTML;
 
-  // Récupérer les valeurs
   const offerData = {
     title: document.getElementById("offerTitle").value,
     company: document.getElementById("companyName").value,
@@ -82,13 +81,28 @@ document.getElementById("offerForm").addEventListener("submit", function (e) {
     endDate: document.getElementById("endDate").value,
   };
 
-  console.log("Offre à créer:", offerData);
-  alert("Offre créée avec succès!");
-
-  // Réinitialiser le formulaire
-  this.reset();
-  skillsContainer.innerHTML = "";
-  document.getElementById("offerDescription").innerHTML = "";
+  // Envoi des données au serveur
+  try {
+    const response = await fetch('/ajouter/offre', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(offerData)
+    });
+    
+    if (response.ok) {
+      alert("Offre créée avec succès!");
+      this.reset();
+      skillsContainer.innerHTML = "";
+      document.getElementById("offerDescription").innerHTML = "";
+    } else {
+      alert("Erreur lors de la création de l'offre");
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert("Erreur réseau");
+  }
 });
 
 // Permettre d'ajouter une compétence avec Entrée
