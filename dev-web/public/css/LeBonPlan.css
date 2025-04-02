@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;1,400&display=swap');
+
+
+:root {
+  --primary: #00a8ff;
+  --primary-dark: #0077b6;
+  --secondary: #2c3e50;
+  --text: #333;
+  --text-light: #777;
+  --bg-gradient: repeating-linear-gradient(135deg, #ffffff, #f0f0f5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* Sections */
+.section-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-title h2 {
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.section-title:hover h2::after {
+  width: 120px;
+}
+
+.section-title p {
+  color: var(--text-light);
+  max-width: 700px;
+  margin: 0 auto;
+  transition: color 0.3s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.8rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  transition: color 0.3s ease;
+}
+
+.card:hover h3 {
+  color: var(--primary-dark);
+}
+
+.card p {
+  color: var(--text);
+  transition: transform 0.3s ease;
+}
+
+.card:hover p {
+  transform: translateX(4px);
+}
+
+.card-icon {
+  font-size: 2.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  transition: all 0.3s ease;
+}
+
+
+.mission-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.mission-item {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  opacity: 0;
+  transform: translateY(20px) rotateX(10deg);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mission-item.visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(0);
+}
+
+.mission-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 168, 255, 0.03) 0%, rgba(0, 119, 182, 0.03) 100%);
+  z-index: 0;
+}
+
+.mission-item h3 {
+  position: relative;
+  z-index: 1;
+  color: var(--secondary);
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.mission-item h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--primary);
+  transition: width 0.3s ease;
+}
+
+.mission-item:hover h3::after {
+  width: 80px;
+}
+
+.mission-item p {
+  position: relative;
+  z-index: 1;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.mission-item:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+footer {
+  background: #1b2835;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  margin-top: 3rem;
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+footer:hover::before {
+  transform: scaleX(1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+  
+  .mission-item {
+    padding: 1.5rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+}
