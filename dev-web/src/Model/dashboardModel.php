@@ -383,12 +383,60 @@ class DashboardModel
 
         return $data;
     }
-    public function getUserFullData(int $userId): array
+    public function getUserById(int $userId): array
     {
         $stmt = $this->pdo->prepare("
-            SELECT * FROM Users WHERE id = :id
+            SELECT id, first_name, last_name, email, phone, groupe, permission 
+            FROM Users 
+            WHERE id = :id
         ");
         $stmt->execute([':id' => $userId]);
         return $stmt->fetch() ?: [];
+    }
+    
+    public function getCompleteUserData(int $userId): array
+    {
+        $user = $this->getUserById($userId);
+        
+        if (empty($user)) {
+            return [];
+        }
+    
+        return [
+            'user' => $user,
+            'skills' => $this->getUserSkills($userId),
+            'applications' => $this->getUserApplications($userId),
+            'wishlist' => $this->getUserWishlist($userId)
+        ];
+    }
+    
+    private function getUserSkills(int $userId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT s.id, s.name 
+            FROM UserSkill us
+            JOIN Skills s ON us.id_skill = s.id
+            WHERE us.id_user = :user_id
+        ");
+        $stmt->execute([':user_id' => $userId]);
+        return $stmt->fetchAll();
+    }
+    
+    private function getUserApplications(int $userId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT /* requête existante pour les applications */
+        ");
+        $stmt->execute([':user_id' => $userId]);
+        return $stmt->fetchAll();
+    }
+    
+    private function getUserWishlist(int $userId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT /* requête existante pour la wishlist */
+        ");
+        $stmt->execute([':user_id' => $userId]);
+        return $stmt->fetchAll();
     }
 }

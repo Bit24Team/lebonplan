@@ -167,16 +167,20 @@ class DashboardController extends AbstractController
         if (!$userSession) {
             return $this->redirectToRoute('login_page');
         }
-
-        // Récupération des données via le modèle
-        $userData = $this->model->getUserFullData($userSession['id']);
-        $dashboardData = $this->model->getUserData($userSession['id']);
-
+    
+        $data = $this->model->getCompleteUserData($userSession['id']);
+    
+        if (empty($data)) {
+            // Gérer le cas où l'utilisateur n'existe pas
+            $session->remove('user');
+            return $this->redirectToRoute('login_page');
+        }
+    
         return $this->render('user.twig', [
-            'user' => array_merge($userSession, $userData), // Fusion des données de session et de la BDD
-            'user_skills' => $dashboardData['user_skills'],
-            'applications' => $dashboardData['applications'],
-            'wishlist' => $dashboardData['wishlist']
+            'user' => $data['user'],
+            'user_skills' => $data['skills'],
+            'applications' => $data['applications'],
+            'wishlist' => $data['wishlist']
         ]);
     }
 }
