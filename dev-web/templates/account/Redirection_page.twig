@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Création de compte</title>
+    <link rel="stylesheet" href="{{ asset('/css/redirection.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Créer un compte</h1>
+
+      <div class="options-container">
+        <div class="option-card entreprise">
+          <div class="option-icon">🏢</div>
+          <h2 class="option-title">Entreprise</h2>
+          <p class="option-description">
+            Créez un compte professionnel pour gérer plusieurs utilisateurs,
+            accéder à des fonctionnalités avancées et bénéficier d'outils dédiés
+            aux organisations.
+          </p>
+          <a href="login_company.twig" class="btn btn-entreprise"
+            >Créer un compte entreprise</a
+          >
+        </div>
+
+        <!-- Option Utilisateur -->
+        <div class="option-card utilisateur">
+          <div class="option-icon">👤</div>
+          <h2 class="option-title">Utilisateur</h2>
+          <p class="option-description">
+            Créez un compte personnel pour accéder aux services de base, gérer
+            votre profil et vos préférences. Idéal pour les particuliers.
+          </p>
+          <a href="login.twig" class="btn btn-utilisateur"
+            >Créer un compte utilisateur</a
+          >
+        </div>
+      </div>
+
+      <div class="separator">Ou</div>
+
+      <p>
+        Vous avez déjà un compte?
+        <a href="login.twig" style="color: #3498db; text-decoration: none"
+          >Connectez-vous</a
+        >
+      </p>
+    </div>
+  </body>
+</html>
