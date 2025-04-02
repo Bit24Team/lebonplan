@@ -156,7 +156,7 @@ class CompanyModel
             $sql .= " Companies.contact_phone = :company_phone";
             $params[':company_phone'] = $phone;
         }
-        $sql .= " WHERE Companies=:company_id";
+        $sql .= " WHERE Companies.id=:company_id";
         $params[':company_id'] = $company_id;
 
         $stmt = $this->pdo->prepare($sql);
@@ -173,11 +173,11 @@ class CompanyModel
         ]);
         $stmt->fetch();
 
-        if ($stmt>=1){
+        if ($stmt->fetchColumn() >= 1){
         $sql = "UPDATE Evaluations SET amount=:rating WHERE from_user=:user_id AND to_company=:company_id ";
         }
         else {
-        $sql = "INSERT INTO Evaluations(from_user,to_compagny,amount) VALUES (:user_id,:company_id,:rating)";
+        $sql = "INSERT INTO Evaluations(from_user,to_company,amount) VALUES (:user_id,:company_id,:rating)";
         }
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
@@ -204,9 +204,37 @@ class CompanyModel
         ]);
     }
 
+    public function getCompanyById(int $company_id): ?array
+{
+    $sql = "SELECT Companies.*, AVG(Evaluations.amount) as average_rating 
+            FROM Companies 
+            LEFT JOIN Evaluations ON Companies.id = Evaluations.to_company 
+            WHERE Companies.id = :company_id
+            GROUP BY Companies.id";
     
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':company_id' => $company_id]);
+    $company = $stmt->fetch();
 
-        
+    if (!$company) {
+        return null;
+    }
+
+    // Récupérer les offres de l'entreprise
+    $sqlOffers = "SELECT * FROM Offers WHERE id_company = :company_id";
+    $stmtOffers = $this->pdo->prepare($sqlOffers);
+    $stmtOffers->execute([':company_id' => $company_id]);
+    $offers = $stmtOffers->fetchAll();
+
+    $company['offers'] = $offers;
+
+    return $company;
+}
+
+public function getPDO(): PDO
+{
+    return $this->pdo;
+}   
 
 
 }
