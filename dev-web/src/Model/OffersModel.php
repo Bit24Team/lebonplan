@@ -62,8 +62,8 @@ class OffersModel
     public function research_offer(string $title, string $description, int $salary, $start_date, int $duration, int $skill)
     {
         $sql = "SELECT id FROM Offers
-                INNER JOIN OfferSkills ON Offers.id = OfferSkills.id_offer
-                JOIN Skills ON Skills.id = OfferSkills.id_skill
+                INNER JOIN OfferSkill ON Offers.id = OfferSkill.id_offer
+                JOIN Skills ON Skills.id = OfferSkill.id_skill
                 WHERE 1=1";
         $params = [];
     
@@ -224,8 +224,8 @@ public function get_paginated_offers(int $page = 1, int $perPage = 10): array
             COUNT(Applications.id) AS applicants
         FROM Offers
         INNER JOIN Companies ON Offers.id_company = Companies.id
-        INNER JOIN OfferSkills ON Offers.id = OfferSkills.id_offer
-        INNER JOIN Skills ON OfferSkills.id_skill = Skills.id
+        INNER JOIN OfferSkill ON Offers.id = OfferSkill.id_offer
+        INNER JOIN Skills ON OfferSkill.id_skill = Skills.id
         LEFT JOIN Applications ON Offers.id = Applications.id_offer
         GROUP BY Offers.id
         LIMIT :offset, :perPage
