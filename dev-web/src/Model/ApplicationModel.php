@@ -35,7 +35,7 @@ class ApplicationModel
         string $motivation_letter_path
     ): bool {
         $sql = "INSERT INTO Applications (id_offer, id_candidate, resume, cover_letter, application_date, status) 
-                VALUES (:offer_id, :user_id, :cv_path, :motivation_letter_path, NOW(), 'pending')";
+        VALUES (:offer_id, :user_id, :cv_path, :motivation_letter_path, CURDATE(), 'pending')";
         
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
