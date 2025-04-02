@@ -49,7 +49,7 @@ class CompanyModel
             $params[':company_phone'] = $company_phone;
         }
         if ($company_rating !== null) {
-            $sql .= " AND Evaluations.amount = :company_rating";
+            $sql .= " AND Evaluations.amount >= :company_rating";
             $params[':company_rating'] = $company_rating;
         }
 
