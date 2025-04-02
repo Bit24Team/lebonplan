@@ -24,7 +24,7 @@
             <div class="offer-details">
                 <span>Salaire: {{ offer.salary }} €</span>
                 <span>Début: {{ offer.start_date|date('d/m/Y') }}</span>
-                <span>Durée: {{ offer.duration }} jours</span>
+                <span>Durée: {{ (offer.duration / (60 * 60 * 24))|round(0) }} jours</span>
                 <span>{{ offer.applicants }} candidat(s)</span>
             </div>
             
