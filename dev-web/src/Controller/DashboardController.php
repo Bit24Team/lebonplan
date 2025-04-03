@@ -145,7 +145,7 @@ class DashboardController extends AbstractController
     public function managerDashboard(SessionInterface $session): Response
     {
         $user = $session->get('user');
-        if (!$user || $user['permission'] != 1) {
+        if (!$user || $user['permission'] != 2) {
             return $this->redirectToRoute('login_page');
         }
 
