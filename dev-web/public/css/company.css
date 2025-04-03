@@ -46,12 +46,9 @@
 
 .notation {
     background-color: white;
-    padding: 2rem;
     border-radius: 10px;
     text-align: center;
     width: 30%;
-    padding-top: 0px;
-    padding-right: 0px;
 }
 
 
@@ -136,5 +133,23 @@
 @media screen and (max-width : 1440px) {
     .notation{
         width: 50%;
+    }
+}
+
+@media screen and (max-width : 650px) {
+    .notation{
+        width: 80%;
+    }
+
+    .star{
+        font-size: 2rem;
+    }
+
+    .btn_star button{
+        margin: 0.5rem;
+    }
+
+    .cookies_croix{
+        padding: 1rem;
     }
 }
