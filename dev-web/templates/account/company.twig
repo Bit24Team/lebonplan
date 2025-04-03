@@ -63,8 +63,11 @@
         <div class="col-md-8">
             <!-- Contenu principal adapté -->
             <div class="card mb-4">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Gestion des offres et candidatures</h5>
+                    <a href="{{ path('add_offer_page') }}" class="btn btn-light btn-sm">
+                        <i class="fas fa-plus"></i> Ajouter une offre
+                    </a>
                 </div>
                 <div class="card-body">
                     {% if offers is not empty %}
