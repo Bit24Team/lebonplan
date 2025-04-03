@@ -177,4 +177,34 @@ class DashboardController extends AbstractController
             'wishlist' => $data['wishlist']
         ]);
     }
+    #[Route('/user/add-skill', name: 'user_add_skill', methods: ['POST'])]
+    public function addUserSkill(Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user) {
+            return $this->redirectToRoute('login_page');
+        }
+
+        $skillId = $request->request->get('skill_id');
+        if ($skillId) {
+            $this->model->addSkillToUser($user['id'], $skillId);
+        }
+
+        return $this->redirectToRoute('user_dashboard');
+    }
+    #[Route('/user/remove-skill', name: 'user_remove_skill', methods: ['POST'])]
+    public function removeUserSkill(Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $skillId = $request->request->get('skill_id');
+        if ($skillId) {
+            $this->model->removeSkillFromUser($user['id'], $skillId);
+        }
+    
+        return new Response('', Response::HTTP_OK);
+    }
 }

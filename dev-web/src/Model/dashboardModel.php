@@ -331,18 +331,21 @@ class DashboardModel
 
     // Données pour le tableau de bord utilisateur
     public function getUserData(int $userId): array
-    {
-        $data = [];
-        
-        // Compétences de l'utilisateur
-        $stmt = $this->pdo->prepare("
-            SELECT s.id, s.name 
-            FROM UserSkill us
-            JOIN Skills s ON us.id_skill = s.id
-            WHERE us.id_user = :user_id
-        ");
-        $stmt->execute([':user_id' => $userId]);
-        $data['user_skills'] = $stmt->fetchAll();
+{
+    $data = [];
+    
+    // Compétences de l'utilisateur
+    $stmt = $this->pdo->prepare("
+        SELECT s.id, s.name 
+        FROM UserSkill us
+        JOIN Skills s ON us.id_skill = s.id
+        WHERE us.id_user = :user_id
+    ");
+    $stmt->execute([':user_id' => $userId]);
+    $data['user_skills'] = $stmt->fetchAll();
+    
+    // Compétences disponibles
+    $data['available_skills'] = $this->getAllAvailableSkills($userId);
         
         // Candidatures de l'utilisateur (exclure wishlist)
         $stmt = $this->pdo->prepare("
@@ -382,5 +385,52 @@ class DashboardModel
         $data['wishlist'] = $stmt->fetchAll();
         
         return $data;
+    }
+    public function getAllAvailableSkills(int $userId): array
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT s.* 
+            FROM Skills s
+            WHERE s.id NOT IN (
+                SELECT us.id_skill 
+                FROM UserSkill us 
+                WHERE us.id_user = :user_id
+            )
+        ");
+        $stmt->execute([':user_id' => $userId]);
+        return $stmt->fetchAll();
+    }
+
+    public function addSkillToUser(int $userId, int $skillId): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare("
+                INSERT INTO UserSkill (id_user, id_skill) 
+                VALUES (:user_id, :skill_id)
+            ");
+            $stmt->execute([
+                ':user_id' => $userId,
+                ':skill_id' => $skillId
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    public function removeSkillFromUser(int $userId, int $skillId): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare("
+                DELETE FROM UserSkill 
+                WHERE id_user = :user_id AND id_skill = :skill_id
+            ");
+            $stmt->execute([
+                ':user_id' => $userId,
+                ':skill_id' => $skillId
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }
