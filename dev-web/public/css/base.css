@@ -383,3 +383,35 @@ footer:hover::before {
   background-color: #7494ec;
   margin-bottom: 0.5rem;
 }
+
+
+
+
+/*---------------------------------------------BOUTON POUR REMONTER----------------------------------------------------*/
+
+
+
+
+
+.btn_remonter{
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
+  border-radius: 20px;
+  background-color: #ececec;
+  position: fixed;
+  border: none;
+  right: 5px;
+  bottom: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.btn_remonter:hover {
+  box-shadow: 0 0 8px #7494ec;
+  transform: scale(1.1);
+}
+
+.btn_remonter:active {
+  transform: scale(0.9);
+}
