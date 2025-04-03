@@ -1,3 +1,4 @@
+const form = document.getElementById('formulaire');
 const cvFile = document.getElementById('filecv');
 const sizeMax = 2097152; //2Mo
 const afficher_cv = document.querySelector('.afficher_cv')
