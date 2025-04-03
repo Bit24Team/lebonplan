@@ -8,22 +8,20 @@ const more_info = document.getElementById('more_info');
 const cookies_explain = document.querySelector('.cookies_explain');
 const cookies_croix = document.getElementById('cookies_croix');
 
-let cookies = 0;
-
-if (cookies === 0){
+if (!localStorage.getItem('cookiesAccepted')) {
     demande_cookies.style.display = 'flex';
 }
 
 accept_cookies.addEventListener('click', function(){
     demande_cookies.style.display = 'none';
-    cookies = 1;
-    console.log("L'utilisateur à accepté les cookies");
+    localStorage.setItem('cookiesAccepted', 'true'); // Sauvegarde dans le localStorage
+    console.log("L'utilisateur a accepté les cookies");
 });
 
 refuse_cookies.addEventListener('click', function(){
     demande_cookies.style.display = 'none';
-    console.log("L'utilisateur à refusé les cookies");
-    cookies = 1;
+    localStorage.setItem('cookiesAccepted', 'false'); // Sauvegarde dans le localStorage
+    console.log("L'utilisateur a refusé les cookies");
 });
 
 more_info.addEventListener('click', function(){
