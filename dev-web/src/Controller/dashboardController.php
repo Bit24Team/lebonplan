@@ -30,7 +30,7 @@ class DashboardController extends AbstractController
         $charts = $this->model->getAdminChartsData();
         $recentActivity = $this->model->getRecentActivity();
 
-        return $this->render('admin.twig', [
+        return $this->render('account/admin.twig', [
             'stats' => $stats,
             'applications_chart' => $charts['applications_chart'],
             'users_chart' => $charts['users_chart'],
@@ -49,7 +49,7 @@ class DashboardController extends AbstractController
 
         $users = $this->model->getAllUsers();
 
-        return $this->render('admin.twig', [
+        return $this->render('account/admin.twig', [
             'active_tab' => 'users',
             'users' => $users
         ]);
@@ -65,7 +65,7 @@ class DashboardController extends AbstractController
 
         $companies = $this->model->getAllCompanies();
 
-        return $this->render('admin.twig', [
+        return $this->render('account/admin.twig', [
             'active_tab' => 'companies',
             'companies' => $companies
         ]);
@@ -82,7 +82,7 @@ class DashboardController extends AbstractController
         $filter = $request->query->get('filter', 'all');
         $offers = $this->model->getAllOffers($filter);
 
-        return $this->render('admin.twig', [
+        return $this->render('account/admin.twig', [
             'active_tab' => 'offers',
             'offers' => $offers,
             'filter' => $filter
@@ -100,7 +100,7 @@ class DashboardController extends AbstractController
         $filter = $request->query->get('filter', 'all');
         $applications = $this->model->getAllApplications($filter);
 
-        return $this->render('admin.twig', [
+        return $this->render('account/admin.twig', [
             'active_tab' => 'applications',
             'applications' => $applications,
             'filter' => $filter
@@ -117,7 +117,7 @@ class DashboardController extends AbstractController
 
         $settings = $this->model->getSiteSettings();
 
-        return $this->render('admin.twig', [
+        return $this->render('account/admin.twig', [
             'active_tab' => 'settings',
             'settings' => $settings
         ]);
@@ -151,7 +151,7 @@ class DashboardController extends AbstractController
 
         $data = $this->model->getManagerData($user['id']);
 
-        return $this->render('company.twig', [
+        return $this->render('account/company.twig', [
             'company' => $data['company'] ?? null,
             'offers' => $data['offers'] ?? [],
             'total_applications' => $data['total_applications'] ?? 0,
@@ -170,7 +170,7 @@ class DashboardController extends AbstractController
 
         $data = $this->model->getUserData($user['id']);
 
-        return $this->render('user.twig', [
+        return $this->render('account/user.twig', [
             'user' => $user,
             'user_skills' => $data['user_skills'],
             'applications' => $data['applications'],
