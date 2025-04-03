@@ -167,12 +167,13 @@ class DashboardController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('login_page');
         }
-
+    
         $data = $this->model->getUserData($user['id']);
-
+    
         return $this->render('account/user.twig', [
             'user' => $user,
             'user_skills' => $data['user_skills'],
+            'available_skills' => $data['available_skills'], // Ajout des compétences disponibles
             'applications' => $data['applications'],
             'wishlist' => $data['wishlist']
         ]);
@@ -199,12 +200,12 @@ class DashboardController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('login_page');
         }
-    
+
         $skillId = $request->request->get('skill_id');
         if ($skillId) {
             $this->model->removeSkillFromUser($user['id'], $skillId);
         }
-    
+
         return new Response('', Response::HTTP_OK);
     }
 }
