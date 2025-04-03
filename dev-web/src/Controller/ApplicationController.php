@@ -27,7 +27,7 @@ class ApplicationController extends AbstractController
             throw $this->createNotFoundException('Offre non trouvée');
         }
 
-        $user = $this->getUserFromSession($session); // À adapter selon votre système d'authentification
+        $user = $this->getUserFromSession($session);
 
         if (!$user) {
             return $this->redirectToRoute('login_page');
@@ -35,7 +35,6 @@ class ApplicationController extends AbstractController
 
         if ($this->model->hasAlreadyApplied($offer_id, $user['id'])) {
             $this->addFlash('warning', 'Vous avez déjà postulé à cette offre');
-            return $this->redirectToRoute('apply_offer', ['offer_id' => $offer_id]);
         }
 
         return $this->render('offer/application.twig', [
