@@ -1,7 +1,10 @@
 {% extends 'base.twig' %}
 
 {% block title %}Mon Compte{% endblock %}
-
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('/css/dashboarduser.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <div class="row">
