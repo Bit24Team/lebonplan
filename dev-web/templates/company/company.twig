@@ -67,7 +67,7 @@
                     <div class="offer-item">
                         <h3>{{ offer.title }}</h3>
                         <p>{{ offer.description|slice(0, 150) }}...</p>
-                        <a href="{{ path('offer', {'offer_id': offer.id}) }}">Voir l'offre</a>
+                        <a href="{{ path('apply_offer', {'offer_id': offer.id}) }}">Voir l'offre</a>
                     </div>
                 {% endfor %}
             </div>
