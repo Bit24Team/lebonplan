@@ -433,4 +433,105 @@ class DashboardModel
             return false;
         }
     }
+    public function getOfferById(int $offerId): ?array
+    {
+        $sql = "SELECT o.*, c.name as company_name 
+                FROM Offers o
+                JOIN Companies c ON o.id_company = c.id
+                WHERE o.id = :offer_id";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':offer_id' => $offerId]);
+        return $stmt->fetch() ?: null;
+    }
+    
+    public function updateOffer(int $offerId, array $data): bool
+    {
+        $sql = "UPDATE Offers SET 
+                title = :title,
+                description = :description,
+                salary = :salary,
+                start_date = :start_date,
+                duration = :duration
+                WHERE id = :offer_id";
+        
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':description' => $data['description'],
+            ':salary' => $data['salary'],
+            ':start_date' => $data['start_date'],
+            ':duration' => $data['duration'],
+            ':offer_id' => $offerId
+        ]);
+    }
+    
+    public function updateApplicationStatus(int $applicationId, string $status): bool
+    {
+        $sql = "UPDATE Applications SET status = :status WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':status' => $status,
+            ':id' => $applicationId
+        ]);
+    }
+    
+    public function getApplicationById(int $applicationId): ?array
+    {
+        $sql = "SELECT a.*, o.title as offer_title, c.name as company_name,
+                CONCAT(u.first_name, ' ', u.last_name) as candidate_name
+                FROM Applications a
+                JOIN Offers o ON a.id_offer = o.id
+                JOIN Companies c ON o.id_company = c.id
+                JOIN Users u ON a.id_candidate = u.id
+                WHERE a.id = :id";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $applicationId]);
+        return $stmt->fetch() ?: null;
+    }
+    
+    public function getSkillsForOffer(int $offerId): array
+    {
+        $sql = "SELECT s.id, s.name 
+                FROM OfferSkill os
+                JOIN Skills s ON os.id_skill = s.id
+                WHERE os.id_offer = :offer_id";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':offer_id' => $offerId]);
+        return $stmt->fetchAll();
+    }
+    
+    public function addSkillToOffer(int $offerId, int $skillId): bool
+    {
+        try {
+            $sql = "INSERT INTO OfferSkill (id_offer, id_skill) VALUES (:offer_id, :skill_id)";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                ':offer_id' => $offerId,
+                ':skill_id' => $skillId
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
+    public function removeSkillFromOffer(int $offerId, int $skillId): bool
+    {
+        $sql = "DELETE FROM OfferSkill WHERE id_offer = :offer_id AND id_skill = :skill_id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':offer_id' => $offerId,
+            ':skill_id' => $skillId
+        ]);
+    }
+    
+    public function createSkill(string $name): int
+    {
+        $sql = "INSERT INTO Skills (name) VALUES (:name)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':name' => $name]);
+        return $this->pdo->lastInsertId();
+    }
 }

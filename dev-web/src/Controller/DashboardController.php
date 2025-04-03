@@ -167,9 +167,9 @@ class DashboardController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('login_page');
         }
-    
+
         $data = $this->model->getUserData($user['id']);
-    
+
         return $this->render('account/user.twig', [
             'user' => $user,
             'user_skills' => $data['user_skills'],
@@ -207,5 +207,138 @@ class DashboardController extends AbstractController
         }
 
         return new Response('', Response::HTTP_OK);
+    }
+    #[Route('/manager/offer/{offer_id}/edit', name: 'edit_offer_page', methods: ['GET'])]
+    public function editOfferPage(int $offer_id, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $offer = $this->model->getOfferById($offer_id);
+        if (!$offer) {
+            throw $this->createNotFoundException('Offre non trouvée');
+        }
+    
+        $skills = $this->model->getSkillsForOffer($offer_id);
+        $allSkills = $this->model->getAllAvailableSkills(0); // Passer 0 pour toutes les compétences
+    
+        return $this->render('offer/edit.twig', [
+            'offer' => $offer,
+            'skills' => $skills,
+            'all_skills' => $allSkills
+        ]);
+    }
+    
+    #[Route('/manager/offer/{offer_id}/edit', name: 'edit_offer', methods: ['POST'])]
+    public function editOffer(int $offer_id, Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $data = [
+            'title' => $request->request->get('title'),
+            'description' => $request->request->get('description'),
+            'salary' => $request->request->get('salary'),
+            'start_date' => $request->request->get('start_date'),
+            'duration' => $request->request->get('duration')
+        ];
+    
+        $this->model->updateOffer($offer_id, $data);
+    
+        $this->addFlash('success', 'Offre mise à jour avec succès');
+        return $this->redirectToRoute('manager_dashboard');
+    }
+    
+    #[Route('/manager/application/{application_id}', name: 'view_application', methods: ['GET'])]
+    public function viewApplication(int $application_id, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $application = $this->model->getApplicationById($application_id);
+        if (!$application) {
+            throw $this->createNotFoundException('Candidature non trouvée');
+        }
+    
+        return $this->render('application/view.twig', [
+            'application' => $application
+        ]);
+    }
+    
+    #[Route('/manager/application/{application_id}/update-status', name: 'update_application_status', methods: ['POST'])]
+    public function updateApplicationStatus(int $application_id, Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $status = $request->request->get('status');
+        $validStatuses = ['accepté', 'refusé', 'en attente'];
+    
+        if (!in_array($status, $validStatuses)) {
+            $this->addFlash('error', 'Statut invalide');
+            return $this->redirectToRoute('view_application', ['application_id' => $application_id]);
+        }
+    
+        $this->model->updateApplicationStatus($application_id, $status);
+        $this->addFlash('success', 'Statut de la candidature mis à jour');
+    
+        return $this->redirectToRoute('view_application', ['application_id' => $application_id]);
+    }
+    
+    #[Route('/manager/offer/{offer_id}/add-skill', name: 'add_skill_to_offer', methods: ['POST'])]
+    public function addSkillToOffer(int $offer_id, Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $skillId = $request->request->get('skill_id');
+        if ($skillId) {
+            $this->model->addSkillToOffer($offer_id, $skillId);
+        }
+    
+        return $this->redirectToRoute('edit_offer_page', ['offer_id' => $offer_id]);
+    }
+    
+    #[Route('/manager/offer/{offer_id}/remove-skill', name: 'remove_skill_from_offer', methods: ['POST'])]
+    public function removeSkillFromOffer(int $offer_id, Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $skillId = $request->request->get('skill_id');
+        if ($skillId) {
+            $this->model->removeSkillFromOffer($offer_id, $skillId);
+        }
+    
+        return new Response('', Response::HTTP_OK);
+    }
+    
+    #[Route('/manager/create-skill', name: 'create_skill', methods: ['POST'])]
+    public function createSkill(Request $request, SessionInterface $session): Response
+    {
+        $user = $session->get('user');
+        if (!$user || $user['permission'] != 1) {
+            return $this->redirectToRoute('login_page');
+        }
+    
+        $name = $request->request->get('name');
+        if ($name) {
+            $this->model->createSkill($name);
+            $this->addFlash('success', 'Compétence créée avec succès');
+        }
+    
+        return $this->redirectToRoute('edit_offer_page', ['offer_id' => $request->request->get('offer_id')]);
     }
 }

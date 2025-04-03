@@ -1,0 +1,87 @@
+{% extends 'base.twig' %}
+
+{% block title %}Modifier l'offre{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Modifier l'offre: {{ offer.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('edit_offer', {'offer_id': offer.id}) }}">
+                        <div class="form-group">
+                            <label for="title">Titre</label>
+                            <input type="text" class="form-control" id="title" name="title" value="{{ offer.title }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" required>{{ offer.description }}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="salary">Salaire (€/mois)</label>
+                            <input type="number" class="form-control" id="salary" name="salary" value="{{ offer.salary }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="start_date">Date de début</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ offer.start_date }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="duration">Durée (en jours)</label>
+                            <input type="number" class="form-control" id="duration" name="duration" value="{{ offer.duration }}" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <a href="{{ path('manager_dashboard') }}" class="btn btn-secondary">Annuler</a>
+                    </form>
+                    
+                    <hr>
+                    
+                    <h5>Compétences requises</h5>
+                    <div class="mb-3">
+                        {% for skill in skills %}
+                            <span class="badge badge-primary mr-2">
+                                {{ skill.name }}
+                                <form method="post" action="{{ path('remove_skill_from_offer', {'offer_id': offer.id}) }}" class="d-inline">
+                                    <input type="hidden" name="skill_id" value="{{ skill.id }}">
+                                    <button type="submit" class="btn btn-sm btn-link text-white">×</button>
+                                </form>
+                            </span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form method="post" action="{{ path('add_skill_to_offer', {'offer_id': offer.id}) }}" class="form-inline">
+                                <div class="form-group mr-2">
+                                    <select class="form-control" name="skill_id">
+                                        {% for skill in all_skills %}
+                                            <option value="{{ skill.id }}">{{ skill.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success">Ajouter</button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form method="post" action="{{ path('create_skill') }}" class="form-inline">
+                                <input type="hidden" name="offer_id" value="{{ offer.id }}">
+                                <div class="form-group mr-2">
+                                    <input type="text" class="form-control" name="name" placeholder="Nouvelle compétence" required>
+                                </div>
+                                <button type="submit" class="btn btn-info">Créer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
