@@ -10,7 +10,7 @@
         <h1>{{ offer_name }}</h1>
         <span class="li_banniere">
             <span>
-                <i class="fa-solid fa-building"></i>
+                <i class="fa-solid fa-building logo"></i>
                 {{ company_name }}
             </span>
             <span>
@@ -69,19 +69,21 @@
         </div>
     </form>
 </div>
-<div class="resum_block">
-    <h3>{{ offer_name }}</h3>
-    <a href="{{ path('company',{'company_id': company_id}) }}" style="margin-bottom: 10px;">{{ company_name }}</a>
-    <h4 style="margin-bottom: 5px;">Résumé de l'offre:</h4>
-    <ul class="list_resum_offre">
-        {% for skill in skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-        <li>{{ duration }}</li>
-        <li>{{ salary }}€/mois</li>
-    </ul>
-    <div class="btn_block">
-            <button id="btn_postuler" class="bouton block">POSTULER</button>
+<div class="contenaire_resume_block">
+    <div class="resum_block">
+        <h3>{{ offer_name }}</h3>
+        <a href="{{ path('company',{'company_id': company_id}) }}" style="margin-bottom: 10px;">{{ company_name }}</a>
+        <h4 style="margin-bottom: 5px;">Résumé de l'offre:</h4>
+        <ul class="list_resum_offre">
+            {% for skill in skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+            <li>{{ duration }}</li>
+            <li>{{ salary }}€/mois</li>
+        </ul>
+        <div class="btn_block">
+                <button id="btn_postuler" class="bouton block">POSTULER</button>
+        </div>
     </div>
 </div>
 
