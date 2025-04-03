@@ -60,6 +60,7 @@ function success(valeur){
 form.addEventListener('submit', function(e){
     ifError = 0;
     e.preventDefault();
+    console.log("efezffs");
 
     const cvValue = cvFile.value;
     const lmValue = lmFile.value;
