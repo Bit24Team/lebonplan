@@ -8,22 +8,37 @@ const more_info = document.getElementById('more_info');
 const cookies_explain = document.querySelector('.cookies_explain');
 const cookies_croix = document.getElementById('cookies_croix');
 
-// Vérifie si le choix a déjà été fait (au lieu de toujours afficher)
-if (!localStorage.getItem('cookies')) {
-    demande_cookies.style.display = 'flex';
+// Vérification du choix existant
+if (!localStorage.getItem('cookieChoice')) {
+    demande_cookies.style.display = 'flex'; // Affiche seulement si aucun choix n'a été fait
 }
 
-accept_cookies.addEventListener('click', function(){
-    demande_cookies.style.display = 'none';
-    localStorage.setItem('cookies', 'true'); // Sauvegarde dans le localStorage
-    console.log("L'utilisateur a accepté les cookies");
+// Gestion des clics
+accept_cookies.addEventListener('click', () => {
+    setCookieChoice('accepted');
 });
 
-refuse_cookies.addEventListener('click', function(){
-    demande_cookies.style.display = 'none';
-    localStorage.setItem('cookies', 'false'); // Sauvegarde dans le localStorage
-    console.log("L'utilisateur a refusé les cookies");
+refuse_cookies.addEventListener('click', () => {
+    setCookieChoice('rejected');
 });
+
+// Fonction pour enregistrer le choix (réutilisable)
+function setCookieChoice(choice) {
+    localStorage.setItem('cookieChoice', choice);
+    demande_cookies.style.display = 'none';
+    
+    // Appliquez le choix ici (ex: charger/ne pas charger Google Analytics)
+    if (choice === 'accepted') {
+        loadTrackingScripts();
+    }
+    console.log(`Cookies ${choice}`);
+}
+
+// Exemple de chargement conditionnel
+function loadTrackingScripts() {
+    // Insérez ici vos scripts de tracking (Google Analytics etc.)
+    console.log("Chargement des scripts de tracking");
+}
 
 more_info.addEventListener('click', function(){
     cookies_explain.style.display = "flex";
