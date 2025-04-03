@@ -2,7 +2,6 @@
 {% block title %}Postuler à {{ offer_name }}{% endblock %}
 {% block styles %}
     <link rel="stylesheet" href="{{asset('/css/offer.css')}}">
-    <link rel="stylesheet" href="{{ asset('/css/base.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 {% endblock %}   
 {% block content %}
@@ -86,9 +85,6 @@
     </div>
 </div>
 
-<div>
-    <button class="btn_remonter"><i class="fa-solid fa-arrow-up"></i></button>
-</div>
 {% endblock %}
 {% block scripts %}
 <script src="{{ asset('/js/application.js') }}"></script>
