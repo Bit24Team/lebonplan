@@ -26,11 +26,6 @@ nav {
 
 main {
   background-color: white;
-  box-shadow: inset;
-  margin-left: 10%;
-  margin-right: 10%;
-  padding-top: 60px;
-  border-radius: 15px;
 }
 
 nav ul {
