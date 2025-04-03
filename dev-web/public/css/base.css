@@ -31,6 +31,7 @@ main {
 
 nav ul {
   width: 100%;
+  padding-bottom: 0px;
   list-style: none;
   display: flex;
   justify-content: flex-end;
