@@ -404,6 +404,7 @@ footer:hover::before {
   right: 5px;
   bottom: 5px;
   cursor: pointer;
+  z-index: 999;
   transition: transform 0.2s ease-in-out;
 }
 

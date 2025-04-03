@@ -1,9 +1,4 @@
-
 const form = document.getElementById('formulaire');
-const genre = document.getElementById('genre');
-const nom = document.getElementById('nom');
-const prenom = document.getElementById('prenom');
-const email = document.getElementById('email');
 const cvFile = document.getElementById('filecv');
 const sizeMax = 2097152; //2Mo
 const afficher_cv = document.querySelector('.afficher_cv')
@@ -14,10 +9,6 @@ const afficher_lm = document.querySelector('.afficher_lm')
 const lmLabel = document.getElementById('lm');
 const lm_name = document.querySelector('.lm_name');
 const notifForm = document.querySelector('.notifForm');
-
-nom.addEventListener('input', function(){
-    this.value = this.value.toUpperCase();
-});
 
 cvFile.addEventListener('change', function(){
     const files = this.files;
@@ -70,54 +61,8 @@ form.addEventListener('submit', function(e){
     ifError = 0;
     e.preventDefault();
 
-    const nomRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
-    const emailRegex = /^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([_\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})+$/
-
-    const nomValue = nom.value.trim();
-    const prenomValue = prenom.value.trim();
-    const emailValue = email.value.trim();
     const cvValue = cvFile.value;
     const lmValue = lmFile.value;
-
-    if(nomValue.length <1 || nomValue.length > 30){
-        if(nomValue === ""){
-            error(nom, 'Champs requis');
-        }
-        else{
-            error(nom, 'votre nom ne doit pas dépasser 30 caractères.');
-        }
-    }
-    else if(!nomRegex.test(nomValue)){
-        error(nom, 'Votre nom ne doit contenir des caractères spéciaux.');
-    }
-    else if(!nom.classList.contains('invisible')){
-        success(nom);
-    }
-
-    if(prenomValue.length <1 || prenomValue.length > 20){
-        if(prenomValue === ""){
-            error(prenom, 'Champs requis');
-        }
-        else{
-            error(prenom, 'Votre prénom ne doit pas dépasser 20 caractères.');
-        }
-    }
-    else if(!nomRegex.test(prenomValue)){
-        error(prenom, 'Votre prénom ne doit pas contenir des caractères spéciaux.');
-    }
-    else if(!prenom.classList.contains('invisible')){
-        success(prenom);
-    }
-    
-    if(emailValue === ""){
-        error(email, 'Champs requis');
-    }
-    else if(!emailRegex.test(emailValue)){
-        error(email, "Votre email n'est pas valide.");
-    }
-    else if(!email.classList.contains('invisible')){
-        success(email);
-    }
 
     if(cvValue === ""){
         error(cvLabel, "CV obligatoire")
