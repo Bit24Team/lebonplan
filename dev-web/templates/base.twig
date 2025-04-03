@@ -81,7 +81,7 @@
         </li>
       </ul>
     </nav>
-
+    
 
     <div class="cookies">
         <p>
@@ -194,11 +194,14 @@
         
     </div>
 
-
     <main>
     {% block content %}
     {% endblock %}
     </main>
+    <footer>
+      <p>© 2023 Le Bon Plan - Tous droits réservés</p>
+      <p>contact@lebonplan.com | +33 1 23 45 67 89</p>
+    </footer>
     <script src="{{ asset('/js/navbar.js') }}"></script>
     <script src="{{ asset('/js/base.js') }}"></script>
     {% block scripts %}
