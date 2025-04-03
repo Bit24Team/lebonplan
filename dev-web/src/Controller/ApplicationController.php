@@ -35,7 +35,7 @@ class ApplicationController extends AbstractController
 
         if ($this->model->hasAlreadyApplied($offer_id, $user['id'])) {
             $this->addFlash('warning', 'Vous avez déjà postulé à cette offre');
-            return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
+            return $this->redirectToRoute('apply_offer', ['offer_id' => $offer_id]);
         }
 
         return $this->render('offer/application.twig', [
@@ -68,7 +68,7 @@ public function submitApplication(int $offer_id, Request $request, SessionInterf
 
     if ($this->model->hasAlreadyApplied($offer_id, $user['id'])) {
         $this->addFlash('warning', 'Vous avez déjà postulé à cette offre');
-        return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
+        return $this->redirectToRoute('apply_offer', ['offer_id' => $offer_id]);
     }
 
     try {
@@ -95,7 +95,7 @@ public function submitApplication(int $offer_id, Request $request, SessionInterf
         );
 
         $this->addFlash('success', 'Votre candidature a bien été envoyée !');
-        return $this->redirectToRoute('offer', ['offer_id' => $offer_id]);
+        return $this->redirectToRoute('apply_offer', ['offer_id' => $offer_id]);
 
     } catch (\Exception $e) {
         $this->addFlash('error', $e->getMessage());
