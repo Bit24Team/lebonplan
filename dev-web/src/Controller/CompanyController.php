@@ -123,4 +123,70 @@ public function rateCompany(int $company_id, Request $request): Response
 
         return $this->redirectToRoute('index');
     }
+    #[Route('/entreprise/{company_id}/modifier', name: 'edit_company_page', methods: ['GET'])]
+public function editCompanyPage(int $company_id, Request $request): Response
+{
+    $user = $request->getSession()->get('user');
+    $company = $this->model->getCompanyById($company_id);
+    
+    if (!$company) {
+        throw $this->createNotFoundException('Entreprise non trouvée');
+    }
+
+    // Vérifier que l'utilisateur est le gestionnaire de l'entreprise
+    if (!$user || $user['id'] != $company['id_manager']) {
+        $this->addFlash('error', 'Vous n\'avez pas les droits pour modifier cette entreprise');
+        return $this->redirectToRoute('company', ['company_id' => $company_id]);
+    }
+
+    return $this->render('company/edit.twig', [
+        'company' => $company
+    ]);
+}
+
+#[Route('/entreprise/{company_id}/modifier', name: 'edit_company', methods: ['POST'])]
+public function editCompany(int $company_id, Request $request): Response
+    {
+        $user = $request->getSession()->get('user');
+        $company = $this->model->getCompanyById($company_id);
+
+        if (!$company) {
+            throw $this->createNotFoundException('Entreprise non trouvée');
+        }
+
+        // Vérification des droits
+        if (!$user || $user['id'] != $company['id_manager']) {
+            $this->addFlash('error', 'Vous n\'avez pas les droits pour modifier cette entreprise');
+            return $this->redirectToRoute('company', ['company_id' => $company_id]);
+        }
+
+        // Récupération des données du formulaire
+        $name = $request->request->get('name');
+        $description = $request->request->get('description');
+        $email = $request->request->get('contact_mail');
+        $phone = $request->request->get('contact_phone');
+
+        // Validation basique
+        if (empty($name)) {
+            $this->addFlash('error', 'Le nom de l\'entreprise est obligatoire');
+            return $this->redirectToRoute('edit_company_page', ['company_id' => $company_id]);
+        }
+
+        // Appel au modèle pour la modification
+        $success = $this->model->modify_company(
+            $name,
+            $description,
+            $email,
+            $phone,
+            $company_id
+        );
+
+        if ($success) {
+            $this->addFlash('success', 'Les informations de l\'entreprise ont été mises à jour');
+        } else {
+            $this->addFlash('error', 'Aucune modification effectuée');
+        }
+
+        return $this->redirectToRoute('company_dashboard');
+    }
 }

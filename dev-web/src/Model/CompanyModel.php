@@ -135,33 +135,40 @@ class CompanyModel
         return $stmt->fetch()['count'] ?? 0;
     }
 
-    public function modify_company(?string $name,?string $description,?string $email,?string $phone,INT $company_id):void
+    public function modify_company(?string $name, ?string $description, ?string $email, ?string $phone, int $company_id): bool
     {
         $sql = "UPDATE Companies SET ";
         $params = [];
-
+        $updates = [];
+    
         if ($name !== null) {
-            $sql .= " Companies.name = :name";
+            $updates[] = "name = :name";
             $params[':name'] = $name;
         }
         if ($description !== null) {
-            $sql .= " Companies.description = :description";
+            $updates[] = "description = :description";
             $params[':description'] = $description;
         }
         if ($email !== null) {
-            $sql .= " Companies.contact_mail = :email";
+            $updates[] = "contact_mail = :email";
             $params[':email'] = $email;
         }
         if ($phone !== null) {
-            $sql .= " Companies.contact_phone = :company_phone";
-            $params[':company_phone'] = $phone;
+            $updates[] = "contact_phone = :phone";
+            $params[':phone'] = $phone;
         }
-        $sql .= " WHERE Companies.id=:company_id";
+    
+        if (empty($updates)) {
+            return false; // Aucune modification demandée
+        }
+    
+        $sql .= implode(', ', $updates);
+        $sql .= " WHERE id = :company_id";
         $params[':company_id'] = $company_id;
-
+    
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-    }   
+        return $stmt->execute($params);
+    }
     public function rate_company(INT $user_id, INT $company_id,INT $rating):void
     {
         $sql = "SELECT Count(*) from Evaluations where from_user=:user_id AND to_company=:company_id ";

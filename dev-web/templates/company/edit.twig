@@ -1,0 +1,38 @@
+{% extends 'base.twig' %}
+
+{% block title %}Modifier {{ company.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Modifier les informations de {{ company.name }}</h1>
+    
+    <form method="post" action="{{ path('edit_company', {'company_id': company.id}) }}">
+        <div class="form-group">
+            <label for="name">Nom de l'entreprise</label>
+            <input type="text" id="name" name="name" class="form-control" value="{{ company.name }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" class="form-control" rows="5">{{ company.description }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="contact_mail">Email de contact</label>
+            <input type="email" id="contact_mail" name="contact_mail" class="form-control" value="{{ company.contact_mail }}">
+        </div>
+        
+        <div class="form-group">
+            <label for="contact_phone">Téléphone de contact</label>
+            <input type="tel" id="contact_phone" name="contact_phone" class="form-control" value="{{ company.contact_phone }}">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        <a href="{{ path('company', {'company_id': company.id}) }}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ asset('/css/edit_company.css') }}">
+{% endblock %}
