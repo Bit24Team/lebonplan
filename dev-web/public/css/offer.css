@@ -8,16 +8,6 @@
     text-decoration: none;
 }
 
-html{
-    font-size: 62.5%;
-}
-
-::selection{
-    background-color: #00a8ff;
-    color: black;
-}
-
-
 body
 {
     font-size: 1.6rem;
