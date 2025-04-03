@@ -18,11 +18,6 @@ class AccountController extends AbstractController
     {
         $this->model = $model;
     }
-    #[Route("/compte", name: "account", methods: ["GET"])]
-    public function account(): Response
-    {
-        return $this->render('account/base.twig');
-    }
 
     #[Route('/deconnexion', name: 'logout', methods: ['GET'])]
     public function logout(SessionInterface $session): Response
