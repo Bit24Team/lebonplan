@@ -76,43 +76,5 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="/js/company.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const btnNoter = document.getElementById('btn_noter');
-    const ratingBlock = document.getElementById('rating_block');
-    const croix = document.getElementById('croix');
-    const stars = document.querySelectorAll('.star-rating');
-    const ratingValue = document.getElementById('rating_value');
-    
-    if (btnNoter) {
-        btnNoter.addEventListener('click', function() {
-            ratingBlock.style.display = 'block';
-        });
-    }
-    
-    if (croix) {
-        croix.addEventListener('click', function() {
-            ratingBlock.style.display = 'none';
-        });
-    }
-    
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const value = this.getAttribute('data-value');
-            ratingValue.value = value;
-            
-            stars.forEach((s, index) => {
-                if (index < value) {
-                    s.classList.remove('fa-regular');
-                    s.classList.add('fa-solid');
-                } else {
-                    s.classList.remove('fa-solid');
-                    s.classList.add('fa-regular');
-                }
-            });
-        });
-    });
-});
-</script>
+<script src="/js/entreprise.js"></script>
 {% endblock %}

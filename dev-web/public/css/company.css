@@ -6,8 +6,11 @@
 }
 
 .logo {
-    font-size: 3rem;
+    background-color: white;
     color: #3498db;
+    padding: 30px;
+    font-size: 60px;
+    border-radius: 10px;
     margin-bottom: 1rem;
 }
 
@@ -45,6 +48,7 @@
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
+    width: 40%;
 }
 
 .croix {
