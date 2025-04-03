@@ -8,9 +8,8 @@ const more_info = document.getElementById('more_info');
 const cookies_explain = document.querySelector('.cookies_explain');
 const cookies_croix = document.getElementById('cookies_croix');
 
-let cookies = true;
-
-if (cookies = true) {
+// Vérifie si le choix a déjà été fait (au lieu de toujours afficher)
+if (!localStorage.getItem('cookies')) {
     demande_cookies.style.display = 'flex';
 }
 
