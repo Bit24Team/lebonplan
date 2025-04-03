@@ -1,5 +1,6 @@
 .banniere {
     background-color: #3498db;
+    color: white;
     padding: 2rem;
     text-align: center;
     position: relative;
@@ -49,19 +50,28 @@
     border-radius: 10px;
     text-align: center;
     width: 40%;
+    padding-top: 0px;
 }
 
-.croix {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+
+
+.cookies_croix{
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.cookies_croix i{
     cursor: pointer;
+    font-size: 20px;
 }
 
 .star {
-    font-size: 2rem;
-    color: #f1c40f;
+    font-size: 180%;
     margin: 1rem 0;
+    display: flex;
+    gap: 0px;
+    justify-content: center;
 }
 
 .star i {
