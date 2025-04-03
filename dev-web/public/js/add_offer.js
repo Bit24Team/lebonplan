@@ -71,7 +71,6 @@ document.getElementById("offerForm").addEventListener("submit", async function (
 
   const offerData = {
     title: document.getElementById("offerTitle").value,
-    company: document.getElementById("companyName").value,
     description: document.getElementById("descriptionHtml").value,
     skills: Array.from(skillsContainer.children).map((tag) =>
       tag.textContent.trim().replace("×", "").trim()
