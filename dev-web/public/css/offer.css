@@ -231,7 +231,7 @@ body
 }
 
 .contenaire_resume_block{
-    width: auto;
+    width: 350px;
     height: 100vh;
     display: flex;
     position: fixed;
