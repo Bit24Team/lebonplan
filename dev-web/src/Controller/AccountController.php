@@ -132,5 +132,28 @@ class AccountController extends AbstractController
         $this->addFlash('success', 'Mot de passe mis à jour avec succès');
         return $this->redirectToRoute('user_dashboard');
     }
+    #[Route("/redirection", name: "redirect_page", methods: ["GET"])]
+    public function redirect_page(Request $request, SessionInterface $session): Response
+    {
+        $error = $request->get("error") ?? null;
+        if ($session->has("user")) {
+            return $this->redirectToRoute('index');
+        }
+        return $this->render('account/Redirection_page.twig');
+    }
+    #[Route("/inscription/entreprise", name: "company_register_page", methods: ["GET"])]
+    public function company_register_page(Request $request, SessionInterface $session): Response
+    {
+        $error = $request->get("error") ?? null;
+        if ($session->has("user")) {
+            return $this->redirectToRoute('index');
+        }
+        return $this->render('account/login_company.twig');
+    }
+    #[Route("/inscription/entreprise", name: "company_register", methods: ["POST"])]
+    public function company_register(Request $request, SessionInterface $session): Response
+    {
+        return $this->login_or_register($request, $session);
+    }
 }
 
