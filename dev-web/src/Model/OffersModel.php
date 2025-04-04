@@ -117,8 +117,8 @@ class OffersModel
             $sql = "SELECT COUNT(*) as count FROM Skills WHERE name = :name";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':name' => $skill]);
-            $result = $stmt->fetch();
-            if($result['count'] == 0){
+            $result = $stmt->fetchColumn();
+            if($result == 0){
                 $this->newskill($skill);
             }
             $sql = "INSERT INTO OfferSkill (id_offer, id_skill) VALUES (:offer, :skill)";
