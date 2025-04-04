@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\CompanyModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +14,12 @@ use App\Model\AccountModel;
 class AccountController extends AbstractController
 {
     private AccountModel $model;
+    private CompanyModel $companyModel;
 
-    public function __construct(AccountModel $model)
+    public function __construct(AccountModel $model, CompanyModel $companyModel)
     {
         $this->model = $model;
+        $this->companyModel = $companyModel;
     }
 
     #[Route('/deconnexion', name: 'logout', methods: ['GET'])]
@@ -153,7 +156,43 @@ class AccountController extends AbstractController
     #[Route("/inscription/entreprise", name: "company_register", methods: ["POST"])]
     public function company_register(Request $request, SessionInterface $session): Response
     {
-        return $this->login_or_register($request, $session);
+        $auth_type = $request->request->get("auth_type");
+        
+        if ($auth_type === "register") {
+            // Création du compte utilisateur (manager)
+            $first_name = $request->request->get("first_name");
+            $last_name = $request->request->get("last_name");
+            $email = $request->request->get("email");
+            $password = $request->request->get("password");
+            $phone = $request->request->get("phone");
+            
+            // Permission 2 pour les managers d'entreprise
+            $this->model->createUser($first_name, $last_name, $password, $email, 2, $phone, null);
+            
+            // Récupération de l'ID du manager créé
+            $manager_id = $this->model->get_user_id($first_name, $last_name, $email);
+            
+            // Création de l'entreprise
+            $company_name = $request->request->get("Entreprise");
+            $company_desc = $request->request->get("description", "");
+            
+            $this->companyModel->newcompany(
+                $manager_id, 
+                $company_name, 
+                $company_desc, 
+                $email, // On utilise l'email du manager comme contact
+                $phone  // On utilise le téléphone du manager comme contact
+            );
+            
+            // Connexion automatique
+            $data = $this->model->login($email, $password);
+            if ($data) {
+                $session->set('user', $data);
+                return $this->redirectToRoute('company_dashboard');
+            }
+        }
+        
+        return $this->redirectToRoute('login_page');
     }
 }
 
