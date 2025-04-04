@@ -188,6 +188,6 @@ public function editCompany(int $company_id, Request $request): Response
             $this->addFlash('error', 'Aucune modification effectuée');
         }
 
-        return $this->redirectToRoute('company_dashboard');
+        return $this->redirectToRoute('manager_dashboard');
     }
 }
