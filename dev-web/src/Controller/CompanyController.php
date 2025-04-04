@@ -108,7 +108,7 @@ public function rateCompany(int $company_id, Request $request): Response
     #[Route("/ajout/entreprise", name: "company_register_page", methods: ["GET"])]
     public function company_register_page(): Response
     {
-        return $this->render('account/login_company.twig');
+        return $this->render('account/login_company.twig',['is_active' => ' active']);
     }
     #[Route("/ajout/entreprise", name: "company_register", methods: ["POST"])]
     public function company_register(Request $request): Response
