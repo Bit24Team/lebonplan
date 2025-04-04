@@ -72,7 +72,7 @@ class OfferController extends AbstractController
             $duration
         );
 
-        return $this->redirectToRoute("account");
+        return $this->redirectToRoute("manager_dashboard");
     }
 
     #[Route("/api/offers", name: "api_offers", methods: ["GET"])]
