@@ -17,7 +17,7 @@ body
 
 .container{
     margin-left: 10%;
-    margin-right: 35%;
+    padding-right: 35%;
     line-height: 1.8;
 }
 
@@ -345,7 +345,7 @@ body
     }   
     
     .container{
-        margin-right: 10%;
+        padding-right: 10%;
     }
 
     .formulaire{
