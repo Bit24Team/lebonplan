@@ -39,8 +39,13 @@
         <li><a href="{{ path('offers') }}">Offres</a></li>
         <li><a href="{{ path('companies') }}">Entreprise</a></li>
         {% if app.session.get('user') %}
-        <li class="test"><a href="{{ path('account') }}">Mon compte</a></li>
-        <li class="test"><a href="{{ path('logout') }}">Déconnexion</a></li>
+        {% if perm == 2 %}
+        <li class="test"><a href="{{ path('manager_dashboard') }}">Mon Compte</a></li>
+        {% elseif perm == 3 %}
+        <li class="test"><a href="{{ path('admin_dashboard') }}">Mon Compte</a></li>
+        {% else %}
+        <li class="test"><a href="{{ path('user_dashboard') }}">Mon Compte</a></li>
+        {% endif %}
         {% else %}
         <li><a href="{{ path('register_page') }}">Inscription</a></li>
         <li><a href="{{ path('login_page') }}">Connexion</a></li>
