@@ -27,17 +27,17 @@ class AccountModel
         }
     }
 
-    public function createUser(string $first_name, string $last_name, string $password, string $email, int $permission, string $phone, string $group): bool
+    public function createUser(string $first_name, string $last_name, string $password, string $email, int $permission, string $phone, ?string $group): bool
     {
-        $sql = "INSERT INTO Users (first_name,last_name,password,email,permission,phone,groupe)
-                VALUES (:first_name,:last_name,:password,:email,:permission,:phone,:groupe)";
-
+        $sql = "INSERT INTO Users (first_name, last_name, password, email, permission, phone, groupe)
+                VALUES (:first_name, :last_name, :password, :email, :permission, :phone, :groupe)";
+    
         $stmt = $this->pdo->prepare($sql);
-
+        
         return $stmt->execute([
             ':first_name' => $first_name,
             ':last_name' => $last_name,
-            ':password' => password_hash($password, PASSWORD_BCRYPT), // Hashage du mot de passe
+            ':password' => password_hash($password, PASSWORD_BCRYPT),
             ':email' => $email,
             ':permission' => $permission,
             ':phone' => $phone,

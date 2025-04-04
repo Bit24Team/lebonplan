@@ -154,45 +154,72 @@ class AccountController extends AbstractController
         return $this->render('account/login_company.twig', ['is_active' => ' active']);
     }
     #[Route("/inscription/entreprise", name: "company_register", methods: ["POST"])]
-    public function company_register(Request $request, SessionInterface $session): Response
+public function company_register(Request $request, SessionInterface $session): Response
     {
         $auth_type = $request->request->get("auth_type");
         
         if ($auth_type === "register") {
-            // Création du compte utilisateur (manager)
-            $first_name = $request->request->get("first_name");
-            $last_name = $request->request->get("last_name");
-            $email = $request->request->get("email");
-            $password = $request->request->get("password");
-            $phone = $request->request->get("phone");
+            try {
+                // Données du formulaire
+                $first_name = $request->request->get("first_name");
+                $last_name = $request->request->get("last_name");
+                $email = $request->request->get("email");
+                $password = $request->request->get("password");
+                $phone = $request->request->get("phone");
+                $company_name = $request->request->get("Entreprise");
+                $company_desc = $request->request->get("description", "");
             
-            // Permission 2 pour les managers d'entreprise
-            $this->model->createUser($first_name, $last_name, $password, $email, 2, $phone, null);
+                // 1. Création du compte manager (permission 2)
+                $userCreated = $this->model->createUser(
+                    $first_name, 
+                    $last_name, 
+                    $password, 
+                    $email, 
+                    2, // Permission manager
+                    $phone, 
+                    null // Pas de groupe pour les managers
+                );
             
-            // Récupération de l'ID du manager créé
-            $manager_id = $this->model->get_user_id($first_name, $last_name, $email);
+                if (!$userCreated) {
+                    throw new \Exception("Échec de la création du compte manager");
+                }
             
-            // Création de l'entreprise
-            $company_name = $request->request->get("Entreprise");
-            $company_desc = $request->request->get("description", "");
+                // 2. Récupération de l'ID du manager
+                $manager_id = $this->model->get_user_id($first_name, $last_name, $email);
+                if (!$manager_id) {
+                    throw new \Exception("Impossible de récupérer l'ID du manager");
+                }
             
-            $this->companyModel->newcompany(
-                $manager_id, 
-                $company_name, 
-                $company_desc, 
-                $email, // On utilise l'email du manager comme contact
-                $phone  // On utilise le téléphone du manager comme contact
-            );
+                // 3. Création de l'entreprise
+                $companyCreated = $this->companyModel->newcompany(
+                    $manager_id,
+                    $company_name,
+                    $company_desc,
+                    $email,
+                    $phone
+                );
             
-            // Connexion automatique
-            $data = $this->model->login($email, $password);
-            if ($data) {
-                $session->set('user', $data);
-                return $this->redirectToRoute('company_dashboard');
+                if (!$companyCreated) {
+                    // Rollback: suppression du user si l'entreprise n'a pas pu être créée
+                    $this->model->delete_user($manager_id);
+                    throw new \Exception("Échec de la création de l'entreprise");
+                }
+            
+                // 4. Connexion automatique
+                $userData = $this->model->login($email, $password);
+                if ($userData) {
+                    $session->set('user', $userData);
+                    $this->addFlash('success', 'Votre compte manager et entreprise ont été créés avec succès');
+                    return $this->redirectToRoute('company_dashboard');
+                }
+            
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la création: '.$e->getMessage());
+                return $this->redirectToRoute('company_register_page');
             }
         }
         
-        return $this->redirectToRoute('login_page');
+        return $this->redirectToRoute('company_register_page');
     }
 }
 
