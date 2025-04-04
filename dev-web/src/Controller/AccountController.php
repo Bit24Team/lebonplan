@@ -148,7 +148,7 @@ class AccountController extends AbstractController
         if ($session->has("user")) {
             return $this->redirectToRoute('index');
         }
-        return $this->render('account/login_company.twig');
+        return $this->render('account/login_company.twig', ['is_active' => '']);
     }
     #[Route("/inscription/entreprise", name: "company_register", methods: ["POST"])]
     public function company_register(Request $request, SessionInterface $session): Response
