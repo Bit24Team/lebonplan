@@ -49,7 +49,7 @@
         <li class="test"><a href="{{ path('user_dashboard') }}">Mon Compte</a></li>
         {% endif %}
         {% else %}
-        <li><a href="{{ path('redirection') }}">Inscription</a></li>
+        <li><a href="{{ path('redirect_page') }}">Inscription</a></li>
         <li><a href="{{ path('login_page') }}">Connexion</a></li>
         {% endif %}
       </ul>
@@ -78,7 +78,7 @@
         <li class="hideOnMobile"><a href="{{ path('logout') }}">Déconnexion</a></li>
         {% else %}
         <li class="hideOnMobile"><a href="{{ path('login_page') }}">Connexion</a></li>
-        <li class="hideOnMobile"><a href="{{ path('redirection') }}">Inscription</a></li>
+        <li class="hideOnMobile"><a href="{{ path('redirect_page') }}">Inscription</a></li>
         {% endif %}
         <li class="menu-button" onclick="showSidebar()">
           <a href="#">
