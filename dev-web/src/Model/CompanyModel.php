@@ -108,12 +108,13 @@ class CompanyModel
         ];
     }
 
-    function newcompany($idmanager, $name, $description, $contact_mail, $contact_phone)
+    public function newcompany($idmanager, $name, $description, $contact_mail, $contact_phone): bool
     {
+        $sql = "INSERT INTO Companies (id_manager, name, description, contact_mail, contact_phone) 
+                VALUES (:idmanager, :name, :description, :contact_mail, :contact_phone)";
 
-        $sql = "INSERT INTO Companies (id_manager,name,description,contact_mail,contact_phone) VALUES (:idmanager,:name,:description,:contact_mail,:contact_phone)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             'idmanager' => $idmanager,
             'name' => $name,
             'description' => $description,

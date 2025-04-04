@@ -58,66 +58,61 @@ lmFile.addEventListener('change', function () {
 
 form.addEventListener('submit', function (e) {
     e.preventDefault();
-    let ifError = 0;
-    console.log(cv_name);
+    let isValid = true;
 
-    const cvValue = cvFile.value;
-    const lmValue = lmFile.value;
-
-    if (!cvFile.value) {
+    // Validation CV
+    if (!cvFile.files[0]) {
         error(cvLabel, "CV obligatoire");
-        ifError = 1;
+        isValid = false;
+    } else if (cvFile.files[0].size > sizeMax) {
+        error(cvLabel, "Le fichier dépasse 2Mo");
+        isValid = false;
     } else {
         success(cvLabel);
     }
 
-    if (!lmFile.value) {
+    // Validation Lettre de motivation
+    if (!lmFile.files[0]) {
         error(lmLabel, "Lettre de motivation obligatoire");
-        ifError = 1;
+        isValid = false;
+    } else if (lmFile.files[0].size > sizeMax) {
+        error(lmLabel, "Le fichier dépasse 2Mo");
+        isValid = false;
     } else {
         success(lmLabel);
     }
 
-    if(cvValue === ""){
-        error(cvLabel, "CV obligatoire")
-    }
-    else if(!cv.classList.contains('invisible')){
-        success(cvLabel);
-    }
-
-    if(lmValue === ""){
-        error(lmLabel, "Lettre de motivation obligatoire")
-    }
-    else if(!lm.classList.contains('invisible')){
-        success(cvLabel);
-    }
-
-    if (ifError === 0) {
-        notifForm.classList.add("toast");
-
-        if (ifPostuler === 0) {
-            notifForm.innerHTML = `
-                <i class="fa-solid fa-check" style="color: #00ff00;"></i>
-                <span>Votre candidature a bien été transmise.</span>
-            `;
-            ifPostuler = 1;
-        } else {
-            notifForm.innerHTML = `
-                <i class="fa-solid fa-xmark" style="color: #ff0000;"></i>
-                <span>Vous ne pouvez pas postuler une nouvelle fois à cette annonce.</span>
-            `;
-        }
-
-        setTimeout(function () {
-            notifForm.classList.add('fade-out');
-
-            setTimeout(function () {
-                notifForm.innerHTML = '';
-                notifForm.classList.remove('fade-out');
-            }, 500);
-        }, 2500);
+    if (isValid) {
+        notifToast();
     }
 });
+
+function notifToast() {
+    notifForm.classList.add("toast");
+
+    if (ifPostuler === 0) {
+        notifForm.innerHTML = `
+            <i class="fa-solid fa-check" style="color: #00ff00;"></i>
+            <span>Votre candidature a bien été transmise.</span>
+        `;
+        ifPostuler = 1;
+        // Soumission réelle du formulaire
+        form.submit();
+    } else {
+        notifForm.innerHTML = `
+            <i class="fa-solid fa-xmark" style="color: #ff0000;"></i>
+            <span>Vous ne pouvez pas postuler une nouvelle fois.</span>
+        `;
+    }
+
+    setTimeout(() => {
+        notifForm.classList.add('fade-out');
+        setTimeout(() => {
+            notifForm.innerHTML = '';
+            notifForm.classList.remove('fade-out', 'toast');
+        }, 500);
+    }, 2500);
+}
 
 
 const btn_postuler = document.getElementById('btn_postuler');
