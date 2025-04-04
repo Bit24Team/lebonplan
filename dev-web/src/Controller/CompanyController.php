@@ -14,10 +14,10 @@ class CompanyController extends AbstractController
     private CompanyModel $model;
     private AccountModel $accountModel;
 
-    public function __construct(CompanyModel $model)
+    public function __construct(CompanyModel $model, AccountModel $accountModel)
     {
         $this->model = $model;
-        $this->accountModel = $model;
+        $this->accountModel = $accountModel;
     }
 
     #[Route("/entreprises", name: "companies", methods: ["GET"])]
