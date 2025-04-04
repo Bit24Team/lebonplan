@@ -169,22 +169,23 @@ class CompanyModel
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }
-    public function rate_company(INT $user_id, INT $company_id, INT $rating): void
+    public function rate_company(int $user_id, int $company_id, int $rating): void
     {
-        $sql = "SELECT Count(*) from Evaluations where from_user=:user_id AND to_company=:company_id ";
 
+        $sql = "SELECT COUNT(*) FROM Evaluations WHERE from_user = :user_id AND to_company = :company_id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':user_id' => $user_id,
             ':company_id' => $company_id
         ]);
-        $stmt->fetch();
+        $exists = $stmt->fetchColumn();
 
-        if ($stmt >= 1) {
-            $sql = "UPDATE Evaluations SET amount=:rating WHERE from_user=:user_id AND to_company=:company_id ";
+        if ($exists > 0) {
+            $sql = "UPDATE Evaluations SET amount = :rating WHERE from_user = :user_id AND to_company = :company_id";
         } else {
-            $sql = "INSERT INTO Evaluations(from_user,to_company,amount) VALUES (:user_id,:company_id,:rating)";
+            $sql = "INSERT INTO Evaluations (from_user, to_company, amount) VALUES (:user_id, :company_id, :rating)";
         }
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':user_id' => $user_id,
@@ -192,6 +193,7 @@ class CompanyModel
             ':rating' => $rating,
         ]);
     }
+
     public function get_rate(INT $company_id): INT
     {
         $sql = "SELECT amount FROM Evaluations where to_company=:company_id";
