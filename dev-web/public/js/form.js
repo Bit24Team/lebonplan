@@ -60,29 +60,26 @@ form.addEventListener('submit', function (e) {
     e.preventDefault();
     let isValid = true;
 
-    // Validation CV
-    if (!cvFile.files[0]) {
-        error(cvLabel, "CV obligatoire");
-        isValid = false;
-    } else if (cvFile.files[0].size > sizeMax) {
-        error(cvLabel, "Le fichier dépasse 2Mo");
-        isValid = false;
-    } else {
+    const cvValue = cvFile.value;
+    const lmValue = lmFile.value;
+
+    if(cvValue === ""){
+        error(cvLabel, "CV obligatoire")
+        isValid = 1;
+    }
+    else if(!cv.classList.contains('invisible')){
         success(cvLabel);
     }
 
-    // Validation Lettre de motivation
-    if (!lmFile.files[0]) {
-        error(lmLabel, "Lettre de motivation obligatoire");
-        isValid = false;
-    } else if (lmFile.files[0].size > sizeMax) {
-        error(lmLabel, "Le fichier dépasse 2Mo");
-        isValid = false;
-    } else {
-        success(lmLabel);
+    if(lmValue === ""){
+        error(lmLabel, "Lettre de motivation obligatoire")
+        isValid = 1;
+    }
+    else if(!lm.classList.contains('invisible')){
+        success(cvLabel);
     }
 
-    if (isValid) {
+    if (isValid === 0) {
         notifToast();
     }
 });
