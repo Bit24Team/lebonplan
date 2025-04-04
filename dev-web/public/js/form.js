@@ -60,6 +60,9 @@ form.addEventListener('submit', function (e) {
     e.preventDefault();
     let isValid = true;
 
+    const cvValue = cvFile.value;
+    const lmValue = lmFile.value;
+
     if(cvValue === ""){
         error(cvLabel, "CV obligatoire")
         isValid = 1;
