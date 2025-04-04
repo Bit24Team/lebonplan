@@ -122,7 +122,7 @@ public function rateCompany(int $company_id, Request $request): Response
         $this->model->newcompany($manager_id, $name, $description, $contact_mail, $contact_phone);
     
         // Rediriger vers le tableau de bord de l'entreprise plutôt que la page d'accueil
-        return $this->redirectToRoute('company_dashboard');
+        return $this->redirectToRoute('manager_dashboard');
     }
     #[Route('/entreprise/{company_id}/modifier', name: 'edit_company_page', methods: ['GET'])]
 public function editCompanyPage(int $company_id, Request $request): Response
