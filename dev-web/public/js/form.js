@@ -61,6 +61,9 @@ form.addEventListener('submit', function (e) {
     let ifError = 0;
     console.log(cv_name);
 
+    const cvValue = cvFile.value;
+    const lmValue = lmFile.value;
+
     if (!cvFile.value) {
         error(cvLabel, "CV obligatoire");
         ifError = 1;
@@ -73,6 +76,20 @@ form.addEventListener('submit', function (e) {
         ifError = 1;
     } else {
         success(lmLabel);
+    }
+
+    if(cvValue === ""){
+        error(cvLabel, "CV obligatoire")
+    }
+    else if(!cv.classList.contains('invisible')){
+        success(cvLabel);
+    }
+
+    if(lmValue === ""){
+        error(lmLabel, "Lettre de motivation obligatoire")
+    }
+    else if(!lm.classList.contains('invisible')){
+        success(cvLabel);
     }
 
     if (ifError === 0) {
