@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\AccountModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,10 +12,12 @@ use App\Model\CompanyModel;
 class CompanyController extends AbstractController
 {
     private CompanyModel $model;
+    private AccountModel $accountModel;
 
     public function __construct(CompanyModel $model)
     {
         $this->model = $model;
+        $this->accountModel = $model;
     }
 
     #[Route("/entreprises", name: "companies", methods: ["GET"])]
@@ -114,6 +117,17 @@ public function rateCompany(int $company_id, Request $request): Response
     public function company_register(Request $request): Response
     {
         $manager_id = $request->request->get("idmanager");
+        if (!$manager_id) {
+            $manager_id = $this->accountModel->createUser(
+                $request->request->get("first_name"),
+                $request->request->get("last_name"),
+                $request->request->get("password"),
+                $request->request->get("contact_mail"),
+                2,
+                $request->request->get("contact_phone"),
+                null
+            );
+        }
         $name = $request->request->get("name");
         $description = $request->request->get("description");
         $contact_mail = $request->request->get("contact_mail");

@@ -31,10 +31,10 @@ class AccountModel
     {
         $sql = "INSERT INTO Users (first_name, last_name, password, email, permission, phone, groupe)
                 VALUES (:first_name, :last_name, :password, :email, :permission, :phone, :groupe)";
-    
+
         $stmt = $this->pdo->prepare($sql);
-        
-        return $stmt->execute([
+
+        $stmt->execute([
             ':first_name' => $first_name,
             ':last_name' => $last_name,
             ':password' => password_hash($password, PASSWORD_BCRYPT),
@@ -43,6 +43,8 @@ class AccountModel
             ':phone' => $phone,
             ':groupe' => $group
         ]);
+
+        return $this->get_user_id($first_name,$last_name,$email);
     }
 
     public function login(string $email, string $password): array|null
