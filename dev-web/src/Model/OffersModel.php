@@ -29,7 +29,7 @@ class OffersModel
     
     public function get_id_offer($title, $company): int
     {
-        $sql = 'SELECT id FROM Offers WHERE title = :title AND id_company = :company';
+        $sql = 'SELECT id FROM Offers WHERE title = :title AND id_company = :company ORDER BY id DESC LIMIT 1';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':title' => $title,
