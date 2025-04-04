@@ -59,6 +59,7 @@ lmFile.addEventListener('change', function () {
 form.addEventListener('submit', function (e) {
     e.preventDefault();
     let ifError = 0;
+    console.log(cv_name);
 
     if (!cvFile.value) {
         error(cvLabel, "CV obligatoire");
